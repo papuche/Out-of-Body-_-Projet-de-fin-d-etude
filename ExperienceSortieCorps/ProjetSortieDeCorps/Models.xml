@@ -1,0 +1,458 @@
+<Models>
+	<Model name="01FemaleHCLHM">
+		<Waist>
+			72.35
+		</Waist>
+		<Hips>
+			101.74
+		</Hips>
+		<Chest>
+			96.95
+		</Chest>
+	</Model>
+	<Model name="02FemaleHCMM">
+		<Waist>
+			78.73
+		</Waist>
+		<Hips>
+			108.97
+		</Hips>
+		<Chest>
+			89.43
+		</Chest>
+	</Model>
+	<Model name="03FemaleHCHLM">
+		<Waist>
+			94.85
+		</Waist>
+		<Hips>
+			117.45
+		</Hips>
+		<Chest>
+			97.92
+		</Chest>
+	</Model>
+	<Model name="04FemaleHCLM">
+		<Waist>
+			114.26
+		</Waist>
+		<Hips>
+			127.20
+		</Hips>
+		<Chest>
+			107.70
+		</Chest>
+	</Model>
+	<Model name="05FemaleLHHM">
+		<Waist>
+			68.91
+		</Waist>
+		<Hips>
+			97.72
+		</Hips>
+		<Chest>
+			95.39
+		</Chest>
+	</Model>
+	<Model name="06FemaleLHLHM">
+		<Waist>
+			71.70
+		</Waist>
+		<Hips>
+			101.05
+		</Hips>
+		<Chest>
+			91.84
+		</Chest>
+	</Model>
+	<Model name="07FemaleLHMM">
+		<Waist>
+			76.92
+		</Waist>
+		<Hips>
+			106.72
+		</Hips>
+		<Chest>
+			87.14
+		</Chest>
+	</Model>
+	<Model name="08FemaleLHHLM">
+		<Waist>
+			88.29
+		</Waist>
+		<Hips>
+			113.83
+		</Hips>
+		<Chest>
+			92.91
+		</Chest>
+	</Model>
+	<Model name="09FemaleLHLM">
+		<Waist>
+			99.57
+		</Waist>
+		<Hips>
+			120.34
+		</Hips>
+		<Chest>
+			98.43
+		</Chest>
+	</Model>
+	<Model name="10FemaleMCHM">
+		<Waist>
+			69.25
+		</Waist>
+		<Hips>
+			97.66
+		</Hips>
+		<Chest>
+			86.43
+		</Chest>
+	</Model>
+	<Model name="11FemaleMCLHM">
+		<Waist>
+			71.53
+		</Waist>
+		<Hips>
+			100.31
+		</Hips>
+		<Chest>
+			84.78
+		</Chest>
+	</Model>
+	<Model name="12FemaleMCMM">
+		<Waist>
+			74.40
+		</Waist>
+		<Hips>
+			103.55
+		</Hips>
+		<Chest>
+			83.45
+		</Chest>
+	</Model>
+	<Model name="13FemaleMCHLM">
+		<Waist>
+			78.23
+		</Waist>
+		<Hips>
+			107.68
+		</Hips>
+		<Chest>
+			84.82
+		</Chest>
+	</Model>
+	<Model name="14FemaleMCLM">
+		<Waist>
+			81.18
+		</Waist>
+		<Hips>
+			110.85
+		</Hips>
+		<Chest>
+			85.99
+		</Chest>
+	</Model>
+	<Model name="15FemaleHLCHM">
+		<Waist>
+			68.43
+		</Waist>
+		<Hips>
+			96.24
+		</Hips>
+		<Chest>
+			83.99
+		</Chest>
+	</Model>
+	<Model name="16FemaleHLCLHM">
+		<Waist>
+			70.02
+		</Waist>
+		<Hips>
+			98.45
+		</Hips>
+		<Chest>
+			82.85
+		</Chest>
+	</Model>
+	<Model name="17FemaleHLCLMM">
+		<Waist>
+			71.96
+		</Waist>
+		<Hips>
+			101.22
+		</Hips>
+		<Chest>
+			81.79
+		</Chest>
+	</Model>
+	<Model name="18FemaleHLCLHLM">
+		<Waist>
+			70.46
+		</Waist>
+		<Hips>
+			98.49
+		</Hips>
+		<Chest>
+			81.93
+		</Chest>
+	</Model>
+	<Model name="19FemaleHLCLLM">
+		<Waist>
+			68.93
+		</Waist>
+		<Hips>
+			95.77
+		</Hips>
+		<Chest>
+			82.47
+		</Chest>
+	</Model>
+	<Model name="20FemaleLCHM">
+		<Waist>
+			68.03
+		</Waist>
+		<Hips>
+			95.56
+		</Hips>
+		<Chest>
+			82.38
+		</Chest>
+	</Model>
+	<Model name="21FemaleLCLHM">
+		<Waist>
+			68.89
+		</Waist>
+		<Hips>
+			97.33
+		</Hips>
+		<Chest>
+			81.50
+		</Chest>
+	</Model>
+	<Model name="22FemaleLCMM">
+		<Waist>
+			69.85
+		</Waist>
+		<Hips>
+			99.39
+		</Hips>
+		<Chest>
+			80.81
+		</Chest>
+	</Model>
+	<Model name="23FemaleLCHLM">
+		<Waist>
+			63.14
+		</Waist>
+		<Hips>
+			89.68
+		</Hips>
+		<Chest>
+			80.23
+		</Chest>
+	</Model>
+	<Model name="24FemaleLCLM">
+		<Waist>
+			57.68
+		</Waist>
+		<Hips>
+			82.54
+		</Hips>
+		<Chest>
+			80.71
+		</Chest>
+	</Model>
+	<Model name="01MaleHCLHM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="02MaleHCMM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="03MaleHCHLM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="04MaleHCLM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="05MaleLHCHM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="06MaleLHCLHM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="07MaleLHCMM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="08MaleLHCHLM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="09MaleLHCLM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="10MaleMCHM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="11MaleMCLHM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="12MaleMCMM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="13MaleMCHLM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="14MaleMCLM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="15MaleHLCHM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="16MaleHLCLHM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="17MaleHLCMM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="18MaleHLCHLM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="19MaleHLCLM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="20MaleLCHM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="21MaleLCLHM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="22MaleLCMM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="23MaleLCHLM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+	<Model name="24MaleLCLM">
+		<Waist>
+		</Waist>
+		<Hips>
+		</Hips>
+		<Chest>
+		</Chest>
+	</Model>
+</Models>
