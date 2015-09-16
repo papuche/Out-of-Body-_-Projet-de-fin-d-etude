@@ -21,10 +21,7 @@
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
 
-# fichiers trop lourds ___ voir lfs
-U_Character_Body-DIF.psd
-U_Character_Head-DIF.psd
-U_Character_REF.fbx
+# fichiers trop lourds ____ à copier localement
 ExperienceSortieCorps/AppExperience_Data/resources.assets
 ExperienceSortieCorps/evalApp_Data/resources.assets
 ExperienceSortieCorps/MenuFemme_Data/resources.assets
