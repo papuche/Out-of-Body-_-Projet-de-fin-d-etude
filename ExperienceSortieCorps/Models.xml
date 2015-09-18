@@ -1,43 +1,43 @@
 <Models>
 	<Model name="01FemaleHCLHM">
 		<Waist>
-			73.07
+			72.35
 		</Waist>
 		<Hips>
-			97.12
+			101.74
 		</Hips>
 		<Chest>
-			95.27
+			96.95
 		</Chest>
 	</Model>
 	<Model name="02FemaleHCMM">
 		<Waist>
-			78.82
+			78.73
 		</Waist>
 		<Hips>
-			103.24
+			108.97
 		</Hips>
 		<Chest>
-			89.49
+			89.43
 		</Chest>
 	</Model>
 	<Model name="03FemaleHCHLM">
 		<Waist>
-			93.64
+			94.85
 		</Waist>
 		<Hips>
-			111.09
+			117.45
 		</Hips>
 		<Chest>
-			97.55
+			97.92
 		</Chest>
 	</Model>
 	<Model name="04FemaleHCLM">
 		<Waist>
-			113.69
+			114.26
 		</Waist>
 		<Hips>
-			121.26
+			127.20
 		</Hips>
 		<Chest>
 			107.70
@@ -45,175 +45,175 @@
 	</Model>
 	<Model name="05FemaleLHHM">
 		<Waist>
-			68.46
+			68.91
 		</Waist>
 		<Hips>
-			91.78
+			97.72
 		</Hips>
 		<Chest>
-			93.69
+			95.39
 		</Chest>
 	</Model>
 	<Model name="06FemaleLHLHM">
 		<Waist>
-			72.07
+			71.70
 		</Waist>
 		<Hips>
-			95.80
+			101.05
 		</Hips>
 		<Chest>
-			89.82
+			91.84
 		</Chest>
 	</Model>
 	<Model name="07FemaleLHMM">
 		<Waist>
-			76.30
+			76.92
 		</Waist>
 		<Hips>
-			100.26
+			106.72
 		</Hips>
 		<Chest>
-			86.48
+			87.14
 		</Chest>
 	</Model>
 	<Model name="08FemaleLHHLM">
 		<Waist>
-			84.87
+			88.29
 		</Waist>
 		<Hips>
-			106.02
+			113.83
 		</Hips>
 		<Chest>
-			90.93
+			92.91
 		</Chest>
 	</Model>
 	<Model name="09FemaleLHLM">
 		<Waist>
-			95.63
+			99.57
 		</Waist>
 		<Hips>
-			112.68
+			120.34
 		</Hips>
 		<Chest>
-			96.22
+			98.43
 		</Chest>
 	</Model>
 	<Model name="10FemaleMCHM">
 		<Waist>
-			68.89
+			69.25
 		</Waist>
 		<Hips>
-			91.73
+			97.66
 		</Hips>
 		<Chest>
-			86.72
+			86.43
 		</Chest>
 	</Model>
 	<Model name="11FemaleMCLHM">
 		<Waist>
-			71.00
+			71.53
 		</Waist>
 		<Hips>
-			94.10
+			100.31
 		</Hips>
 		<Chest>
-			85.17
+			84.78
 		</Chest>
 	</Model>
 	<Model name="12FemaleMCMM">
 		<Waist>
-			74.19
+			74.40
 		</Waist>
 		<Hips>
-			97.61
+			103.55
 		</Hips>
 		<Chest>
-			83.62
+			83.45
 		</Chest>
 	</Model>
 	<Model name="13FemaleMCHLM">
 		<Waist>
-			77.87
+			78.23
 		</Waist>
 		<Hips>
-			101.50
+			107.68
 		</Hips>
 		<Chest>
-			84.94
+			84.82
 		</Chest>
 	</Model>
 	<Model name="14FemaleMCLM">
 		<Waist>
-			81.58
+			81.18
 		</Waist>
 		<Hips>
-			105.40
+			110.85
 		</Hips>
 		<Chest>
-			86.44
+			85.99
 		</Chest>
 	</Model>
 	<Model name="15FemaleHLCHM">
 		<Waist>
-			68.14
+			68.43
 		</Waist>
 		<Hips>
-			90.59
+			96.24
 		</Hips>
 		<Chest>
-			84.11
+			83.99
 		</Chest>
 	</Model>
 	<Model name="16FemaleHLCLHM">
 		<Waist>
-			69.91
+			70.02
 		</Waist>
 		<Hips>
-			92.91
+			98.45
 		</Hips>
 		<Chest>
-			82.86
+			82.85
 		</Chest>
 	</Model>
 	<Model name="17FemaleHLCLMM">
 		<Waist>
-			71.76
+			71.96
 		</Waist>
 		<Hips>
-			95.42
+			101.22
 		</Hips>
 		<Chest>
-			81.88
+			81.79
 		</Chest>
 	</Model>
 	<Model name="18FemaleHLCLHLM">
 		<Waist>
-			70.52
+			70.46
 		</Waist>
 		<Hips>
-			93.05
+			98.49
 		</Hips>
 		<Chest>
-			82.07
+			81.93
 		</Chest>
 	</Model>
 	<Model name="19FemaleHLCLLM">
 		<Waist>
-			69.32
+			68.93
 		</Waist>
 		<Hips>
-			90.83
+			95.77
 		</Hips>
 		<Chest>
-			82.63
+			82.47
 		</Chest>
 	</Model>
 	<Model name="20FemaleLCHM">
 		<Waist>
-			67.71
+			68.03
 		</Waist>
 		<Hips>
-			90.18
+			95.56
 		</Hips>
 		<Chest>
 			82.38
@@ -221,32 +221,32 @@
 	</Model>
 	<Model name="21FemaleLCLHM">
 		<Waist>
-			68.55
+			68.89
 		</Waist>
 		<Hips>
-			91.77
+			97.33
 		</Hips>
 		<Chest>
-			81.48
+			81.50
 		</Chest>
 	</Model>
 	<Model name="22FemaleLCMM">
 		<Waist>
-			69.36
+			69.85
 		</Waist>
 		<Hips>
-			93.52
+			99.39
 		</Hips>
 		<Chest>
-			80.77
+			80.81
 		</Chest>
 	</Model>
 	<Model name="23FemaleLCHLM">
 		<Waist>
-			63.13
+			63.14
 		</Waist>
 		<Hips>
-			84.58
+			89.68
 		</Hips>
 		<Chest>
 			80.23
@@ -254,10 +254,10 @@
 	</Model>
 	<Model name="24FemaleLCLM">
 		<Waist>
-			57.33
+			57.68
 		</Waist>
 		<Hips>
-			77.24
+			82.54
 		</Hips>
 		<Chest>
 			80.71
