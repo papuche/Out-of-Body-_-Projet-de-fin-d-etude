@@ -18,6 +18,7 @@ public class LoadScene : MonoBehaviour {
 	}
 
 	public void Load(){
+		int i = 0;
 		foreach (Toggle t in toggleGroupSrc.ActiveToggles()) {
 			if (t.isOn) {
 				model = "Femme/" + t.GetComponent<ToggleModel> ().model + ";";

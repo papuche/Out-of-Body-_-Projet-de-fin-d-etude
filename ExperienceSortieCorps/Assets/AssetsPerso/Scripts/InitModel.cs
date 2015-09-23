@@ -5,18 +5,30 @@ public class InitModel : MonoBehaviour {
 	public Material jeanGhost;
 	public Material shirtGhost;
 	public GameObject posAvatar;
-	GameObject goSrc;
 
-	void Awake(){
-		bool isMale = false;
-		if (PlayerPrefs.GetInt("gender",1) == 0){
-			isMale = true;
-		}
+	private GameObject goSrc;
 
-		string name = PlayerPrefs.GetString ("Model");
+	private GameObject[] _go_models;
+	
+	private int avatarIndex;
+
+	private int gender=0;	// 0 : homme, 1 : femme
+
+	private string[] modelsDirectory = {"Models/Homme/", "Models/Femme/"};
+	
+	void Start(){
+
+		avatarIndex = PlayerPrefs.GetInt ("avatarIndex");
+		
+		/*string name = PlayerPrefs.GetString ("Model");
 		string[] model = name.Split(';');
 		goSrc = (GameObject)Instantiate(Resources.Load("Models/"+model[0]));
-		GameObject goDst = (GameObject)Resources.Load ("Models/" + model [1]);
+		GameObject goDst = (GameObject)Resources.Load ("Models/" + model [1]);*/
+
+		_go_models = Resources.LoadAll<GameObject> (modelsDirectory[gender]);
+		goSrc = (GameObject) Instantiate (_go_models[avatarIndex]);
+		goSrc.name = _go_models [avatarIndex].name;
+		GameObject goDst = _go_models [avatarIndex];
 		PlayerPrefs.SetString ("ModelSRC", goSrc.name);
 		PlayerPrefs.SetString ("ModelDST", goDst.name);
 		goSrc.transform.parent = posAvatar.transform;
@@ -24,7 +36,7 @@ public class InitModel : MonoBehaviour {
 		goSrc.transform.localRotation = new Quaternion(0.0f,0.0f,0.0f,0.0f);
 		initAvatar ();
 		initKinect ();
-
+		
 		GameObject jean = (GameObject) Instantiate(goSrc.transform.FindChild ("jeans01Mesh").gameObject);
 		jean.name = "jeanGhost";
 		jean.transform.parent = goSrc.transform;
@@ -36,32 +48,30 @@ public class InitModel : MonoBehaviour {
 		shirt.GetComponent<Renderer> ().material = shirtGhost;
 		shirt.SetActive (false);
 
-		if(isMale){
-			//initMorphing("mhair02Mesh",goSrc);
-			initMorphing("high-polyMesh");
-			initMorphing("jeans01Mesh");
-			initMorphing("male1591Mesh");
-			initMorphing("shirt01Mesh");
-		}else{
-			//initMorphing("fhair01Mesh",goSrc);
-			initMorphing("high-polyMesh");
-			initMorphing("jeans01Mesh");
-			initMorphing("female1605Mesh");
-			initMorphing("shirt01Mesh");
-		}
 
+		initMorphing("high-polyMesh");
+		initMorphing("jeans01Mesh");
+
+		if(gender == 0){
+			initMorphing("male1591Mesh");
+		}else{
+			initMorphing("female1605Mesh");
+		}
+		initMorphing("shirt01Mesh");
+
+		
 		foreach (MorphingAvatar morph in goSrc.GetComponentsInChildren<MorphingAvatar>()) {
 			Mesh meshSrc = morph.gameObject.GetComponent<SkinnedMeshRenderer>().sharedMesh;
 			Mesh meshDst = goDst.transform.FindChild(morph.gameObject.name).gameObject.GetComponent<SkinnedMeshRenderer>().sharedMesh;
 			morph.dstMesh = meshDst;
 			morph.srcMesh = meshSrc;
 		}
-
+		
 		goSrc.AddComponent<AvatarGhost> ();
 		SetLayerRecursively (goSrc, 8);
-		Debug.Log ("Model/" + name);
+		//Debug.Log ("Model/" + name);
 	}
-
+	
 	void initKinect(){
 		//goSrc.transform.position = posAvatar.transform.position;
 		//goSrc.transform.localRotation = posAvatar.transform.localRotation;
@@ -99,10 +109,10 @@ public class InitModel : MonoBehaviour {
 		
 		ctrl.BodyRoot = modelRoot.transform.FindChild("Hips");
 		ctrl.OffsetNode = modelRoot;
-
+		
 		ctrl.Init ();
 	}
-
+	
 	void initMorphing(string name){
 		
 		MorphingAvatar morph = goSrc.transform.FindChild (name).gameObject.AddComponent<MorphingAvatar> ();
@@ -110,11 +120,11 @@ public class InitModel : MonoBehaviour {
 		/*morph.dstMesh = modelDst.transform.FindChild (name).gameObject.GetComponent<SkinnedMeshRenderer>().sharedMesh;
 		morph.srcMesh = modelSrc.transform.FindChild (name).gameObject.GetComponent<SkinnedMeshRenderer> ().sharedMesh;*/
 	}
-
+	
 	void initAvatar(){
-
+		
 		GameObject modelRoot = goSrc.transform.FindChild ("python").gameObject;
-
+		
 		modelRoot.transform.FindChild ("Hips/Spine/Spine1/Spine2/Spine3/LeftShoulder").transform.localRotation = new Quaternion (-0.5f, 0.3f, 0.3f, 0.8f);
 		modelRoot.transform.FindChild ("Hips/Spine/Spine1/Spine2/Spine3/LeftShoulder/LeftShoulderExtra").transform.localRotation = new Quaternion (-0.6f, 0.3f, 0.2f, 0.7f);
 		modelRoot.transform.FindChild ("Hips/Spine/Spine1/Spine2/Spine3/LeftShoulder/LeftShoulderExtra/LeftArm").transform.localRotation = new Quaternion (-0.3f, 0.9f, 0.3f, -0.3f);
@@ -125,7 +135,7 @@ public class InitModel : MonoBehaviour {
 		modelRoot.transform.FindChild ("Hips/Spine/Spine1/Spine2/Spine3/LeftShoulder/LeftShoulderExtra/LeftArm/LeftForeArm/LeftHand/LeftInHandMiddle").transform.localRotation = new Quaternion (-0.1f, 0.0f, 0.0f, 1.0f);
 		modelRoot.transform.FindChild ("Hips/Spine/Spine1/Spine2/Spine3/LeftShoulder/LeftShoulderExtra/LeftArm/LeftForeArm/LeftHand/LeftInHandPinky").transform.localRotation = new Quaternion (-0.1f, -0.2f, 0.1f, 1.0f);
 		modelRoot.transform.FindChild ("Hips/Spine/Spine1/Spine2/Spine3/LeftShoulder/LeftShoulderExtra/LeftArm/LeftForeArm/LeftHand/LeftInHandRing").transform.localRotation = new Quaternion (-0.1f, -0.1f, 0.1f, 1.0f);
-
+		
 		modelRoot.transform.FindChild("Hips/Spine/Spine1/Spine2/Spine3/RightShoulder").transform.localRotation = new Quaternion (-0.5f, -0.3f, -0.3f, 0.8f);
 		modelRoot.transform.FindChild ("Hips/Spine/Spine1/Spine2/Spine3/RightShoulder/RightShoulderExtra").transform.localRotation = new Quaternion (-0.6f, -0.3f, -0.2f, 0.7f);
 		modelRoot.transform.FindChild ("Hips/Spine/Spine1/Spine2/Spine3/RightShoulder/RightShoulderExtra/RightArm").transform.localRotation = new Quaternion (0.3f, 0.9f, 0.3f, 0.3f);
@@ -137,11 +147,35 @@ public class InitModel : MonoBehaviour {
 		modelRoot.transform.FindChild ("Hips/Spine/Spine1/Spine2/Spine3/RightShoulder/RightShoulderExtra/RightArm/RightForeArm/RightHand/RightInHandPinky").transform.localRotation = new Quaternion (-0.1f, 0.2f, -0.1f, 1.0f);
 		modelRoot.transform.FindChild ("Hips/Spine/Spine1/Spine2/Spine3/RightShoulder/RightShoulderExtra/RightArm/RightForeArm/RightHand/RightInHandRing").transform.localRotation = new Quaternion (-0.1f, 0.1f, 0.0f, 1.0f);
 	}
-
+	
 	void SetLayerRecursively(GameObject go, int layerNumber) {
 		if (go == null) return;
 		foreach (Transform trans in go.GetComponentsInChildren<Transform>(true)) {
 			trans.gameObject.layer = layerNumber;
 		}
+	}
+	
+	void Update(){
+		if (PlayerPrefs.GetInt ("gender") != gender) {
+			gender = PlayerPrefs.GetInt ("gender");
+			_go_models = Resources.LoadAll<GameObject> (modelsDirectory[gender]);
+			reloadAvatar();
+		}	
+		if (avatarIndex != PlayerPrefs.GetInt ("avatarIndex")) {
+			avatarIndex = PlayerPrefs.GetInt ("avatarIndex");
+			reloadAvatar();
+		}
+		goSrc.transform.Rotate (0.0f, 1.0f, 0.0f);
+	}
+
+	void reloadAvatar(){
+		Quaternion srcRotation = goSrc.transform.localRotation;
+		Destroy (goSrc);
+		goSrc = (GameObject)Instantiate (_go_models [avatarIndex]);
+		goSrc.name = _go_models [avatarIndex].name;
+		goSrc.transform.parent = posAvatar.transform;
+		goSrc.transform.localPosition = Vector3.zero;
+		goSrc.transform.localRotation = srcRotation;
+		initAvatar ();
 	}
 }
