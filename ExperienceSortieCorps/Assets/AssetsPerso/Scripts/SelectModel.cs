@@ -131,11 +131,15 @@ public class SelectModel : MonoBehaviour
 	}
 
 	void Validate(){
-		string models = _modelsDirectory [_gender] + _chosenAvatar [0] + ";" + _modelsDirectory [_gender] + _chosenAvatar [1];
-		PlayerPrefs.SetString ("Model", models);
-		Destroy (_avatar);
-		GameObject.Find ("Canvas").SetActive(false);
-		initModel.SetActive(true);
+		GameObject src = (GameObject)Resources.Load (_modelsDirectory [_gender] + _chosenAvatar [0]);
+		GameObject dst = (GameObject)Resources.Load (_modelsDirectory [_gender] + _chosenAvatar [1]);
+		if (src != null && dst != null) {	// S'assure que les deux avatars sélectionnés sont bien de meme sexe
+			string models = _modelsDirectory [_gender] + _chosenAvatar [0] + ";" + _modelsDirectory [_gender] + _chosenAvatar [1];
+			PlayerPrefs.SetString ("Model", models);
+			Destroy (_avatar);
+			GameObject.Find ("Canvas").SetActive (false);
+			initModel.SetActive (true);
+		}
 	}
 	
 	public GameObject posAvatar {
