@@ -2,39 +2,42 @@
 using System.Collections;
 
 public class InitModel : MonoBehaviour {
-	public Material jeanGhost;
-	public Material shirtGhost;
-	public GameObject posAvatar;
-	GameObject goSrc;
+
+	[SerializeField]
+	private Material _jeanGhost;
+	[SerializeField]
+	private Material _shirtGhost;
+	[SerializeField]
+	private GameObject _posAvatar;
+
+	private GameObject _goSrc;
 
 	void Awake(){
-
-		bool isMale = false;
-		if (PlayerPrefs.GetInt("gender",1) != 0){
-			isMale = true;
-		}
-
 		string name = PlayerPrefs.GetString ("Model");
 		string[] model = name.Split(';');
-		goSrc = (GameObject)Instantiate(Resources.Load(model[0]));
+		_goSrc = (GameObject)Instantiate(Resources.Load(model[0]));
 		GameObject goDst = (GameObject)Resources.Load (model [1]);
-		PlayerPrefs.SetString ("ModelSRC", goSrc.name);
+		PlayerPrefs.SetString ("ModelSRC", _goSrc.name);
 		PlayerPrefs.SetString ("ModelDST", goDst.name);
-		goSrc.transform.parent = posAvatar.transform;
-		goSrc.transform.localPosition = Vector3.zero;
-		goSrc.transform.localRotation = new Quaternion(0.0f,0.0f,0.0f,0.0f);
+		_goSrc.transform.parent = _posAvatar.transform;
+		_goSrc.transform.localPosition = Vector3.zero;
+		_goSrc.transform.localRotation = new Quaternion(0.0f,0.0f,0.0f,0.0f);
 		initAvatar ();
 		initKinect ();
 
-		GameObject jean = (GameObject) Instantiate(goSrc.transform.FindChild ("jeans01Mesh").gameObject);
+		bool isMale = false;
+		if(model[0].Contains(SelectModel._modelsDirectory[0])) {
+			isMale = true;
+		}
+		GameObject jean = (GameObject) Instantiate(_goSrc.transform.FindChild ("jeans01Mesh").gameObject);
 		jean.name = "jeanGhost";
-		jean.transform.parent = goSrc.transform;
-		jean.GetComponent<Renderer> ().material = jeanGhost;
+		jean.transform.parent = _goSrc.transform;
+		jean.GetComponent<Renderer> ().material = _jeanGhost;
 		jean.SetActive (false);
-		GameObject shirt = (GameObject) Instantiate(goSrc.transform.FindChild ("shirt01Mesh").gameObject);
+		GameObject shirt = (GameObject) Instantiate(_goSrc.transform.FindChild ("shirt01Mesh").gameObject);
 		shirt.name = "shirtGhost";
-		shirt.transform.parent = goSrc.transform;
-		shirt.GetComponent<Renderer> ().material = shirtGhost;
+		shirt.transform.parent = _goSrc.transform;
+		shirt.GetComponent<Renderer> ().material = _shirtGhost;
 		shirt.SetActive (false);
 
 		initMorphing("high-polyMesh");
@@ -47,25 +50,24 @@ public class InitModel : MonoBehaviour {
 			initMorphing("female1605Mesh");
 		}
 
-		foreach (MorphingAvatar morph in goSrc.GetComponentsInChildren<MorphingAvatar>()) {
+		foreach (MorphingAvatar morph in _goSrc.GetComponentsInChildren<MorphingAvatar>()) {
 			Mesh meshSrc = morph.gameObject.GetComponent<SkinnedMeshRenderer>().sharedMesh;
 			Mesh meshDst = goDst.transform.FindChild(morph.gameObject.name).gameObject.GetComponent<SkinnedMeshRenderer>().sharedMesh;
 			morph.dstMesh = meshDst;
 			morph.srcMesh = meshSrc;
 		}
 
-		goSrc.AddComponent<AvatarGhost> ();
-		SetLayerRecursively (goSrc, 8);
-		Debug.Log (name);
+		_goSrc.AddComponent<AvatarGhost> ();
+		SetLayerRecursively (_goSrc, 8);
 	}
 
 	void initKinect(){
 		//goSrc.transform.position = posAvatar.transform.position;
 		//goSrc.transform.localRotation = posAvatar.transform.localRotation;
-		AvatarControllerClassic ctrl = goSrc.AddComponent <AvatarControllerClassic>();
+		AvatarControllerClassic ctrl = _goSrc.AddComponent <AvatarControllerClassic>();
 		
 		ctrl.verticalMovement = true;
-		GameObject modelRoot = goSrc.transform.FindChild ("python").gameObject;
+		GameObject modelRoot = _goSrc.transform.FindChild ("python").gameObject;
 		
 		ctrl.HipCenter = modelRoot.transform.FindChild("Hips");
 		ctrl.Spine = modelRoot.transform.FindChild ("Hips/Spine");
@@ -102,7 +104,7 @@ public class InitModel : MonoBehaviour {
 
 	void initMorphing(string name){
 		
-		MorphingAvatar morph = goSrc.transform.FindChild (name).gameObject.AddComponent<MorphingAvatar> ();
+		MorphingAvatar morph = _goSrc.transform.FindChild (name).gameObject.AddComponent<MorphingAvatar> ();
 		morph.speed = 0.016f;
 		/*morph.dstMesh = modelDst.transform.FindChild (name).gameObject.GetComponent<SkinnedMeshRenderer>().sharedMesh;
 		morph.srcMesh = modelSrc.transform.FindChild (name).gameObject.GetComponent<SkinnedMeshRenderer> ().sharedMesh;*/
@@ -110,7 +112,7 @@ public class InitModel : MonoBehaviour {
 
 	void initAvatar(){
 
-		GameObject modelRoot = goSrc.transform.FindChild ("python").gameObject;
+		GameObject modelRoot = _goSrc.transform.FindChild ("python").gameObject;
 
 		modelRoot.transform.FindChild ("Hips/Spine/Spine1/Spine2/Spine3/LeftShoulder").transform.localRotation = new Quaternion (-0.5f, 0.3f, 0.3f, 0.8f);
 		modelRoot.transform.FindChild ("Hips/Spine/Spine1/Spine2/Spine3/LeftShoulder/LeftShoulderExtra").transform.localRotation = new Quaternion (-0.6f, 0.3f, 0.2f, 0.7f);
@@ -139,6 +141,31 @@ public class InitModel : MonoBehaviour {
 		if (go == null) return;
 		foreach (Transform trans in go.GetComponentsInChildren<Transform>(true)) {
 			trans.gameObject.layer = layerNumber;
+		}
+	}
+
+	public Material jeanGhost {
+		set {
+			_jeanGhost = value;
+		}
+		get {
+			return _jeanGhost;
+		}
+	}
+	public Material shirtGhost {
+		set {
+			_shirtGhost = value;
+		}
+		get {
+			return _shirtGhost;
+		}
+	}
+	public GameObject posAvatar {
+		set {
+			_posAvatar = value;
+		}
+		get {
+			return _posAvatar;
 		}
 	}
 }

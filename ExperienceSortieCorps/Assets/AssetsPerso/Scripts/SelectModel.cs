@@ -12,31 +12,35 @@ public class SelectModel : MonoBehaviour
 	private Slider _sliderUser;
 	[SerializeField]
 	private Button _validateButton;
+	[SerializeField]
+	private GameObject _initModel;
 
-	public GameObject initModel;
-	
+	public readonly static string[] _modelsDirectory = {"Models/Homme/","Models/Femme/"};
+
 	private string[] _chosenAvatar;
 	private GameObject[] _go_models;
 	private GameObject _avatar;
 	private int _avatarIndex;
 	private int _gender = 0;	// 0 : homme, 1 : femme
 	private int _user = 0;		// 0 : utilisateur, 1 : expérimentateur 
-
-	private string[] _modelsDirectory = {"Models/Homme/", "Models/Femme/"};
 	
 	void Start ()
 	{
 		/* Gestion des listeners */
-		_validateButton.onClick.AddListener (() => Validate());
-		_sliderGender.onValueChanged.AddListener (delegate { ChangeGender (); });
-		_sliderUser.onValueChanged.AddListener (delegate { ChangeUser (); });
+		_validateButton.onClick.AddListener (() => Validate ());
+		_sliderGender.onValueChanged.AddListener (delegate {
+			ChangeGender ();
+		});
+		_sliderUser.onValueChanged.AddListener (delegate {
+			ChangeUser ();
+		});
 
 		_avatarIndex = PlayerPrefs.GetInt ("avatarIndex");
 		_chosenAvatar = new string[2];
 
 		_go_models = Resources.LoadAll<GameObject> (_modelsDirectory [_gender]);
 		_avatar = (GameObject)Instantiate (_go_models [_avatarIndex]);
-		_avatar.name = _go_models [_avatarIndex].name;
+		_avatar.name = _modelsDirectory [(int)_sliderUser.value] + _go_models [_avatarIndex].name;
 		_chosenAvatar [0] = _avatar.name;
 		_chosenAvatar [1] = _avatar.name;
 
@@ -47,7 +51,6 @@ public class SelectModel : MonoBehaviour
 		
 		_avatar.AddComponent<AvatarGhost> ();
 	}
-
 	
 	void initAvatar ()
 	{
@@ -85,12 +88,12 @@ public class SelectModel : MonoBehaviour
 	/// <summary>
 	/// Supprime l'avatar instancié et en instancie un nouveau
 	/// </summary>
-	void reloadAvatar ()
+	void ReloadAvatar ()
 	{
 		Quaternion srcRotation = _avatar.transform.localRotation;
 		Destroy (_avatar);
 		_avatar = (GameObject)Instantiate (_go_models [_avatarIndex]);
-		_avatar.name = _go_models [_avatarIndex].name;
+		_avatar.name = _modelsDirectory [(int)_sliderGender.value] + _go_models [_avatarIndex].name;
 		_avatar.transform.parent = posAvatar.transform;
 		_avatar.transform.localPosition = Vector3.zero;
 		_avatar.transform.localRotation = srcRotation;
@@ -103,7 +106,7 @@ public class SelectModel : MonoBehaviour
 		if ((int)_sliderGender.value != _gender) {	// Si le genre de l'avatar change
 			_gender = (int)_sliderGender.value;	// On sauvegarde le genre de l'avatar
 			_go_models = Resources.LoadAll<GameObject> (_modelsDirectory [_gender]);	// On charge les modèles d'avatar correspondant au sexe
-			reloadAvatar ();								// On charge le nouvel avatar
+			ReloadAvatar ();								// On charge le nouvel avatar
 		}
 	}
 
@@ -113,10 +116,25 @@ public class SelectModel : MonoBehaviour
 			_user = (int)sliderUser.value;			// On sauvegarde l'utilisateur
 			int oldUser = (_user == 0) ? 1 : 0;
 			_chosenAvatar [oldUser] = _avatar.name;			// On sauvegarde le modele choisi par l'ancien utilisateur
-			if (_chosenAvatar [_user] != null) {
+			if (!_chosenAvatar [_user].Contains (_modelsDirectory [(int)_sliderGender.value])) {
+				int gender = (int)_sliderGender.value == 0 ? 1 : 0;
+				_go_models = Resources.LoadAll<GameObject> (_modelsDirectory [gender]);	// On charge les modèles d'avatar correspondant au sexe
+				if (_chosenAvatar [_user] != null) {
+					for (int i=0; i< _go_models.Length; i++) {
+						if (_chosenAvatar [_user].Contains (_go_models [i].name)) {
+							PlayerPrefs.SetInt ("avatarIndex", i);	// On charge l'avatar choisi anciennement par l'utilisateur
+							break;
+						}
+					}
+				}
+				_sliderGender.value = gender;	// Change la position du slider qui gere le sexe et declenche le listener associé
+			}
+			else if (_chosenAvatar [_user] != null) {
 				for (int i=0; i< _go_models.Length; i++) {
-					if (_go_models [i].name.Equals (_chosenAvatar [_user]))
+					if (_chosenAvatar [_user].Contains (_go_models [i].name)) {
 						PlayerPrefs.SetInt ("avatarIndex", i);	// On charge l'avatar choisi anciennement par l'utilisateur
+						break;
+					}
 				}
 			}
 		}
@@ -126,22 +144,32 @@ public class SelectModel : MonoBehaviour
 	{
 		if (_avatarIndex != PlayerPrefs.GetInt ("avatarIndex")) {		// Si on change d'avatar
 			_avatarIndex = PlayerPrefs.GetInt ("avatarIndex");			// On sauvegarde l'index de l'avatar
-			reloadAvatar ();
+			ReloadAvatar ();
 		}
 	}
 
-	void Validate(){
-		GameObject src = (GameObject)Resources.Load (_modelsDirectory [_gender] + _chosenAvatar [0]);
-		GameObject dst = (GameObject)Resources.Load (_modelsDirectory [_gender] + _chosenAvatar [1]);
-		if (src != null && dst != null) {	// S'assure que les deux avatars sélectionnés sont bien de meme sexe
-			string models = _modelsDirectory [_gender] + _chosenAvatar [0] + ";" + _modelsDirectory [_gender] + _chosenAvatar [1];
-			PlayerPrefs.SetString ("Model", models);
-			Destroy (_avatar);
-			GameObject.Find ("Canvas").SetActive (false);
-			initModel.SetActive (true);
+	void Validate ()
+	{
+		int avatarGender = 0;
+		for (int i=0; i<_modelsDirectory.Length; i++) {
+			if (_chosenAvatar [0].Contains (_modelsDirectory [i])) {
+				avatarGender = i;
+				break;
+			}
+		}
+		if (_chosenAvatar [1].Contains (_modelsDirectory [avatarGender])) {
+			GameObject src = (GameObject)Resources.Load (_chosenAvatar [0]);
+			GameObject dst = (GameObject)Resources.Load (_chosenAvatar [1]);
+			if (src != null && dst != null) {	// S'assure que les deux avatars sélectionnés sont bien de meme sexe
+				string models = _chosenAvatar [0] + ";" + _chosenAvatar [1];
+				PlayerPrefs.SetString ("Model", models);
+				Destroy (_avatar);
+				GameObject.Find ("Canvas").SetActive (false);
+				initModel.SetActive (true);
+			}
 		}
 	}
-	
+
 	public GameObject posAvatar {
 		set {
 			_posAvatar = value;
@@ -175,6 +203,15 @@ public class SelectModel : MonoBehaviour
 		}
 		get {
 			return _validateButton;
+		}
+	}
+
+	public GameObject initModel {
+		set {
+			_initModel = value;
+		}
+		get {
+			return _initModel;
 		}
 	}
 }
