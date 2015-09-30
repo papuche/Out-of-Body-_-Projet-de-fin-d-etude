@@ -76,9 +76,9 @@ public class InitSceneDoors : MonoBehaviour {
 		// Recupération du nom des modèles dans modelName
 		string[] modelName = PlayerPrefs.GetString ("Model").Split (';');
 		if(!modelName[0].Equals("")) {
-		_modelSrcValues = ReadModelsValue (modelName [0].Split ('/') [1]);	// Les modèles du sujet sont enregistrés en [0]
-		_modelDstValues = ReadModelsValue (modelName [1].Split ('/') [1]);	// Les modèles du phychologue sont enregistrés en [1]
-		_differenceModels = calculEcart (_modelSrcValues, _modelDstValues);
+			_modelSrcValues = ReadModelsValue (modelName [0].Split ('/') [2]);	// Les modèles du sujet sont enregistrés en [0]
+			_modelDstValues = ReadModelsValue (modelName [1].Split ('/') [2]);	// Les modèles du phychologue sont enregistrés en [1]
+			_differenceModels = calculEcart (_modelSrcValues, _modelDstValues);
 		}
 
 		// Mise à jour de la largeur de porte.

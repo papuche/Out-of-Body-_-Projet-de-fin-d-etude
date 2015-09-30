@@ -12,8 +12,6 @@ public class SelectModel : MonoBehaviour
 	private Slider _sliderUser;
 	[SerializeField]
 	private Button _validateButton;
-	[SerializeField]
-	private GameObject _initModel;
 
 	public readonly static string[] _modelsDirectory = {"Models/Homme/","Models/Femme/"};
 
@@ -35,7 +33,7 @@ public class SelectModel : MonoBehaviour
 			ChangeUser ();
 		});
 
-		_avatarIndex = PlayerPrefs.GetInt ("avatarIndex");
+		_avatarIndex = PlayerPrefs.GetInt (Utils.PREFS_AVATAR_INDEX);
 		_chosenAvatar = new string[2];
 
 		_go_models = Resources.LoadAll<GameObject> (_modelsDirectory [_gender]);
@@ -122,7 +120,7 @@ public class SelectModel : MonoBehaviour
 				if (_chosenAvatar [_user] != null) {
 					for (int i=0; i< _go_models.Length; i++) {
 						if (_chosenAvatar [_user].Contains (_go_models [i].name)) {
-							PlayerPrefs.SetInt ("avatarIndex", i);	// On charge l'avatar choisi anciennement par l'utilisateur
+							PlayerPrefs.SetInt (Utils.PREFS_AVATAR_INDEX, i);	// On charge l'avatar choisi anciennement par l'utilisateur
 							break;
 						}
 					}
@@ -132,7 +130,7 @@ public class SelectModel : MonoBehaviour
 			else if (_chosenAvatar [_user] != null) {
 				for (int i=0; i< _go_models.Length; i++) {
 					if (_chosenAvatar [_user].Contains (_go_models [i].name)) {
-						PlayerPrefs.SetInt ("avatarIndex", i);	// On charge l'avatar choisi anciennement par l'utilisateur
+						PlayerPrefs.SetInt (Utils.PREFS_AVATAR_INDEX, i);	// On charge l'avatar choisi anciennement par l'utilisateur
 						break;
 					}
 				}
@@ -142,8 +140,8 @@ public class SelectModel : MonoBehaviour
 	
 	void ChangeAvatar ()
 	{
-		if (_avatarIndex != PlayerPrefs.GetInt ("avatarIndex")) {		// Si on change d'avatar
-			_avatarIndex = PlayerPrefs.GetInt ("avatarIndex");			// On sauvegarde l'index de l'avatar
+		if (_avatarIndex != PlayerPrefs.GetInt (Utils.PREFS_AVATAR_INDEX)) {		// Si on change d'avatar
+			_avatarIndex = PlayerPrefs.GetInt (Utils.PREFS_AVATAR_INDEX);			// On sauvegarde l'index de l'avatar
 			ReloadAvatar ();
 		}
 	}
@@ -163,9 +161,10 @@ public class SelectModel : MonoBehaviour
 			if (src != null && dst != null) {	// S'assure que les deux avatars sélectionnés sont bien de meme sexe
 				string models = _chosenAvatar [0] + ";" + _chosenAvatar [1];
 				PlayerPrefs.SetString ("Model", models);
-				Destroy (_avatar);
-				GameObject.Find ("Canvas").SetActive (false);
-				initModel.SetActive (true);
+				//Destroy (_avatar);
+				/*GameObject.Find ("Canvas").SetActive (false);
+				initModel.SetActive (true);*/
+				Application.LoadLevel("MainMenu");
 			}
 		}
 	}
@@ -203,15 +202,6 @@ public class SelectModel : MonoBehaviour
 		}
 		get {
 			return _validateButton;
-		}
-	}
-
-	public GameObject initModel {
-		set {
-			_initModel = value;
-		}
-		get {
-			return _initModel;
 		}
 	}
 }

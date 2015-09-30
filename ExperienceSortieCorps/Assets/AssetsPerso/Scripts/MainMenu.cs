@@ -14,32 +14,13 @@ public class MainMenu : MonoBehaviour {
 
 
 	//variables for loadLevel
-	public bool doorsExercices;
-	public bool avatarChoice;
-	public bool avatarExercice;
-	public bool morfingExercice;
-	public bool stickExercice;
-	public bool allExercices;
-	public bool parameters;
-
-	// Use this for initialization
-	void Start () {
-
-		tex= Resources.Load("light-wood", typeof(Texture)) as Texture;
-
-
-		doorsExercices = false;
-		avatarChoice = false;
-		avatarExercice = false;
-		morfingExercice = false;
-		stickExercice = false;
-		allExercices = false;
-		parameters = false;
-
-	}
-	
-	// Update is called once per frame
-	void Update () {}
+	private bool doorsExercices = false;
+	private bool avatarChoice = false;
+	private bool avatarExercice = false;
+	private bool morfingExercice = false;
+	private bool stickExercice = false;
+	private bool allExercices = false;
+	private bool parameters = false;
 
 	public void OnGUI(){
 
@@ -58,9 +39,6 @@ public class MainMenu : MonoBehaviour {
 		//BOUTON PARAMETRE		
 		GUI.skin = skinParameters;
 		if (GUI.Button (new Rect (Screen.width * 3 / 100, Screen.height * 80 / 100, 80, 70), "")) {
-			parameters=true;
-		}
-		if (parameters) {
 			Debug.Log ("open parameters !");
 		}
 
@@ -68,9 +46,6 @@ public class MainMenu : MonoBehaviour {
 		GUI.skin = skinBtnDoors;
 		if(GUI.Button (new Rect (Screen.width*15/100, Screen.height*18/100, Screen.width*23/100, Screen.height*38/100),"Exercice des portes"))
 		{
-			doorsExercices=true;
-		}
-		if (doorsExercices) {
 			Debug.Log ("open doors !");
 			Application.LoadLevel("Doors");
 		}
@@ -79,10 +54,7 @@ public class MainMenu : MonoBehaviour {
 		GUI.skin = skinBtnChoixAvatar;
 		if(GUI.Button (new Rect (Screen.width*15/100, Screen.height*58/100, Screen.width*23/100, Screen.height*38/100), "Choix de l'avatar"))		
 		{
-			avatarChoice=true;
-		}
-		if (avatarChoice) {
-			Debug.Log ("open avatar choice !");
+			PlayerPrefs.SetInt(Utils.PREFS_LAUNCH_MODEL, 0);
 			Application.LoadLevel("Out Of Body");
 		}
 
@@ -90,40 +62,37 @@ public class MainMenu : MonoBehaviour {
 		GUI.skin = skinBtnExercice;
 		if(GUI.Button (new Rect (Screen.width*50/100, Screen.height*20/100, Screen.width*35/100, Screen.height*15/100), "Exercice de l'avatar"))		
 		{
-			avatarExercice=true;
-		}
-		if (avatarExercice) {
-			Debug.Log ("open avatar exercice !");
+			PlayerPrefs.SetInt(Utils.PREFS_LAUNCH_MODEL, 1);
+			PlayerPrefs.SetInt(Utils.PREFS_LAUNCH_MORPHING, 0);
+			PlayerPrefs.SetInt(Utils.PREFS_LAUNCH_BATON, 0);
+			Application.LoadLevel("Out Of Body");
 		}
 
 		// BUTTON MORFING EXERCICE
 		GUI.skin = skinBtnExercice;
-		if(GUI.Button (new Rect (Screen.width*50/100, Screen.height*40/100, Screen.width*35/100, Screen.height*15/100), "Exercice de morfing"))		
+		if(GUI.Button (new Rect (Screen.width*50/100, Screen.height*40/100, Screen.width*35/100, Screen.height*15/100), "Exercice de morphing"))		
 		{
-			avatarExercice=true;
-		}
-		if (avatarExercice) {
-			Debug.Log ("open morfing exercice !");
+			PlayerPrefs.SetInt(Utils.PREFS_LAUNCH_MODEL, 1);
+			PlayerPrefs.SetInt(Utils.PREFS_LAUNCH_MORPHING, 1);
+			PlayerPrefs.SetInt(Utils.PREFS_LAUNCH_BATON, 0);
+			Application.LoadLevel("Out Of Body");
 		}
 
 		// BUTTON STICK EXERCICE
 		GUI.skin = skinBtnExercice;
 		if(GUI.Button (new Rect (Screen.width*50/100, Screen.height*60/100, Screen.width*35/100, Screen.height*15/100), "Exercice du baton"))		
 		{
-			avatarExercice=true;
-		}
-		if (avatarExercice) {
-			Debug.Log ("open stick exercice !");
+			PlayerPrefs.SetInt(Utils.PREFS_LAUNCH_MODEL, 1);
+			PlayerPrefs.SetInt(Utils.PREFS_LAUNCH_BATON, 1);
+			PlayerPrefs.SetInt(Utils.PREFS_LAUNCH_MORPHING, 0);
+			Application.LoadLevel("Out Of Body");
 		}
 
 		// BUTTON COMPLETE EXERCICE
 		GUI.skin = skinBtnExercice;
 		if(GUI.Button (new Rect (Screen.width*50/100, Screen.height*80/100, Screen.width*35/100, Screen.height*15/100), "Tous les exercices"))		
 		{
-			avatarExercice=true;
-		}
-		if (avatarExercice) {
-			Debug.Log ("open complele exercice !");
+			Debug.Log ("open complete exercice !");
 		}
 	}
 

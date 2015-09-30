@@ -16,6 +16,7 @@ public class InitModel : MonoBehaviour {
 		string name = PlayerPrefs.GetString ("Model");
 		string[] model = name.Split(';');
 		_goSrc = (GameObject)Instantiate(Resources.Load(model[0]));
+		_goSrc.name = model [0].Split ('/') [2];
 		GameObject goDst = (GameObject)Resources.Load (model [1]);
 		PlayerPrefs.SetString ("ModelSRC", _goSrc.name);
 		PlayerPrefs.SetString ("ModelDST", goDst.name);
@@ -25,10 +26,10 @@ public class InitModel : MonoBehaviour {
 		initAvatar ();
 		initKinect ();
 
-		bool isMale = false;
+		/*bool isMale = false;
 		if(model[0].Contains(SelectModel._modelsDirectory[0])) {
 			isMale = true;
-		}
+		}*/
 		GameObject jean = (GameObject) Instantiate(_goSrc.transform.FindChild ("jeans01Mesh").gameObject);
 		jean.name = "jeanGhost";
 		jean.transform.parent = _goSrc.transform;
@@ -40,7 +41,7 @@ public class InitModel : MonoBehaviour {
 		shirt.GetComponent<Renderer> ().material = _shirtGhost;
 		shirt.SetActive (false);
 
-		initMorphing("high-polyMesh");
+		/*initMorphing("high-polyMesh");
 		initMorphing("jeans01Mesh");
 		initMorphing("shirt01Mesh");
 
@@ -57,8 +58,9 @@ public class InitModel : MonoBehaviour {
 			morph.srcMesh = meshSrc;
 		}
 
-		_goSrc.AddComponent<AvatarGhost> ();
+		_goSrc.AddComponent<AvatarGhost> ();*/
 		SetLayerRecursively (_goSrc, 8);
+
 	}
 
 	void initKinect(){
@@ -106,8 +108,6 @@ public class InitModel : MonoBehaviour {
 		
 		MorphingAvatar morph = _goSrc.transform.FindChild (name).gameObject.AddComponent<MorphingAvatar> ();
 		morph.speed = 0.016f;
-		/*morph.dstMesh = modelDst.transform.FindChild (name).gameObject.GetComponent<SkinnedMeshRenderer>().sharedMesh;
-		morph.srcMesh = modelSrc.transform.FindChild (name).gameObject.GetComponent<SkinnedMeshRenderer> ().sharedMesh;*/
 	}
 
 	void initAvatar(){
