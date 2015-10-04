@@ -18,11 +18,11 @@ public class InitSceneDoors : MonoBehaviour {
 	private GameObject _text;
 
 	// Gestion de la largeur des portes
-	private int _scalesNumber=30;
-	private float _scalesMin=0.3f;
-	private float _scalesMax=1.2f;
+	//private int _scalesNumber = 6;
+	private int _nbTries = 5;
+	private List<float> _doors = new List<float>(){0.25f, 0.60f, 0.75f, 0.90f, 1.0f, 1.2f};
 	private List<float> _scales = new List<float>();
-	private int _doorWidthIndex;		// Index pointant dans scales
+	private int _doorIndex;		// Index pointant dans scales
 	private Vector3 _currentScale;	// Dimension de la porte dans la scène
 
 	// Nombre de réponses jouées (affichées dans la scène)
@@ -82,78 +82,71 @@ public class InitSceneDoors : MonoBehaviour {
 		}
 
 		// Mise à jour de la largeur de porte.
-		updateWidthDoor ();
+		_doorIndex = Random.Range (0, _scales.Count);
+		_currentScale = _piece.transform.localScale;
+		_currentScale = _piece.transform.localScale;
+		_ordreOuverture.Add (_currentScale.x);
+		_scales.RemoveAt(_doorIndex);
+		// Modification de la largeur de porte dans la scène.
+		_piece.transform.localScale = _currentScale;
 
-		// Ecriture de la largeur de porte 
 		_file = new StreamWriter ("Resultat.txt",true);
-
-		// Utile pour la fonction update
+		
 		_stop = false;
-	}
+		// Ecriture de l'avancement dans la scène
+		_nbAnswers++;
+		_text.GetComponent<Text>().text = _nbAnswers.ToString() + "/" + (_doors.Count*_nbTries).ToString();	}
 	
-	// Update is called once per frame
 	void Update () {
 		if(!_stop){
-
-			if (Input.GetMouseButtonDown (0) || Input.GetKeyDown(KeyCode.O)) {
+			if (Input.GetKeyDown (KeyCode.O) || Input.GetMouseButtonDown(0)) {
 				Reponse(true);
 				_next = true;
-			} else if (Input.GetMouseButtonDown (1) || Input.GetKeyDown(KeyCode.N)) {
+			} else if (Input.GetKeyDown (KeyCode.N) || Input.GetMouseButtonDown(1)) {
 				Reponse(false);
 				_next = true;
 			}
-
 			if(_next){
+				//rndNumber = (int)Random.Range(0.0f,10.0f);
+				//doorMat.color = colors[rndNumber];
+				//rndNumber = (int)Random.Range(0.0f,10.0f);
+				//roomMat.color = colors[rndNumber];
 				if(_scales.Count > 0){
-					// Mise à jour de la largeur de porte.
-					updateWidthDoor ();
-				}
-				else {
+					int nbTry = 0;
+					_currentScale = _piece.transform.localScale;
+					do{
+						//Random.
+						_doorIndex = Random.Range(0,(_scales.Count));
+						nbTry++;
+						if(nbTry > 10){
+							break;
+						}
+					}while(_currentScale.x == _scales[_doorIndex]);
+					
+					_currentScale.x = _scales[_doorIndex];
+					_ordreOuverture.Add (_currentScale.x);
+					_scales.RemoveAt(_doorIndex);
+					_piece.transform.localScale = _currentScale;
+					_next = false;
+					_nbAnswers++;
+					_text.GetComponent<Text>().text = _nbAnswers.ToString() + "/" + (_doors.Count*_nbTries).ToString();
+				} else {
 					_stop=true;
 					modifyXml ();
 					modifyTxT();
 					_file.Close ();
-					Application.Quit();
+					Application.LoadLevel("MainMenu");
 				}
-				_next = false;
 			}
 		}
 	}
+
 	/// <summary>
 	/// Initialisation du tableau conprenant la largeur des portes.
 	/// </summary>
 	void initScales(){
-		for (int i=0; i<_scalesNumber; i++) {
-			_scales.Add (Random.Range (_scalesMin, _scalesMax));
-		}
-	}
-
-	/// <summary>
-	/// Sélection aléatoire d'un index du tableau conprenant la largeur des portes.
-	/// </summary>
-	/// <returns>The ramdom index.</returns>
-	int selectRamdomIndex(){
-		return Random.Range (0, _scales.Count);
-	}
-
-	/// <summary>
-	/// Mise à jour de la largeur de porte.
-	/// </summary>
-	void updateWidthDoor(){
-		_doorWidthIndex = selectRamdomIndex ();		// Récupération aléatoire d'un index
-		_currentScale = _piece.transform.localScale;	// Récupération de l'échelle de la porte dans la scène
-		_currentScale.x = _scales[_doorWidthIndex];	// Affectation de la coordonée sélectionée dans scales[] sur currentScale.x (largeur de currentScale)
-		
-		// Ajout de la largeur dans ordreOuverture (pour le fichier de résultats) et suppression de la porte sélectionée dans scales
-		_ordreOuverture.Add (_currentScale.x);
-		_scales.RemoveAt(_doorWidthIndex);
-		
-		// Modification de la largeur de porte dans la scène.
-		_piece.transform.localScale = _currentScale;	
-		
-		// Ecriture de l'avancement dans la scène
-		_nbAnswers++;
-		_text.GetComponent<Text>().text = _nbAnswers.ToString() + "/" + _scalesNumber.ToString();
+		for (int i=0; i<_nbTries; i++)
+			_scales.AddRange(_doors);
 	}
 
 	void loadXMLFromAssest(){
