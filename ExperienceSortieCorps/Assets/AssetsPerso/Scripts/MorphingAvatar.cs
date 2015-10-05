@@ -7,7 +7,7 @@ public class MorphingAvatar : MonoBehaviour {
 	public Mesh srcMesh;
 	private Mesh mesh;
 	bool initDone;
-	//bool startMorph;
+	bool startMorph;
 	private float time;
 	public float speed = 0.0005f;
 	//public GameObject[] lineRenderers;
@@ -58,10 +58,10 @@ public class MorphingAvatar : MonoBehaviour {
 	void Update () {
 	//	SixenseInput.Controller controller = SixenseInput.GetController( SixenseHands.RIGHT );
 
-		//if (Input.GetKeyDown (KeyCode.Z) || Input.GetKeyDown (KeyCode.F)/* || controller.GetButton( SixenseButtons.TWO )*/) {
-		//	startMorph = true;
-		//}
-		if (initDone /*&& startMorph*/) {
+		if (Input.GetKeyDown (KeyCode.Z) || Input.GetKeyDown (KeyCode.F)/* || controller.GetButton( SixenseButtons.TWO )*/) {
+			startMorph = true;
+		}
+		if (initDone && startMorph) {
 			float deltaTime = Time.deltaTime * speed;
 			time += deltaTime;
 			float tmp = Mathf.Clamp(time,0,1);

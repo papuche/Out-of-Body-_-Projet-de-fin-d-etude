@@ -96,7 +96,7 @@ public class AvatarController : MonoBehaviour
 	}*/
 	public void Init()
 	{	
-		//Debug.Log ("InitKinect");
+		Debug.Log ("InitKinect");
 		// check for double start
 		if(bones != null)
 			return;
@@ -377,6 +377,7 @@ public class AvatarController : MonoBehaviour
 	// Capture the initial rotations of the bones
 	protected void GetInitialRotations()
 	{
+		Debug.Log ("InitialRotations");
 		// save the initial rotation
 		if(offsetNode != null)
 		{
