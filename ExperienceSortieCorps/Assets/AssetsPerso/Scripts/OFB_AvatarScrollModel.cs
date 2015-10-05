@@ -13,7 +13,7 @@ public class OFB_AvatarScrollModel : MonoBehaviour {
 		}
 		avatarIndex --;
 		if (avatarIndex < 0)
-			avatarIndex = Resources.LoadAll<GameObject> (SelectModel._modelsDirectory[(int)_sliderGender.value]).Length -1;
+			avatarIndex = Resources.LoadAll<GameObject> (Utils.MODELS_DIRECTORY[(int)_sliderGender.value]).Length -1;
 		PlayerPrefs.SetInt (Utils.PREFS_AVATAR_INDEX, avatarIndex);
 		}
 
@@ -24,7 +24,7 @@ public class OFB_AvatarScrollModel : MonoBehaviour {
 			avatarIndex = PlayerPrefs.GetInt (Utils.PREFS_AVATAR_INDEX);
 		}
 		avatarIndex ++;
-		if (avatarIndex >= Resources.LoadAll<GameObject> (SelectModel._modelsDirectory[(int)_sliderGender.value]).Length -1 )
+		if (avatarIndex >= Resources.LoadAll<GameObject> (Utils.MODELS_DIRECTORY[(int)_sliderGender.value]).Length -1 )
 			avatarIndex = 0;
 		PlayerPrefs.SetInt (Utils.PREFS_AVATAR_INDEX, avatarIndex);
 	}

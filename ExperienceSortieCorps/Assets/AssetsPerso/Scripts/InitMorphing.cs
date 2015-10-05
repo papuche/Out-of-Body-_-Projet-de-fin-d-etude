@@ -13,7 +13,7 @@ public class InitMorphing : MonoBehaviour {
 		GameObject goDst = (GameObject)Resources.Load (model [1]);
 
 		bool isMale = false;
-		if(model[0].Contains(SelectModel._modelsDirectory[0])) {
+		if(model[0].Contains(Utils.MODELS_DIRECTORY[0])) {
 			isMale = true;
 		}
 		init("high-polyMesh");

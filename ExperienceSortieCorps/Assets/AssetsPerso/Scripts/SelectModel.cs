@@ -13,8 +13,6 @@ public class SelectModel : MonoBehaviour
 	[SerializeField]
 	private Button _validateButton;
 
-	public readonly static string[] _modelsDirectory = {"Models/Homme/","Models/Femme/"};
-
 	private string[] _chosenAvatar;
 	private GameObject[] _go_models;
 	private GameObject _avatar;
@@ -36,9 +34,9 @@ public class SelectModel : MonoBehaviour
 		_avatarIndex = PlayerPrefs.GetInt (Utils.PREFS_AVATAR_INDEX);
 		_chosenAvatar = new string[2];
 
-		_go_models = Resources.LoadAll<GameObject> (_modelsDirectory [_gender]);
+		_go_models = Resources.LoadAll<GameObject> (Utils.MODELS_DIRECTORY [_gender]);
 		_avatar = (GameObject)Instantiate (_go_models [_avatarIndex]);
-		_avatar.name = _modelsDirectory [(int)_sliderUser.value] + _go_models [_avatarIndex].name;
+		_avatar.name = Utils.MODELS_DIRECTORY [(int)_sliderUser.value] + _go_models [_avatarIndex].name;
 		_chosenAvatar [0] = _avatar.name;
 		_chosenAvatar [1] = _avatar.name;
 
@@ -91,7 +89,7 @@ public class SelectModel : MonoBehaviour
 		Quaternion srcRotation = _avatar.transform.localRotation;
 		Destroy (_avatar);
 		_avatar = (GameObject)Instantiate (_go_models [_avatarIndex]);
-		_avatar.name = _modelsDirectory [(int)_sliderGender.value] + _go_models [_avatarIndex].name;
+		_avatar.name = Utils.MODELS_DIRECTORY [(int)_sliderGender.value] + _go_models [_avatarIndex].name;
 		_avatar.transform.parent = posAvatar.transform;
 		_avatar.transform.localPosition = Vector3.zero;
 		_avatar.transform.localRotation = srcRotation;
@@ -103,7 +101,7 @@ public class SelectModel : MonoBehaviour
 	{
 		if ((int)_sliderGender.value != _gender) {	// Si le genre de l'avatar change
 			_gender = (int)_sliderGender.value;	// On sauvegarde le genre de l'avatar
-			_go_models = Resources.LoadAll<GameObject> (_modelsDirectory [_gender]);	// On charge les modèles d'avatar correspondant au sexe
+			_go_models = Resources.LoadAll<GameObject> (Utils.MODELS_DIRECTORY [_gender]);	// On charge les modèles d'avatar correspondant au sexe
 			ReloadAvatar ();								// On charge le nouvel avatar
 		}
 	}
@@ -114,9 +112,9 @@ public class SelectModel : MonoBehaviour
 			_user = (int)sliderUser.value;			// On sauvegarde l'utilisateur
 			int oldUser = (_user == 0) ? 1 : 0;
 			_chosenAvatar [oldUser] = _avatar.name;			// On sauvegarde le modele choisi par l'ancien utilisateur
-			if (!_chosenAvatar [_user].Contains (_modelsDirectory [(int)_sliderGender.value])) {
+			if (!_chosenAvatar [_user].Contains (Utils.MODELS_DIRECTORY [(int)_sliderGender.value])) {
 				int gender = (int)_sliderGender.value == 0 ? 1 : 0;
-				_go_models = Resources.LoadAll<GameObject> (_modelsDirectory [gender]);	// On charge les modèles d'avatar correspondant au sexe
+				_go_models = Resources.LoadAll<GameObject> (Utils.MODELS_DIRECTORY [gender]);	// On charge les modèles d'avatar correspondant au sexe
 				if (_chosenAvatar [_user] != null) {
 					for (int i=0; i< _go_models.Length; i++) {
 						if (_chosenAvatar [_user].Contains (_go_models [i].name)) {
@@ -149,13 +147,13 @@ public class SelectModel : MonoBehaviour
 	void Validate ()
 	{
 		int avatarGender = 0;
-		for (int i=0; i<_modelsDirectory.Length; i++) {
-			if (_chosenAvatar [0].Contains (_modelsDirectory [i])) {
+		for (int i=0; i<Utils.MODELS_DIRECTORY.Length; i++) {
+			if (_chosenAvatar [0].Contains (Utils.MODELS_DIRECTORY [i])) {
 				avatarGender = i;
 				break;
 			}
 		}
-		if (_chosenAvatar [1].Contains (_modelsDirectory [avatarGender])) {
+		if (_chosenAvatar [1].Contains (Utils.MODELS_DIRECTORY [avatarGender])) {
 			GameObject src = (GameObject)Resources.Load (_chosenAvatar [0]);
 			GameObject dst = (GameObject)Resources.Load (_chosenAvatar [1]);
 			if (src != null && dst != null) {	// S'assure que les deux avatars sélectionnés sont bien de meme sexe

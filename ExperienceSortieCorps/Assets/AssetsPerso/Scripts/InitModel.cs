@@ -8,22 +8,17 @@ public class InitModel : MonoBehaviour {
 	GameObject goSrc;
 
 	void Awake(){
-		bool isMale = false;
-		if (PlayerPrefs.GetInt("gender",1) == 0){
-			isMale = true;
-		}
 
-		string name = PlayerPrefs.GetString ("Model");
-		string[] model = name.Split(';');
+		string[] model = PlayerPrefs.GetString ("Model").Split(';');
 		goSrc = (GameObject)Instantiate(Resources.Load(model[0]));
-		GameObject goDst = (GameObject)Resources.Load (model [1]);
+		GameObject goDst = (GameObject)Resources.Load (model[1]);
 		PlayerPrefs.SetString ("ModelSRC", goSrc.name);
 		PlayerPrefs.SetString ("ModelDST", goDst.name);
 		goSrc.transform.parent = posAvatar.transform;
 		goSrc.transform.localPosition = Vector3.zero;
 		goSrc.transform.localRotation = new Quaternion(0.0f,0.0f,0.0f,0.0f);
-		initAvatar ();
-		initKinect ();
+		initAvatar();
+		initKinect();
 
 		GameObject jean = (GameObject) Instantiate(goSrc.transform.FindChild ("jeans01Mesh").gameObject);
 		jean.name = "jeanGhost";
@@ -36,19 +31,13 @@ public class InitModel : MonoBehaviour {
 		shirt.GetComponent<Renderer> ().material = shirtGhost;
 		shirt.SetActive (false);
 
-		if(isMale){
-			//initMorphing("mhair02Mesh",goSrc);
-			initMorphing("high-polyMesh");
-			initMorphing("jeans01Mesh");
+		initMorphing("high-polyMesh");
+		initMorphing("jeans01Mesh");
+		initMorphing("shirt01Mesh");
+		if(model[0].Contains(Utils.MODELS_DIRECTORY[0]))
 			initMorphing("male1591Mesh");
-			initMorphing("shirt01Mesh");
-		}else{
-			//initMorphing("fhair01Mesh",goSrc);
-			initMorphing("high-polyMesh");
-			initMorphing("jeans01Mesh");
+		else
 			initMorphing("female1605Mesh");
-			initMorphing("shirt01Mesh");
-		}
 
 		foreach (MorphingAvatar morph in goSrc.GetComponentsInChildren<MorphingAvatar>()) {
 			Mesh meshSrc = morph.gameObject.GetComponent<SkinnedMeshRenderer>().sharedMesh;
@@ -59,12 +48,9 @@ public class InitModel : MonoBehaviour {
 
 		goSrc.AddComponent<AvatarGhost> ();
 		SetLayerRecursively (goSrc, 8);
-		Debug.Log ("Model/" + name);
 	}
 
 	void initKinect(){
-		//goSrc.transform.position = posAvatar.transform.position;
-		//goSrc.transform.localRotation = posAvatar.transform.localRotation;
 		AvatarControllerClassic ctrl = goSrc.AddComponent <AvatarControllerClassic>();
 		
 		ctrl.verticalMovement = true;
@@ -74,7 +60,6 @@ public class InitModel : MonoBehaviour {
 		ctrl.Spine = modelRoot.transform.FindChild ("Hips/Spine");
 		ctrl.ShoulderCenter = modelRoot.transform.FindChild("Hips/Spine/Spine1/Spine2/Spine3/Neck");
 		ctrl.Neck = modelRoot.transform.FindChild("Hips/Spine/Spine1/Spine2/Spine3/Neck/Head");
-		//ctrl.Head = model.transform.FindChild("Head");
 		
 		ctrl.ClavicleLeft = modelRoot.transform.FindChild("Hips/Spine/Spine1/Spine2/Spine3/LeftShoulder/LeftShoulderExtra");
 		ctrl.ShoulderLeft = modelRoot.transform.FindChild("Hips/Spine/Spine1/Spine2/Spine3/LeftShoulder/LeftShoulderExtra/LeftArm");
@@ -87,11 +72,9 @@ public class InitModel : MonoBehaviour {
 		ctrl.ElbowRight = modelRoot.transform.FindChild("Hips/Spine/Spine1/Spine2/Spine3/RightShoulder/RightShoulderExtra/RightArm/RightForeArm");
 		ctrl.HandRight = modelRoot.transform.FindChild("Hips/Spine/Spine1/Spine2/Spine3/RightShoulder/RightShoulderExtra/RightArm/RightForeArm/RightHand");
 		
-		
 		ctrl.HipLeft = modelRoot.transform.FindChild("Hips/LeftUpLeg");
 		ctrl.KneeLeft = modelRoot.transform.FindChild("Hips/LeftUpLeg/LeftLeg");
 		ctrl.FootLeft = modelRoot.transform.FindChild("Hips/LeftUpLeg/LeftLeg/LeftFoot");
-		
 		
 		ctrl.HipRight = modelRoot.transform.FindChild("Hips/RightUpLeg");
 		ctrl.KneeRight = modelRoot.transform.FindChild("Hips/RightUpLeg/RightLeg");
@@ -104,15 +87,11 @@ public class InitModel : MonoBehaviour {
 	}
 
 	void initMorphing(string name){
-		
 		MorphingAvatar morph = goSrc.transform.FindChild (name).gameObject.AddComponent<MorphingAvatar> ();
 		morph.speed = 0.016f;
-		/*morph.dstMesh = modelDst.transform.FindChild (name).gameObject.GetComponent<SkinnedMeshRenderer>().sharedMesh;
-		morph.srcMesh = modelSrc.transform.FindChild (name).gameObject.GetComponent<SkinnedMeshRenderer> ().sharedMesh;*/
 	}
 
 	void initAvatar(){
-
 		GameObject modelRoot = goSrc.transform.FindChild ("python").gameObject;
 
 		modelRoot.transform.FindChild ("Hips/Spine/Spine1/Spine2/Spine3/LeftShoulder").transform.localRotation = new Quaternion (-0.5f, 0.3f, 0.3f, 0.8f);
