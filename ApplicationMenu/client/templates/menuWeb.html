@@ -3,8 +3,9 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>Menu Web</title>
-		<script src="../../node_modules/angular/angular.js"></script>
-		<script src="../controllers/controller_menuWeb.js"></script>
+		<script src="node_modules/angular/angular.js"></script>
+		<script src="node_modules/angular-ui-router/release/angular-ui-router.js"></script>
+		<script src="client/controllers/controller_menuWeb.js"></script>
 
 	</head >
 
@@ -21,5 +22,6 @@
         		<input type="button" ng-click='exp_click()' value="Experience sortie de corps"/>
         	</div>
     	</section>
+    	<div ui-view></div>
 	</body>
 </html>
