@@ -34,6 +34,7 @@ public class InitModel : MonoBehaviour {
 		initMorphing("high-polyMesh");
 		initMorphing("jeans01Mesh");
 		initMorphing("shirt01Mesh");
+
 		if(model[0].Contains(Utils.MODELS_DIRECTORY[0]))
 			initMorphing("male1591Mesh");
 		else

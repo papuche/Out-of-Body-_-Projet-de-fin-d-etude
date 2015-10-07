@@ -15,6 +15,7 @@ public class LoadScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		camera.SetActive (false);
 		int launchModel = PlayerPrefs.GetInt (Utils.PREFS_LAUNCH_MODEL);
 		if (launchModel == 0) {
 			_canvas.SetActive (true);
