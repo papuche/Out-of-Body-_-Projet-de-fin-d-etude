@@ -9,7 +9,7 @@ public class InitModel : MonoBehaviour {
 
 	void Awake(){
 
-		string[] model = PlayerPrefs.GetString ("Model").Split(';');
+		string[] model = PlayerPrefs.GetString (Utils.PREFS_MODEL).Split(';');
 		goSrc = (GameObject)Instantiate(Resources.Load(model[0]));
 		GameObject goDst = (GameObject)Resources.Load (model[1]);
 		PlayerPrefs.SetString ("ModelSRC", goSrc.name);

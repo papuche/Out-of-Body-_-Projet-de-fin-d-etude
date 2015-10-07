@@ -158,11 +158,11 @@ public class SelectModel : MonoBehaviour
 			GameObject dst = (GameObject)Resources.Load (_chosenAvatar [1]);
 			if (src != null && dst != null) {	// S'assure que les deux avatars sélectionnés sont bien de meme sexe
 				string models = _chosenAvatar [0] + ";" + _chosenAvatar [1];
-				PlayerPrefs.SetString ("Model", models);
+				PlayerPrefs.SetString (Utils.PREFS_MODEL, models);
 				//Destroy (_avatar);
 				/*GameObject.Find ("Canvas").SetActive (false);
 				initModel.SetActive (true);*/
-				Application.LoadLevel("MainMenu");
+				Application.LoadLevel(Utils.MAINMENU_SCENE);
 			}
 		}
 	}
