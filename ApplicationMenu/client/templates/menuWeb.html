@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html ng-app="menu">
+	<head>
+		<meta charset="utf-8" />
+		<title>Menu Web</title>
+		<script src="../../node_modules/angular/angular.js"></script>
+		<script src="../controllers/controller_menuWeb.js"></script>
+
+	</head >
+
+	<body >
+		<header>
+			<h1>Menu Web</h1>
+		</header>
+    	<section  ng-controller="MainCtrl">
+        	<span>{{ chemin }}</span>
+        	<div>
+        		<input type="button" ng-click='portes_click()' value="Exercices des portes"/>
+        	</div>
+        	<div>
+        		<input type="button" ng-click='exp_click()' value="Experience sortie de corps"/>
+        	</div>
+    	</section>
+	</body>
+</html>
