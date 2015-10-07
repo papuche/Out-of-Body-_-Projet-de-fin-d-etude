@@ -12,9 +12,20 @@ express.get('/', function(req, res){
 
 express.listen(HTTP_PORT);
 
-net.createServer(function (socket) {    
+var server = net.createServer(function (socket) {    
 
     express.get('/baton:id', function(req, res){
-        console.log(req.params.id);
+        var id = req.params.id;
+        var ret = socket.write('baton' + req.params.id);
+        console.log(ret);
+        res.send(id);
     });
-}).listen(UNITY_PORT);
+    
+    socket.on('end', function() {
+        server.close();
+        express
+    });
+    
+});
+
+server.listen(UNITY_PORT);
