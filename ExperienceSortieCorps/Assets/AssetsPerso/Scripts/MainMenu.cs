@@ -47,7 +47,7 @@ public class MainMenu : MonoBehaviour {
 		if(GUI.Button (new Rect (Screen.width*15/100, Screen.height*18/100, Screen.width*23/100, Screen.height*38/100),"Exercice des portes"))
 		{
 			Debug.Log ("open doors !");
-			Application.LoadLevel("Doors");
+			Application.LoadLevel(Utils.DOORS_SCENE);
 		}
 
 		// BUTTON AVATAR CHOICE
@@ -55,7 +55,7 @@ public class MainMenu : MonoBehaviour {
 		if(GUI.Button (new Rect (Screen.width*15/100, Screen.height*58/100, Screen.width*23/100, Screen.height*38/100), "Choix de l'avatar"))		
 		{
 			PlayerPrefs.SetInt(Utils.PREFS_LAUNCH_MODEL, 0);
-			Application.LoadLevel("Out Of Body");
+			Application.LoadLevel(Utils.OUTOFBODY_SCENE);
 		}
 
 		// BUTTON AVATAR EXERCICE
@@ -65,7 +65,7 @@ public class MainMenu : MonoBehaviour {
 			PlayerPrefs.SetInt(Utils.PREFS_LAUNCH_MODEL, 1);
 			PlayerPrefs.SetInt(Utils.PREFS_LAUNCH_MORPHING, 0);
 			PlayerPrefs.SetInt(Utils.PREFS_LAUNCH_BATON, 0);
-			Application.LoadLevel("Out Of Body");
+			Application.LoadLevel(Utils.OUTOFBODY_SCENE);
 		}
 
 		// BUTTON MORFING EXERCICE
@@ -75,7 +75,7 @@ public class MainMenu : MonoBehaviour {
 			PlayerPrefs.SetInt(Utils.PREFS_LAUNCH_MODEL, 1);
 			PlayerPrefs.SetInt(Utils.PREFS_LAUNCH_MORPHING, 1);
 			PlayerPrefs.SetInt(Utils.PREFS_LAUNCH_BATON, 0);
-			Application.LoadLevel("Out Of Body");
+			Application.LoadLevel(Utils.OUTOFBODY_SCENE);
 		}
 
 		// BUTTON STICK EXERCICE
@@ -85,7 +85,7 @@ public class MainMenu : MonoBehaviour {
 			PlayerPrefs.SetInt(Utils.PREFS_LAUNCH_MODEL, 1);
 			PlayerPrefs.SetInt(Utils.PREFS_LAUNCH_BATON, 1);
 			PlayerPrefs.SetInt(Utils.PREFS_LAUNCH_MORPHING, 0);
-			Application.LoadLevel("Out Of Body");
+			Application.LoadLevel(Utils.OUTOFBODY_SCENE);
 		}
 
 		// BUTTON COMPLETE EXERCICE
@@ -94,7 +94,27 @@ public class MainMenu : MonoBehaviour {
 		{
 			Debug.Log ("open complete exercice !");
 		}
+
+		GUI.skin = skinBtnExercice;
+		if(GUI.Button (new Rect (Screen.width*1/100, Screen.height*25/100, Screen.width*10/100, Screen.height*10/100), "Full"))		
+		{
+			PlayerPrefs.SetString(Utils.PREFS_DOORS, Utils.FULL_DOORS);
+			Application.LoadLevel(Utils.DOORS_SCENE);
+		}
+
+
+		GUI.skin = skinBtnExercice;
+		if(GUI.Button (new Rect (Screen.width*1/100, Screen.height*40/100, Screen.width*10/100, Screen.height*10/100), "Bottom"))		
+		{
+			PlayerPrefs.SetString(Utils.PREFS_DOORS, Utils.BOTTOM_DOORS);
+			Application.LoadLevel(Utils.DOORS_SCENE);
+		}
+
+		GUI.skin = skinBtnExercice;
+		if(GUI.Button (new Rect (Screen.width*1/100, Screen.height*55/100, Screen.width*10/100, Screen.height*10/100), "Top"))		
+		{
+			PlayerPrefs.SetString(Utils.PREFS_DOORS, Utils.TOP_DOORS);
+			Application.LoadLevel(Utils.DOORS_SCENE);
+		}
 	}
-
-
 }

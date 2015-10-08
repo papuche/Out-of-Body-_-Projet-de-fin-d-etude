@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "angular": "^1.4.7",
+    "angular-ui-router": "^0.2.15",
     "express": "^4.13.3"
   },
   "devDependencies": {},

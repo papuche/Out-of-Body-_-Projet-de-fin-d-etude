@@ -13,12 +13,17 @@ public class InitSceneDoors : MonoBehaviour {
 	// Non : Clic droit souris ou touche "N"
 
 	[SerializeField]
-	private GameObject _piece;
+	private GameObject _fullDoors;
+	[SerializeField]
+	private GameObject _bottomDoors;
+	[SerializeField]
+	private GameObject _topDoors;
 	[SerializeField]
 	private GameObject _text;
 
 	// Gestion de la largeur des portes
 	//private int _scalesNumber = 6;
+	private GameObject _piece;
 	private int _nbTries = 5;
 	private List<float> _doors = new List<float>(){0.25f, 0.60f, 0.75f, 0.90f, 1.0f, 1.2f};
 	private List<float> _scales = new List<float>();
@@ -55,6 +60,17 @@ public class InitSceneDoors : MonoBehaviour {
 	private int _condition;
 
 	void Start () {
+		string doors = PlayerPrefs.GetString (Utils.PREFS_DOORS);
+		if (doors.Equals (Utils.BOTTOM_DOORS)) {
+			_bottomDoors.SetActive(true);
+			_piece = _bottomDoors;
+		} else if (doors.Equals (Utils.TOP_DOORS)) {
+			_topDoors.SetActive (true);
+			_piece = _topDoors;
+		} else {
+			_fullDoors.SetActive (true);
+			_piece = _fullDoors;
+		}
 
 		// Assignation de labels à la condition du test et au sujet du test
 		_sujet = PlayerPrefs.GetInt ("Sujet", 0);
@@ -135,7 +151,7 @@ public class InitSceneDoors : MonoBehaviour {
 					modifyXml ();
 					modifyTxT();
 					_file.Close ();
-					Application.LoadLevel("MainMenu");
+					Application.LoadLevel(Utils.MAINMENU_SCENE);
 				}
 			}
 		}
@@ -229,21 +245,40 @@ public class InitSceneDoors : MonoBehaviour {
 		resultat [2] = (dst [2] - src [2]) / src [2] * 100;
 		return resultat;
 	}
-
-	public GameObject piece {
-		get {
-			return _piece;
-		}
-		set { 
-			_piece = value;
-		}
-	}
+	
 	public GameObject text{
 		get {
 			return _text;
 		}
 		set { 
 			_text = value;
+		}
+	}
+
+	public GameObject fullDoors{
+		get {
+			return _fullDoors;
+		}
+		set { 
+			_fullDoors = value;
+		}
+	}
+
+	public GameObject bottomDoors{
+		get {
+			return _bottomDoors;
+		}
+		set { 
+			_bottomDoors = value;
+		}
+	}
+
+	public GameObject topDoors{
+		get {
+			return _topDoors;
+		}
+		set { 
+			_topDoors = value;
 		}
 	}
 }
