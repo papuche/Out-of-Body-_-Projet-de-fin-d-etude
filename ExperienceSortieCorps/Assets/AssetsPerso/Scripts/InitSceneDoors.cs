@@ -5,12 +5,9 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
 using System.IO;
+using System.Globalization;
 
 public class InitSceneDoors : MonoBehaviour {
-
-	// Controles de l'utilisateur
-	// Oui : Clic gauche souris ou touche "O"
-	// Non : Clic droit souris ou touche "N"
 
 	[SerializeField]
 	private GameObject _fullDoors;
@@ -22,11 +19,12 @@ public class InitSceneDoors : MonoBehaviour {
 	private GameObject _text;
 
 	// Gestion de la largeur des portes
-	//private int _scalesNumber = 6;
 	private GameObject _piece;
-	private int _nbTries = 5;
-	private List<float> _doors = new List<float>(){0.25f, 0.60f, 0.75f, 0.90f, 1.0f, 1.2f};
-	private List<float> _scales = new List<float>();
+	private int _nbTries = 1;
+	private int _nbDoors = 0;
+	private string _widths = "0.25;0.60;0.75;0.90;1.0;1.2";
+	private string _heights = "0.35;0.50;0.65;0.80;0.90;1.1";
+	private List<Measure> _scales = new List<Measure>();
 	private int _doorIndex;		// Index pointant dans scales
 	private Vector3 _currentScale;	// Dimension de la porte dans la scène
 
@@ -34,7 +32,7 @@ public class InitSceneDoors : MonoBehaviour {
 	private int _nbAnswers=0;
 
 	// Liste où sont enregistrés les largeur de portes jouées (pour le fichier de résultats)
-	private List<float> _ordreOuverture = new List<float>();
+	private List<Measure> _ordreOuverture = new List<Measure>();
 
 	// Modèle sélectionné par le sujet
 	private float[] _modelSrcValues;
@@ -71,6 +69,7 @@ public class InitSceneDoors : MonoBehaviour {
 			_fullDoors.SetActive (true);
 			_piece = _fullDoors;
 		}
+		_currentScale = _piece.transform.localScale;
 
 		// Assignation de labels à la condition du test et au sujet du test
 		_sujet = PlayerPrefs.GetInt ("Sujet", 0);
@@ -90,7 +89,7 @@ public class InitSceneDoors : MonoBehaviour {
 		// Debug.Log (PlayerPrefs.GetString ("Model"));
 
 		// Recupération du nom des modèles dans modelName
-		string[] modelName = PlayerPrefs.GetString ("Model").Split (';');
+		string[] modelName = PlayerPrefs.GetString (Utils.PREFS_MODEL).Split (';');
 		if(!modelName[0].Equals("")) {
 			_modelSrcValues = ReadModelsValue (modelName [0].Split ('/') [2]);	// Les modèles du sujet sont enregistrés en [0]
 			_modelDstValues = ReadModelsValue (modelName [1].Split ('/') [2]);	// Les modèles du phychologue sont enregistrés en [1]
@@ -99,19 +98,15 @@ public class InitSceneDoors : MonoBehaviour {
 
 		// Mise à jour de la largeur de porte.
 		_doorIndex = Random.Range (0, _scales.Count);
-		_currentScale = _piece.transform.localScale;
-		_currentScale = _piece.transform.localScale;
-		_ordreOuverture.Add (_currentScale.x);
-		_scales.RemoveAt(_doorIndex);
-		// Modification de la largeur de porte dans la scène.
-		_piece.transform.localScale = _currentScale;
+		applyScale ();
 
 		_file = new StreamWriter ("Resultat.txt",true);
 		
 		_stop = false;
 		// Ecriture de l'avancement dans la scène
 		_nbAnswers++;
-		_text.GetComponent<Text>().text = _nbAnswers.ToString() + "/" + (_doors.Count*_nbTries).ToString();	}
+		_text.GetComponent<Text>().text = _nbAnswers.ToString() + "/" + _nbDoors.ToString();	
+	}
 	
 	void Update () {
 		if(!_stop){
@@ -123,29 +118,26 @@ public class InitSceneDoors : MonoBehaviour {
 				_next = true;
 			}
 			if(_next){
-				//rndNumber = (int)Random.Range(0.0f,10.0f);
-				//doorMat.color = colors[rndNumber];
-				//rndNumber = (int)Random.Range(0.0f,10.0f);
-				//roomMat.color = colors[rndNumber];
 				if(_scales.Count > 0){
 					int nbTry = 0;
-					_currentScale = _piece.transform.localScale;
-					do{
-						//Random.
-						_doorIndex = Random.Range(0,(_scales.Count));
-						nbTry++;
-						if(nbTry > 10){
-							break;
-						}
-					}while(_currentScale.x == _scales[_doorIndex]);
-					
-					_currentScale.x = _scales[_doorIndex];
-					_ordreOuverture.Add (_currentScale.x);
-					_scales.RemoveAt(_doorIndex);
-					_piece.transform.localScale = _currentScale;
+					float scale;
+					if(_ordreOuverture[_ordreOuverture.Count-1].key.Equals(Utils.WIDTH_KEY))
+					scale = _currentScale.x;
+					else 
+						scale = _currentScale.y;
+						do{
+							//Random.
+							_doorIndex = Random.Range(0,(_scales.Count));
+							nbTry++;
+							if(nbTry > 10){
+								break;
+							}
+						}while(scale == _scales[_doorIndex].scale || !_scales[_doorIndex].key.Equals(_ordreOuverture[_ordreOuverture.Count-1]));
+
+					applyScale();
 					_next = false;
 					_nbAnswers++;
-					_text.GetComponent<Text>().text = _nbAnswers.ToString() + "/" + (_doors.Count*_nbTries).ToString();
+					_text.GetComponent<Text>().text = _nbAnswers.ToString() + "/" + _nbDoors.ToString();
 				} else {
 					_stop=true;
 					modifyXml ();
@@ -158,11 +150,46 @@ public class InitSceneDoors : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Initialisation du tableau conprenant la largeur des portes.
+	/// Initialisation du tableau conprenant les échelles des portes.
 	/// </summary>
 	void initScales(){
-		for (int i=0; i<_nbTries; i++)
-			_scales.AddRange(_doors);
+		List<Measure> measures = new List<Measure> ();
+		if (!_widths.Equals ("")) {
+			string[] widthArray = _widths.Split(';');
+			for(int i = 0; i < widthArray.Length; i++){
+				measures.Add (new Measure(float.Parse(widthArray[i], CultureInfo.InvariantCulture.NumberFormat), Utils.WIDTH_KEY));
+			}
+		}
+		
+		if (!_heights.Equals ("") && _piece == _fullDoors) {
+			string[] heightArray = _heights.Split(';');
+			for(int i = 0; i < heightArray.Length; i++){
+				measures.Add (new Measure(float.Parse(heightArray[i], CultureInfo.InvariantCulture.NumberFormat), Utils.HEIGHT_KEY));
+			}
+		}
+
+		for (int i=0; i<_nbTries; i++) {
+			_scales.AddRange(measures);
+		}
+		_nbDoors = _scales.Count;
+
+	}
+
+	/// <summary>
+	/// Met a jour l'échelle de la porte en fonction de la valeur de _widthIndex
+	/// </summary>
+	void applyScale(){
+		if(_scales[_doorIndex].key.Equals(Utils.WIDTH_KEY)){
+			_currentScale.x = _scales[_doorIndex].scale;
+			_currentScale.y = 1.0f;
+		}
+		else {
+			_currentScale.x = 1.0f;
+			_currentScale.y = _scales[_doorIndex].scale;
+		}
+		_ordreOuverture.Add (_scales[_doorIndex]);
+		_scales.RemoveAt(_doorIndex);
+		_piece.transform.localScale = _currentScale;
 	}
 
 	void loadXMLFromAssest(){
@@ -279,6 +306,36 @@ public class InitSceneDoors : MonoBehaviour {
 		}
 		set { 
 			_topDoors = value;
+		}
+	}
+
+	class Measure {
+		private float _scale;
+		private string _key;
+
+		public Measure (float scale, string key)
+		{
+			_scale = scale;
+			_key = key;
+		}
+
+
+		public float scale {
+			get {
+				return _scale;
+			}
+			set {
+				_scale = value;
+			}
+		}
+
+		public string key {
+			get {
+				return _key;
+			}
+			set {
+				_key = value;
+			}
 		}
 	}
 }

@@ -14,4 +14,7 @@
 	public readonly static string DOORS_SCENE = "Doors";
 	public readonly static string MAINMENU_SCENE = "MainMenu";
 	public readonly static string OUTOFBODY_SCENE = "Out Of Body";
+
+	public readonly static string WIDTH_KEY = "width";
+	public readonly static string HEIGHT_KEY = "height";
 }
