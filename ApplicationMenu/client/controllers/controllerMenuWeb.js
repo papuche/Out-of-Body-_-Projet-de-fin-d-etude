@@ -5,22 +5,21 @@ var menu = angular.module('menu', modules);
 menu.config(function($stateProvider, $urlRouterProvider){
 	$urlRouterProvider.otherwise("");
 	$stateProvider
+	.state('mainMenu',{
+		url: "",
+		templateUrl: "client/templates/mainMenu.html"
+	})
 	.state('portes',{
 		url: "/portes",
-		templateUrl: "client/templates/portes.html" /*function ($stateParams, $http){
-			return $http({
-				method: 'GET',
-				url: '/portes'
-			}).then(function successCallback(response) {
-    			return response;
-			}, function errorCallback(response) {
-				return response;
-			});
-		}*/
+		templateUrl: "client/templates/portes.html"
+	})
+	.state('oob',{
+		url: "/SortieDeCorps",
+		templateUrl: "client/templates/oob.html"
 	});
 });
 
-menu.controller('MainCtrl', function ($scope,$state) {
+menu.controller('MenuWebCtrl', function ($scope,$state) {
 
 	$scope.chemin = 'Accueil >';
 
@@ -34,5 +33,10 @@ menu.controller('MainCtrl', function ($scope,$state) {
 		$state.go("portes");
 	}
 
+});
+
+menu.controller('mainMenuCtrl', function ($scope,$state) {
+	$scope.oob = "Sortie de Corps";
+	$scope.portes = "Exercice des portes";
 });
 

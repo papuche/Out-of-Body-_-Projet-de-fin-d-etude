@@ -1,27 +1,19 @@
 <!DOCTYPE html>
 <html ng-app="menu">
-	<head>
-		<meta charset="utf-8" />
-		<title>Menu Web</title>
-		<script src="node_modules/angular/angular.js"></script>
-		<script src="node_modules/angular-ui-router/release/angular-ui-router.js"></script>
-		<script src="client/controllers/controller_menuWeb.js"></script>
+<head>
+	<meta charset="utf-8" />
+	<title>Menu Web</title>
+	<script src="node_modules/angular/angular.js"></script>
+	<script src="node_modules/angular-ui-router/release/angular-ui-router.js"></script>
+	<script src="client/controllers/controllerMenuWeb.js"></script>
 
-	</head >
+</head >
 
-	<body >
-		<header>
-			<h1>Menu Web</h1>
-		</header>
-    	<section  ng-controller="MainCtrl">
-        	<span>{{ chemin }}</span>
-        	<div>
-        		<input type="button" ng-click='portes_click()' value="Exercices des portes"/>
-        	</div>
-        	<div>
-        		<input type="button" ng-click='exp_click()' value="Experience sortie de corps"/>
-        	</div>
-    	</section>
-    	<div ui-view></div>
-	</body>
+<body >
+	<header>
+		<h1>Menu Web</h1>
+	</header>
+	<span>{{chemin}}</span>
+	<div ui-view></div>
+</body>
 </html>
