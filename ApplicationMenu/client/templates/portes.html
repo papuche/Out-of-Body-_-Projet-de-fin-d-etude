@@ -1,3 +1,13 @@
 <!DOCTYPE html>
-
-<h1>Mon État</h1>
+<script src="client/controllers/controllerPortes.js"></script>
+<section  ng-controller="PortesCtrl">
+	<div>
+		<input type="button" ng-click='entiere_click()' value="Portes entières"/>
+	</div>
+	<div>
+		<input type="button" ng-click='etagere_click()' value="Etagères"/>
+	</div>
+	<div>
+		<input type="button" ng-click='portique_click()' value="Portiques"/>
+	</div>
+</section>
