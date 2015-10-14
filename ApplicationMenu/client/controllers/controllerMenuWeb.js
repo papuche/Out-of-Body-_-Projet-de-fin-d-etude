@@ -18,10 +18,6 @@ menu.config(function($stateProvider, $urlRouterProvider, $locationProvider){
 	.state('oob',{
 		url: "/sortie_de_corps",
 		templateUrl: "client/templates/oob.html"
-	})
-	.state('runOob',{
-		url: "/sortie_de_corps/en_cours",
-		templateUrl: "client/templates/runOob.html"
 	});
 });
 
@@ -40,9 +36,3 @@ menu.controller('MenuWebCtrl', function ($scope,$state) {
 	}
 
 });
-
-menu.controller('mainMenuCtrl', function ($scope,$state) {
-	$scope.oob = "Sortie de Corps";
-	$scope.portes = "Exercice des portes";
-});
-

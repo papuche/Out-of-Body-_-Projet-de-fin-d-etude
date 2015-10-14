@@ -5,19 +5,15 @@ $scope.message = '';
 $scope.next = function () {
 	if ($scope.baton && $scope.morphing){
 		$http.get('/baton_morphing');
-		$scope.message = 'avec baton et morphing';
 	}	
 	else if ($scope.morphing){
 		$http.get('/morphing');
-		$scope.message = 'avec morphing seulement';
 	}	
 	else if ($scope.baton){
 		$http.get('/baton');
-		$scope.message = 'avec baton seulement';
 	}
 	else {
 		$http.get('/nothing');
-		$scope.message = 'sans baton ni morphing';
 	}
 	$state.go('runOob');
 };
@@ -27,3 +23,10 @@ $scope.exit = function () {
 }
 });
 
+menu.config(function($stateProvider){	
+	$stateProvider
+	.state('runOob',{
+		url: "/sortie_de_corps/application_en_cours",
+		templateUrl: "client/templates/runOob.html"
+	});
+});
