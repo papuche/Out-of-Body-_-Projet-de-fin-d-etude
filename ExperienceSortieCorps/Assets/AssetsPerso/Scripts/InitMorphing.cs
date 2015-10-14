@@ -2,25 +2,32 @@
 using System.Collections;
 
 public class InitMorphing : MonoBehaviour {
-
+	public Material jeanGhost;
+	public Material shirtGhost;
 	private GameObject _goSrc;
 
 	// Use this for initialization
 	void Start () {
-		string name = PlayerPrefs.GetString ("Model");
-		string[] model = name.Split(';');
+		string[] model = PlayerPrefs.GetString (Utils.PREFS_MODEL).Split(';');
 		_goSrc = GameObject.Find(model[0].Split('/')[2]);
 		GameObject goDst = (GameObject)Resources.Load (model [1]);
 
-		bool isMale = false;
-		if(model[0].Contains(Utils.MODELS_DIRECTORY[0])) {
-			isMale = true;
-		}
+		GameObject jean = (GameObject) Instantiate(_goSrc.transform.FindChild ("jeans01Mesh").gameObject);
+		jean.name = "jeanGhost";
+		jean.transform.parent = _goSrc.transform;
+		jean.GetComponent<Renderer> ().material = jeanGhost;
+		jean.SetActive (false);
+		GameObject shirt = (GameObject) Instantiate(_goSrc.transform.FindChild ("shirt01Mesh").gameObject);
+		shirt.name = "shirtGhost";
+		shirt.transform.parent = _goSrc.transform;
+		shirt.GetComponent<Renderer> ().material = shirtGhost;
+		shirt.SetActive (false);
+
 		init("high-polyMesh");
 		init("jeans01Mesh");
 		init("shirt01Mesh");
 		
-		if(isMale) {
+		if(model[0].Contains(Utils.MODELS_DIRECTORY[0])) {
 			init("male1591Mesh");
 		}else {
 			init("female1605Mesh");
@@ -33,6 +40,7 @@ public class InitMorphing : MonoBehaviour {
 			morph.srcMesh = meshSrc;
 		}
 		_goSrc.AddComponent<AvatarGhost> ();
+		SetLayerRecursively (_goSrc, 8);
 	}
 	
 	// Update is called once per frame
@@ -44,5 +52,12 @@ public class InitMorphing : MonoBehaviour {
 		
 		MorphingAvatar morph = _goSrc.transform.FindChild (name).gameObject.AddComponent<MorphingAvatar> ();
 		morph.speed = 0.016f;
+	}
+
+	void SetLayerRecursively(GameObject go, int layerNumber) {
+		if (go == null) return;
+		foreach (Transform trans in go.GetComponentsInChildren<Transform>(true)) {
+			trans.gameObject.layer = layerNumber;
+		}
 	}
 }
