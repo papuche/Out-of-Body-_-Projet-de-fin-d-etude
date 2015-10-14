@@ -49,39 +49,6 @@ public class MainMenu : MonoBehaviour {
 			Application.LoadLevel (Utils.OUTOFBODY_SCENE);
 		}
 
-		// BUTTON AVATAR EXERCICE
-		GUI.skin = skinBtnExercice;
-		if (GUI.Button (new Rect (Screen.width * 50 / 100, Screen.height * 20 / 100, Screen.width * 35 / 100, Screen.height * 15 / 100), "Exercice de l'avatar")) {
-			PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
-			PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MORPHING, 0);
-			PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_BATON, 0);
-			Application.LoadLevel (Utils.OUTOFBODY_SCENE);
-		}
-
-		// BUTTON MORFING EXERCICE
-		GUI.skin = skinBtnExercice;
-		if (GUI.Button (new Rect (Screen.width * 50 / 100, Screen.height * 40 / 100, Screen.width * 35 / 100, Screen.height * 15 / 100), "Exercice de morphing")) {
-			PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
-			PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MORPHING, 1);
-			PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_BATON, 0);
-			Application.LoadLevel (Utils.OUTOFBODY_SCENE);
-		}
-
-		// BUTTON STICK EXERCICE
-		GUI.skin = skinBtnExercice;
-		if (GUI.Button (new Rect (Screen.width * 50 / 100, Screen.height * 60 / 100, Screen.width * 35 / 100, Screen.height * 15 / 100), "Exercice du baton")) {
-			PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
-			PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_BATON, 1);
-			PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MORPHING, 0);
-			Application.LoadLevel (Utils.OUTOFBODY_SCENE);
-		}
-
-		// BUTTON COMPLETE EXERCICE
-		GUI.skin = skinBtnExercice;
-		if (GUI.Button (new Rect (Screen.width * 50 / 100, Screen.height * 80 / 100, Screen.width * 35 / 100, Screen.height * 15 / 100), "Tous les exercices")) {
-			Debug.Log ("open complete exercice !");
-		}
-
 		// EXERCICE DES PORTES
 		GUI.skin = skinBtnDoors;
 		if (GUI.Button (new Rect (Screen.width * 15 / 100, Screen.height * 18 / 100, Screen.width * 23 / 100, Screen.height * 38 / 100), "Exercice des portes")) {
@@ -110,19 +77,11 @@ public class MainMenu : MonoBehaviour {
 			Application.LoadLevel (Utils.DOORS_SCENE);
 		}
 		
-		// EXERCICE SORTIE DE CORPS
-		GUI.skin = skinBtnExercice;
-		if (GUI.Button (new Rect (Screen.width * 50 / 100, Screen.height * 20 / 100, Screen.width * 35 / 100, Screen.height * 15 / 100), "Exercice de l'avatar")) {
-			PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
-			PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MORPHING, 0);
-			PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_BATON, 0);
-			Application.LoadLevel (Utils.OUTOFBODY_SCENE);
-		}
-		
 		// EXERCICE SORTIE DE CORPS : SANS PARAMETRES
 		GUI.skin = skinBtnExercice;
 		if (GUI.Button (new Rect (Screen.width * 88 / 100, Screen.height * 25 / 100, Screen.width * 10 / 100, Screen.height * 10 / 100), "Aucun")) {
 			PlayerPrefs.SetString (Utils.PREFS_OUTOFBODY, Utils.NO_PARAMETER);
+			PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
 			Application.LoadLevel (Utils.OUTOFBODY_SCENE);
 		}
 		
@@ -130,6 +89,7 @@ public class MainMenu : MonoBehaviour {
 		GUI.skin = skinBtnExercice;
 		if (GUI.Button (new Rect (Screen.width * 88 / 100, Screen.height * 40 / 100, Screen.width * 10 / 100, Screen.height * 10 / 100), "Baton")) {
 			PlayerPrefs.SetString (Utils.PREFS_OUTOFBODY, Utils.STICK_PARAMETER);
+			PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
 			Application.LoadLevel (Utils.OUTOFBODY_SCENE);
 		}
 		
@@ -137,6 +97,7 @@ public class MainMenu : MonoBehaviour {
 		GUI.skin = skinBtnExercice;
 		if (GUI.Button (new Rect (Screen.width * 88 / 100, Screen.height * 55 / 100, Screen.width * 10 / 100, Screen.height * 10 / 100), "Morphing")) {
 			PlayerPrefs.SetString (Utils.PREFS_OUTOFBODY, Utils.MORPHING_PARAMETER);
+			PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
 			Application.LoadLevel (Utils.OUTOFBODY_SCENE);
 		}
 		
@@ -144,6 +105,7 @@ public class MainMenu : MonoBehaviour {
 		GUI.skin = skinBtnExercice;
 		if (GUI.Button (new Rect (Screen.width * 88 / 100, Screen.height * 70 / 100, Screen.width * 10 / 100, Screen.height * 10 / 100), "B & M")) {
 			PlayerPrefs.SetString (Utils.PREFS_OUTOFBODY, Utils.ALL_PARAMETERS);
+			PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
 			Application.LoadLevel (Utils.OUTOFBODY_SCENE);
 		}
 	}

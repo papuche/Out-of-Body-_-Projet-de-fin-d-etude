@@ -1,0 +1,26 @@
+<Ouvertures>
+  <Ouverture>
+    <Taille>InitSceneDoors+Measure</Taille>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Taille>InitSceneDoors+Measure</Taille>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Taille>InitSceneDoors+Measure</Taille>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Taille>InitSceneDoors+Measure</Taille>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Taille>InitSceneDoors+Measure</Taille>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Taille>InitSceneDoors+Measure</Taille>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+</Ouvertures>

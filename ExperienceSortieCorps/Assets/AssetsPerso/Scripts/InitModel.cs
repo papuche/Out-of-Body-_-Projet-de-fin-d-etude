@@ -2,8 +2,6 @@
 using System.Collections;
 
 public class InitModel : MonoBehaviour {
-	public Material jeanGhost;
-	public Material shirtGhost;
 	public GameObject posAvatar;
 	GameObject goSrc;
 
@@ -15,12 +13,16 @@ public class InitModel : MonoBehaviour {
 		PlayerPrefs.SetString ("ModelSRC", goSrc.name);
 		PlayerPrefs.SetString ("ModelDST", goDst.name);
 		goSrc.transform.parent = posAvatar.transform;
+		goSrc.name = model [0].Split ('/') [2];
 		goSrc.transform.localPosition = Vector3.zero;
+		/*Vector3 vector = Vector3.zero;
+		vector.y -= 0.5;
+		goSrc.transform.localPosition = vector;*/
 		goSrc.transform.localRotation = new Quaternion(0.0f,0.0f,0.0f,0.0f);
 		initAvatar();
 		initKinect();
 
-		GameObject jean = (GameObject) Instantiate(goSrc.transform.FindChild ("jeans01Mesh").gameObject);
+		/*GameObject jean = (GameObject) Instantiate(goSrc.transform.FindChild ("jeans01Mesh").gameObject);
 		jean.name = "jeanGhost";
 		jean.transform.parent = goSrc.transform;
 		jean.GetComponent<Renderer> ().material = jeanGhost;
@@ -48,7 +50,7 @@ public class InitModel : MonoBehaviour {
 		}
 
 		goSrc.AddComponent<AvatarGhost> ();
-		SetLayerRecursively (goSrc, 8);
+		SetLayerRecursively (goSrc, 8);*/
 	}
 
 	void initKinect(){
