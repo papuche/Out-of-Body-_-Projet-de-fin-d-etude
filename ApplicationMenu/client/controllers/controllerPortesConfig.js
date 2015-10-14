@@ -7,7 +7,8 @@ menu.config(function($stateProvider, $urlRouterProvider){
 	});
 });
 
-menu.controller('PortesConfigCtrl', function ($scope,$state,$http) {
+menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope) {
+	$rootScope.chemin = 'Accueil > Exercice des portes > Portes ' + $state.current.name;
 
 	console.log($state.current.name);
 	if($state.current.name == "entiere"){

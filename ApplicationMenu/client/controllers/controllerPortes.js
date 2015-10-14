@@ -15,9 +15,9 @@ menu.config(function($stateProvider, $urlRouterProvider){
 	});
 });
 
-menu.controller('PortesCtrl', function ($scope,$state) {
-
-		$scope.suivant_click = function(type){
+menu.controller('PortesCtrl', function ($scope,$state, $rootScope) {
+	$rootScope.chemin = 'Accueil > Exercice des portes';
+	$scope.suivant_click = function(type){
 			$state.go(type);
 	}
 });

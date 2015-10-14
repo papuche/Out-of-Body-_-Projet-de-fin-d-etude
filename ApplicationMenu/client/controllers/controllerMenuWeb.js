@@ -20,19 +20,3 @@ menu.config(function($stateProvider, $urlRouterProvider, $locationProvider){
 		templateUrl: "client/templates/oob.html"
 	});
 });
-
-menu.controller('MenuWebCtrl', function ($scope,$state) {
-
-	$scope.chemin = 'Accueil >';
-
-	$scope.exp_click = function(){
-
-		$scope.chemin = "Accueil > Experience";    	
-	}
-
-	$scope.portes_click = function(){
-		$scope.chemin = "Accueil > Portes";
-		$state.go("portes");
-	}
-
-});
