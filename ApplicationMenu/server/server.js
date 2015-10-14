@@ -20,6 +20,7 @@ app.listen(HTTP_PORT);
 
 var server = net.createServer(function (socket) {    
 
+    getAndSendWithoutParams(socket, 'avatar');
     getAndSendWithoutParams(socket, 'baton');
     getAndSendWithoutParams(socket, 'morphing');
     getAndSendWithoutParams(socket, 'baton_morphing');
@@ -34,7 +35,9 @@ var server = net.createServer(function (socket) {
         server.close();
     });
     
-    socket.on('error', function() {});
+    socket.on('error', function() {
+        console.log("error");
+    });
     
 });
 
@@ -43,7 +46,9 @@ server.listen(UNITY_PORT);
 
 function getAndSendWithoutParams(socket, url) {
     app.get('/' + url, function(req, res) {
-          socket.write(url);
+        //console.log(url);
+        socket.write(url);
+        res.end();
     });
 }
 
@@ -51,7 +56,7 @@ function getAndSendWithParams(socket, url) {
     url += "/:values";
     app.get('/' + url, function(req, res) {
         var send = req.originalUrl.replace('/', '');
-        
         socket.write(send);
+        res.end();
     });
 }

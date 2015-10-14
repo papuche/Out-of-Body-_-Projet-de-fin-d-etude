@@ -23,4 +23,19 @@
 
 	public readonly static string WIDTH_KEY = "width";
 	public readonly static string HEIGHT_KEY = "height";
+
+	public readonly static string SERVER_IP = @"127.0.0.1";
+	public readonly static int SERVER_PORT = 8000;
+
+	public readonly static string SOCKET_AVATAR = "avatar";
+	public readonly static string SOCKET_NOTHING = "nothing";
+	public readonly static string SOCKET_BATON = "baton";
+	public readonly static string SOCKET_MORPHING = "morphing";
+	public readonly static string SOCKET_BATON_MORPHING = "baton_morphing";
+	public readonly static string SOCKET_STOP = "stop";
+	
+	public readonly static string SOCKET_PORTE_ENTIERE = "e/";
+	public readonly static string SOCKET_PORTE_DEMIHAUT = "dh/";
+	public readonly static string SOCKET_PORTE_DEMIBAS = "db/";
+
 }

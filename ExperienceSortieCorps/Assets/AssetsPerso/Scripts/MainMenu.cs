@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Net;
+using AssemblyCSharp;
 
 public class MainMenu : MonoBehaviour {
-	public Texture tex;
+	/*public Texture tex;
 
 	public GUISkin skinBtnDoors;
 	public GUISkin skinBtnChoixAvatar; 
@@ -20,21 +21,20 @@ public class MainMenu : MonoBehaviour {
 	private bool morfingExercice = false;
 	private bool stickExercice = false;
 	private bool allExercices = false;
-	private bool parameters = false;
+	private bool parameters = false;*/
 
-	public void OnGUI(){
+	void Start(){
+	}
+
+
+	/*public void OnGUI(){
 
 		GUI.DrawTexture (new Rect (0, 0, Screen.width, Screen.height), tex);
 
 		GUI.skin = skinTextTitle;
 		GUI.TextField (new Rect (Screen.width * 30 / 100, Screen.height * 5 / 100, Screen.width * 40 / 100, Screen.height * 10 / 100), "Out Of Body Experiment");
 
-		//BOUTON QUITTER		
-		GUI.skin = skinQuit;
-		if (GUI.Button (new Rect (Screen.width * 80 / 100, Screen.height * 5 / 100, Screen.width * 10 / 100, Screen.height * 7 / 100), "Quit")) {
-			Debug.Log ("Quitter !");
-			Application.Quit (); 
-		}
+
 
 		//BOUTON PARAMETRE		
 		GUI.skin = skinParameters;
@@ -92,15 +92,7 @@ public class MainMenu : MonoBehaviour {
 			PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
 			Application.LoadLevel (Utils.OUTOFBODY_SCENE);
 		}
-		
-		// EXERCICE SORTIE DE CORPS : PARAMETRE MORPHING
-		GUI.skin = skinBtnExercice;
-		if (GUI.Button (new Rect (Screen.width * 88 / 100, Screen.height * 55 / 100, Screen.width * 10 / 100, Screen.height * 10 / 100), "Morphing")) {
-			PlayerPrefs.SetString (Utils.PREFS_OUTOFBODY, Utils.MORPHING_PARAMETER);
-			PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
-			Application.LoadLevel (Utils.OUTOFBODY_SCENE);
-		}
-		
+
 		// EXERCICE SORTIE DE CORPS : PARAMETRES BATON ET MORPHING
 		GUI.skin = skinBtnExercice;
 		if (GUI.Button (new Rect (Screen.width * 88 / 100, Screen.height * 70 / 100, Screen.width * 10 / 100, Screen.height * 10 / 100), "B & M")) {
@@ -108,5 +100,5 @@ public class MainMenu : MonoBehaviour {
 			PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
 			Application.LoadLevel (Utils.OUTOFBODY_SCENE);
 		}
-	}
+	}*/
 }
