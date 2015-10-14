@@ -1,6 +1,7 @@
-menu.controller('mainMenuCtrl', function ($scope,$state,$rootScope) {
+menu.controller('mainMenuCtrl', function ($scope, $state, $rootScope, $http) {
 	$rootScope.chemin = 'Accueil';
-	$scope.oob = "Sortie de Corps";
-	$scope.portes = "Exercice des portes";
+	$scope.changeAvatar = function () {
+		$http.get("/avatar");
+	}
 });
 
