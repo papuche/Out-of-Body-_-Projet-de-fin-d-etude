@@ -16,27 +16,25 @@ public class LoadScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		camera.SetActive (false);
-		int launchModel = PlayerPrefs.GetInt (Utils.PREFS_LAUNCH_MODEL);
+		/*int launchModel = PlayerPrefs.GetInt (Utils.PREFS_LAUNCH_MODEL);
 		if (launchModel == 0) {
 			_canvas.SetActive (true);
 			_baton.SetActive (true);
 		} else {
 			_initModel.SetActive (true);
-			/*if (PlayerPrefs.GetInt (Utils.PREFS_LAUNCH_BATON) == 1)
+			if (PlayerPrefs.GetInt (Utils.PREFS_LAUNCH_BATON) == 1)
 				_baton.SetActive (true);
 			else if (PlayerPrefs.GetInt (Utils.PREFS_LAUNCH_MORPHING) == 1)
-				_launchMorphing.SetActive (true);*/
-			string parameter = PlayerPrefs.GetString (Utils.PREFS_OUTOFBODY);
-			if (parameter.Equals (Utils.MORPHING_PARAMETER)) {
 				_launchMorphing.SetActive (true);
-			}
-			else if (parameter.Equals (Utils.STICK_PARAMETER)) {
-				_baton.SetActive (true);
-			}
-			else if (parameter.Equals (Utils.ALL_PARAMETERS)) {
-				_launchMorphing.SetActive (true);
-				_baton.SetActive (true);
-			}
+		}*/
+		string parameter = PlayerPrefs.GetString (Utils.PREFS_OUTOFBODY);
+		if (parameter.Equals (Utils.MORPHING_PARAMETER)) {
+			_launchMorphing.SetActive (true);
+		} else if (parameter.Equals (Utils.STICK_PARAMETER)) {
+			_baton.SetActive (true);
+		} else if (parameter.Equals (Utils.ALL_PARAMETERS)) {
+			_launchMorphing.SetActive (true);
+			_baton.SetActive (true);
 		}
 		camera.SetActive (true);
 	}
