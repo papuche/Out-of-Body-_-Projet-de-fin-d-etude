@@ -2,9 +2,15 @@
 using System.Collections;
 
 public class InitMorphing : MonoBehaviour {
-	public Material jeanGhost;
-	public Material shirtGhost;
+
 	private GameObject _goSrc;
+
+	[SerializeField]
+	private float _speed=0.016f;
+	[SerializeField]
+	private Material _jeanGhost;
+	[SerializeField]
+	private Material _shirtGhost;
 
 	// Use this for initialization
 	void Start () {
@@ -51,13 +57,43 @@ public class InitMorphing : MonoBehaviour {
 	void init(string name){
 		
 		MorphingAvatar morph = _goSrc.transform.FindChild (name).gameObject.AddComponent<MorphingAvatar> ();
-		morph.speed = 0.016f;
+		morph.speed = speed;
 	}
 
 	void SetLayerRecursively(GameObject go, int layerNumber) {
 		if (go == null) return;
 		foreach (Transform trans in go.GetComponentsInChildren<Transform>(true)) {
 			trans.gameObject.layer = layerNumber;
+		}
+	}
+
+	public float speed {
+		get {
+			return _speed;
+		}
+		
+		set {
+			_speed = value;
+		}
+	}
+
+	public Material jeanGhost {
+		get {
+			return _jeanGhost;
+		}
+		
+		set {
+			_jeanGhost = value;
+		}
+	}
+
+	public Material shirtGhost {
+		get {
+			return _shirtGhost;
+		}
+		
+		set {
+			_shirtGhost = value;
 		}
 	}
 }
