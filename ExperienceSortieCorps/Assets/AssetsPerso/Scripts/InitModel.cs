@@ -16,7 +16,7 @@ public class InitModel : MonoBehaviour {
 		goSrc.name = model [0].Split ('/') [2];
 		goSrc.transform.localPosition = Vector3.zero;
 		/*Vector3 vector = Vector3.zero;
-		vector.y -= 0.5;
+		vector.y -= 0.5f;
 		goSrc.transform.localPosition = vector;*/
 		goSrc.transform.localRotation = new Quaternion(0.0f,0.0f,0.0f,0.0f);
 		initAvatar();

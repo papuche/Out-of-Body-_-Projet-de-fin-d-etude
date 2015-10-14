@@ -48,9 +48,10 @@ function getAndSendWithoutParams(socket, url) {
 }
 
 function getAndSendWithParams(socket, url) {
-    url += ":values";
+    url += "/:values";
     app.get('/' + url, function(req, res) {
         var send = req.originalUrl.replace('/', '');
-        socket.write(url);
+        
+        socket.write(send);
     });
 }

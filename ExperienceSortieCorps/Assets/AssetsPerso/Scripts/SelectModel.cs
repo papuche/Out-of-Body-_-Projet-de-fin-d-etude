@@ -19,6 +19,8 @@ public class SelectModel : MonoBehaviour
 	private int _avatarIndex;
 	private int _gender = 0;	// 0 : homme, 1 : femme
 	private int _user = 0;		// 0 : utilisateur, 1 : expérimentateur 
+
+	private float _offsetYPosAvatar = 0.68f;
 	
 	void Start ()
 	{
@@ -41,10 +43,7 @@ public class SelectModel : MonoBehaviour
 		_chosenAvatar [1] = _avatar.name;
 
 		_avatar.transform.parent = posAvatar.transform;
-		_avatar.transform.localPosition = Vector3.zero;
-		Vector3 vector = Vector3.zero;
-		vector.y -= 0.7f;
-		_avatar.transform.localPosition = vector;
+		applyOffsetY ();
 		_avatar.transform.localRotation = new Quaternion (0.0f, 0.0f, 0.0f, 0.0f);
 		initAvatar ();
 	}
@@ -92,10 +91,7 @@ public class SelectModel : MonoBehaviour
 		_avatar = (GameObject)Instantiate (_go_models [_avatarIndex]);
 		_avatar.name = Utils.MODELS_DIRECTORY [(int)_sliderGender.value] + _go_models [_avatarIndex].name;
 		_avatar.transform.parent = posAvatar.transform;
-		//_avatar.transform.localPosition = Vector3.zero;
-		Vector3 vector = Vector3.zero;
-		vector.y -= 0.7f;
-		_avatar.transform.localPosition = vector;
+		applyOffsetY ();
 		_avatar.transform.localRotation = srcRotation;
 		initAvatar ();
 		_chosenAvatar [_user] = _avatar.name;
@@ -169,6 +165,12 @@ public class SelectModel : MonoBehaviour
 				Application.LoadLevel(Utils.MAINMENU_SCENE);
 			}
 		}
+	}
+
+	void applyOffsetY(){
+		Vector3 vector = Vector3.zero;
+		vector.y -= _offsetYPosAvatar;
+		_avatar.transform.localPosition = vector;
 	}
 
 	public GameObject posAvatar {
