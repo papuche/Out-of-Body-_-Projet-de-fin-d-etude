@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<script src="client/controllers/controllerPortes.js"></script>
 <section  ng-controller="PortesCtrl">
 	<div>
-		<input type="button" ng-click='entiere_click()' value="Portes entières"/>
+		<input type="button" ng-click='suivant_click("entiere")' value="Portes entières"/>
 	</div>
 	<div>
-		<input type="button" ng-click='etagere_click()' value="Etagères"/>
+		<input type="button" ng-click='suivant_click("demi_haut")' value="Etagères"/>
 	</div>
 	<div>
-		<input type="button" ng-click='portique_click()' value="Portiques"/>
+		<input type="button" ng-click='suivant_click("demi_bas")' value="Portiques"/>
 	</div>
 </section>

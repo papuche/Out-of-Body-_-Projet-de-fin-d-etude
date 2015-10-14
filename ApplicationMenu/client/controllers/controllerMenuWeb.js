@@ -2,11 +2,13 @@ var modules = ['ui.router'];
 var menu = angular.module('menu', modules);
 
 
-menu.config(function($stateProvider, $urlRouterProvider){
+menu.config(function($stateProvider, $urlRouterProvider, $locationProvider){
 	$urlRouterProvider.otherwise("");
+	//use the HTML5 History API
+    $locationProvider.html5Mode(true);
 	$stateProvider
 	.state('mainMenu',{
-		url: "",
+		url: "/",
 		templateUrl: "client/templates/mainMenu.html"
 	})
 	.state('portes',{
@@ -14,7 +16,7 @@ menu.config(function($stateProvider, $urlRouterProvider){
 		templateUrl: "client/templates/portes.html"
 	})
 	.state('oob',{
-		url: "/SortieDeCorps",
+		url: "/sortie_de_corps",
 		templateUrl: "client/templates/oob.html"
 	});
 });
@@ -34,9 +36,3 @@ menu.controller('MenuWebCtrl', function ($scope,$state) {
 	}
 
 });
-
-menu.controller('mainMenuCtrl', function ($scope,$state) {
-	$scope.oob = "Sortie de Corps";
-	$scope.portes = "Exercice des portes";
-});
-
