@@ -31,7 +31,6 @@ menu.controller('PortesConfigCtrl', function ($scope,$state,$http) {
 				console.log("envoyer les donnees !");
 				sendMessage();
 			}
-				
 		}
 		else if ($scope.nbEssai > 0 & $scope.nbTaille > 1 & $scope.diffTaille != 0){
 			if($scope.hauteur){
@@ -41,7 +40,6 @@ menu.controller('PortesConfigCtrl', function ($scope,$state,$http) {
 				console.log("envoyer les donnees !");
 				sendMessage();
 			}
-				
 		}
 		else{
 			$scope.informationsDonnees = "Tous les champs nécessaires ne sont pas remplis";
