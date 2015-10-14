@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<section  ng-controller="PortesConfigCtrl">
+	<div ng-show="hauteur">
+		<input type="number" name="nbTailleH" ng-init="nbTailleH=0" ng-model="nbTailleH"/>
+		<span>nombre de taillesH différentes</span>		
+		<input type="number" name="diffTailleH" ng-init="diffTailleH=0" ng-model="diffTailleH"/>%
+		<span>différence en largeur entre les taillesH</span>
+	</div>
+	<div>
+		<input type="number" name="nbTaille" ng-init="nbTaille=0" ng-model="nbTaille"/>
+		<span>nombre de tailles différentes</span>		
+		<input type="number" name="diffTaille" ng-init="diffTaille=0" ng-model="diffTaille"/>%
+		<span>différence en largeur entre les tailles</span>
+	</div>
+	<div>
+		<input type="number" name="nbRepet" ng-init="nbRepet=0" ng-model="nbRepet"/>
+		<span>nombre de répétitions</span>
+	</div>
+	<div>
+		<span>= {{nbEssai}} tests</span>
+	</div>
+	<div>
+		<input type="button" ng-click='executer_click()' value="Lancer l'exercice"/>
+		<span>{{informationsDonnees}}</span>
+	</div>
+</section>
