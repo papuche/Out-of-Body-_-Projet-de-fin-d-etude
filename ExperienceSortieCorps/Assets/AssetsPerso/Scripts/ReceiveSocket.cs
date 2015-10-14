@@ -36,24 +36,21 @@ public class ReceiveSocket : MonoBehaviour
 			
 			// EXERCICE DES PORTES : PARAMETRE "PORTES ENTIERE"
 			if (message.Contains (Utils.SOCKET_PORTE_ENTIERE)) {
-				message = message.Split('/')[1];
-				// send playerprefs
+				PlayerPrefs.SetString (Utils.PREFS_PARAM_DOORS, message.Split('/')[1]);
 				PlayerPrefs.SetString (Utils.PREFS_DOORS, Utils.FULL_DOORS);
 				Application.LoadLevel (Utils.DOORS_SCENE);
 			}
 			
 			// EXERCICE DES PORTES : PARAMETRE "DEMI-PORTES BASSES"
 			if (message.Contains (Utils.SOCKET_PORTE_DEMIBAS)) {
-				message = message.Split('/')[1];
-				// send playerprefs
+				PlayerPrefs.SetString (Utils.PREFS_PARAM_DOORS, message.Split('/')[1]);
 				PlayerPrefs.SetString (Utils.PREFS_DOORS, Utils.BOTTOM_DOORS);
 				Application.LoadLevel (Utils.DOORS_SCENE);
 			}
 			
 			// EXERCICE DES PORTES : PARAMETRE "DEMI-PORTES HAUTES"
 			if (message.Contains (Utils.SOCKET_PORTE_DEMIHAUT)) {
-				message = message.Split('/')[1];
-				// send playerprefs
+				PlayerPrefs.SetString (Utils.PREFS_PARAM_DOORS, message.Split('/')[1]);
 				PlayerPrefs.SetString (Utils.PREFS_DOORS, Utils.TOP_DOORS);
 				Application.LoadLevel (Utils.DOORS_SCENE);
 			}

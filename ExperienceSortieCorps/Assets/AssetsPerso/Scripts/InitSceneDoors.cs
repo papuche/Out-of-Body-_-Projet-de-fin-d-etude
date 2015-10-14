@@ -59,6 +59,33 @@ public class InitSceneDoors : MonoBehaviour {
 
 	void Start () {
 		string doors = PlayerPrefs.GetString (Utils.PREFS_DOORS);
+
+		string resSocket = PlayerPrefs.GetString (Utils.PREFS_PARAM_DOORS);
+
+		_nbTries = int.Parse(resSocket.Split ('_')[0]);
+
+		int nbWidth = int.Parse(resSocket.Split ('_') [1]);
+		if(nbWidth != 0){
+			double widthStep = double.Parse(resSocket.Split ('_') [2]);
+			_widths = "";
+			for (int i = 0; i < nbWidth; i++){
+				_widths += widthStep * (i + 1) / 100.0 + 1.0;
+				if(i != nbWidth - 1)
+					_widths += ';';
+			}
+		}
+
+		int nbHeight = int.Parse(resSocket.Split ('_') [3]);
+		if(nbHeight != 0){
+			double heightStep = double.Parse(resSocket.Split ('_') [4]);
+			_heights = "";
+			for (int i = 0; i < nbHeight; i++){
+				_heights += heightStep * (i + 1) / 100.0 + 1.0;
+				if(i != nbHeight - 1)
+					_heights += ';';
+			}
+		}
+
 		if (doors.Equals (Utils.BOTTOM_DOORS)) {
 			_bottomDoors.SetActive(true);
 			_piece = _bottomDoors;
@@ -154,14 +181,14 @@ public class InitSceneDoors : MonoBehaviour {
 	/// </summary>
 	void initScales(){
 		List<Measure> measures = new List<Measure> ();
-		if (!_widths.Equals ("")) {
+		if (_widths != null && !_widths.Equals ("")) {
 			string[] widthArray = _widths.Split(';');
 			for(int i = 0; i < widthArray.Length; i++){
 				measures.Add (new Measure(float.Parse(widthArray[i], CultureInfo.InvariantCulture.NumberFormat), Utils.WIDTH_KEY));
 			}
 		}
 		
-		if (!_heights.Equals ("") && _piece == _fullDoors) {
+		if (_heights != null && !_heights.Equals ("") && _piece == _fullDoors) {
 			string[] heightArray = _heights.Split(';');
 			for(int i = 0; i < heightArray.Length; i++){
 				measures.Add (new Measure(float.Parse(heightArray[i], CultureInfo.InvariantCulture.NumberFormat), Utils.HEIGHT_KEY));

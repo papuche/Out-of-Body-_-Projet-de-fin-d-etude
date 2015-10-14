@@ -57,7 +57,7 @@ namespace AssemblyCSharp
 				try {
 					bytes = socket.Receive(bytesReceived, bytesReceived.Length, 0);
 					message = Encoding.ASCII.GetString(bytesReceived, 0, bytes);
-				} catch(SocketException ex) {
+				} catch(SocketException) {
 					_thread.Interrupt();
 					System.Environment.Exit(1);
 				}

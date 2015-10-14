@@ -5,6 +5,7 @@
 	public readonly static string PREFS_AVATAR_INDEX = "avatarIndex";
 	public readonly static string PREFS_MODEL = "Model";
 	public readonly static string PREFS_DOORS = "doors";
+	public readonly static string PREFS_PARAM_DOORS = "param_doors";
 	public readonly static string PREFS_OUTOFBODY = "Out of Body";
 	public readonly static string[] MODELS_DIRECTORY = {"Models/Homme/", "Models/Femme/"};
 
