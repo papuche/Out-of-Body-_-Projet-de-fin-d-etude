@@ -162,7 +162,7 @@ public class SelectModel : MonoBehaviour
 				//Destroy (_avatar);
 				/*GameObject.Find ("Canvas").SetActive (false);
 				initModel.SetActive (true);*/
-				Application.LoadLevel(Utils.MAINMENU_SCENE);
+				Application.LoadLevel(Utils.WAITING_SCENE);
 			}
 		}
 	}

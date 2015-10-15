@@ -6,10 +6,10 @@ public class MorphingAvatar : MonoBehaviour {
 	public Mesh dstMesh;
 	public Mesh srcMesh;
 	private Mesh mesh;
-	bool initDone;
-	bool startMorph;
+	private bool initDone;
+	private bool startMorph;
 	private float time;
-	public float speed = 0.0005f;
+	private float _speed;
 	//public GameObject[] lineRenderers;
 	//Vector3 init = new Vector3(-1.68f,0.88f,-5.19f);
 	// Use this for initialization
@@ -62,7 +62,7 @@ public class MorphingAvatar : MonoBehaviour {
 			startMorph = true;
 		}
 		if (initDone && startMorph) {
-			float deltaTime = Time.deltaTime * speed;
+			float deltaTime = Time.deltaTime * _speed;
 			time += deltaTime;
 			float tmp = Mathf.Clamp(time,0,1);
 			Morph(tmp);
@@ -112,5 +112,14 @@ public class MorphingAvatar : MonoBehaviour {
 		GL.End();
 		GL.PopMatrix();
 	}*/
-	
+
+	public float speed {
+		get {
+			return _speed;
+		}
+		set {
+			_speed = value;
+		}
+	}
+
 }

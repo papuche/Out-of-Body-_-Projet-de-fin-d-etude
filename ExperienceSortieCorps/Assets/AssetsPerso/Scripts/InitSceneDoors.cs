@@ -20,10 +20,7 @@ public class InitSceneDoors : MonoBehaviour {
 
 	// Gestion de la largeur des portes
 	private GameObject _piece;
-	private int _nbTries = 1;
 	private int _nbDoors = 0;
-	private string _widths = "0.25;0.60;0.75;0.90;1.0;1.2";
-	private string _heights = "0.35;0.50;0.65;0.80;0.90;1.1";
 	private List<Measure> _scales = new List<Measure>();
 	private int _doorIndex;		// Index pointant dans scales
 	private Vector3 _currentScale;	// Dimension de la porte dans la scène
@@ -60,32 +57,6 @@ public class InitSceneDoors : MonoBehaviour {
 	void Start () {
 		string doors = PlayerPrefs.GetString (Utils.PREFS_DOORS);
 
-		string resSocket = PlayerPrefs.GetString (Utils.PREFS_PARAM_DOORS);
-
-		_nbTries = int.Parse(resSocket.Split ('_')[0]);
-
-		int nbWidth = int.Parse(resSocket.Split ('_') [1]);
-		if(nbWidth != 0){
-			double widthStep = double.Parse(resSocket.Split ('_') [2]);
-			_widths = "";
-			for (int i = 0; i < nbWidth; i++){
-				_widths += widthStep * (i + 1) / 100.0 + 1.0;
-				if(i != nbWidth - 1)
-					_widths += ';';
-			}
-		}
-
-		int nbHeight = int.Parse(resSocket.Split ('_') [3]);
-		if(nbHeight != 0){
-			double heightStep = double.Parse(resSocket.Split ('_') [4]);
-			_heights = "";
-			for (int i = 0; i < nbHeight; i++){
-				_heights += heightStep * (i + 1) / 100.0 + 1.0;
-				if(i != nbHeight - 1)
-					_heights += ';';
-			}
-		}
-
 		if (doors.Equals (Utils.BOTTOM_DOORS)) {
 			_bottomDoors.SetActive(true);
 			_piece = _bottomDoors;
@@ -112,8 +83,6 @@ public class InitSceneDoors : MonoBehaviour {
 
 		createXML ();
 		loadXMLFromAssest ();
-
-		// Debug.Log (PlayerPrefs.GetString ("Model"));
 
 		// Recupération du nom des modèles dans modelName
 		string[] modelName = PlayerPrefs.GetString (Utils.PREFS_MODEL).Split (';');
@@ -170,7 +139,7 @@ public class InitSceneDoors : MonoBehaviour {
 					modifyXml ();
 					modifyTxT();
 					_file.Close ();
-					Application.LoadLevel(Utils.MAINMENU_SCENE);
+					Application.LoadLevel(Utils.WAITING_SCENE);
 				}
 			}
 		}
@@ -181,21 +150,28 @@ public class InitSceneDoors : MonoBehaviour {
 	/// </summary>
 	void initScales(){
 		List<Measure> measures = new List<Measure> ();
-		if (_widths != null && !_widths.Equals ("")) {
-			string[] widthArray = _widths.Split(';');
-			for(int i = 0; i < widthArray.Length; i++){
-				measures.Add (new Measure(float.Parse(widthArray[i], CultureInfo.InvariantCulture.NumberFormat), Utils.WIDTH_KEY));
-			}
-		}
-		
-		if (_heights != null && !_heights.Equals ("") && _piece == _fullDoors) {
-			string[] heightArray = _heights.Split(';');
-			for(int i = 0; i < heightArray.Length; i++){
-				measures.Add (new Measure(float.Parse(heightArray[i], CultureInfo.InvariantCulture.NumberFormat), Utils.HEIGHT_KEY));
+
+		string resSocket = PlayerPrefs.GetString (Utils.PREFS_PARAM_DOORS);
+
+		int nbTries = int.Parse (resSocket.Split ('_') [0]);
+
+		int nbWidth = int.Parse(resSocket.Split ('_') [1]);
+		if(nbWidth > 0){
+			int widthStep = int.Parse(resSocket.Split ('_') [2]);
+			for (int i = 0; i < nbWidth; i++){
+				measures.Add (new Measure((float)(widthStep * (i + 1) / 100.0 + 1.0), Utils.WIDTH_KEY));
 			}
 		}
 
-		for (int i=0; i<_nbTries; i++) {
+		int nbHeight = int.Parse(resSocket.Split ('_') [3]);
+		if(nbHeight > 0){
+			int heightStep = int.Parse(resSocket.Split ('_') [4]);
+			for (int i = 0; i < nbHeight; i++){
+				measures.Add (new Measure((float)(heightStep * (i + 1) / 100.0 + 1.0), Utils.HEIGHT_KEY));
+			}
+		}
+
+		for (int i = 0; i<nbTries; i++) {
 			_scales.AddRange(measures);
 		}
 		_nbDoors = _scales.Count;
@@ -336,7 +312,7 @@ public class InitSceneDoors : MonoBehaviour {
 		}
 	}
 
-	class Measure {
+	private class Measure {
 		private float _scale;
 		private string _key;
 

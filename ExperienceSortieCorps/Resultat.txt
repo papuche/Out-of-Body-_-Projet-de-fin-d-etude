@@ -540,3 +540,13 @@
 13	0	10	InitSceneDoors+Measure	1	78.57	86.59	91.09	78.57	86.59	91.09	0	0	0
 13	0	11	InitSceneDoors+Measure	1	78.57	86.59	91.09	78.57	86.59	91.09	0	0	0
 13	0	12	InitSceneDoors+Measure	1	78.57	86.59	91.09	78.57	86.59	91.09	0	0	0
+13	0	1	InitSceneDoors+Measure	1	78.57	86.59	91.09	78.57	86.59	91.09	0	0	0
+13	0	2	InitSceneDoors+Measure	1	78.57	86.59	91.09	78.57	86.59	91.09	0	0	0
+13	0	3	InitSceneDoors+Measure	1	78.57	86.59	91.09	78.57	86.59	91.09	0	0	0
+13	0	4	InitSceneDoors+Measure	1	78.57	86.59	91.09	78.57	86.59	91.09	0	0	0
+13	0	5	InitSceneDoors+Measure	1	78.57	86.59	91.09	78.57	86.59	91.09	0	0	0
+13	0	6	InitSceneDoors+Measure	1	78.57	86.59	91.09	78.57	86.59	91.09	0	0	0
+13	0	7	InitSceneDoors+Measure	1	78.57	86.59	91.09	78.57	86.59	91.09	0	0	0
+13	0	8	InitSceneDoors+Measure	1	78.57	86.59	91.09	78.57	86.59	91.09	0	0	0
+13	0	9	InitSceneDoors+Measure	1	78.57	86.59	91.09	78.57	86.59	91.09	0	0	0
+13	0	10	InitSceneDoors+Measure	1	78.57	86.59	91.09	78.57	86.59	91.09	0	0	0

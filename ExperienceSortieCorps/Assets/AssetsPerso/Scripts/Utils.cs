@@ -19,7 +19,7 @@
 	public readonly static string ALL_PARAMETERS = "allParameters";
 
 	public readonly static string DOORS_SCENE = "Doors";
-	public readonly static string MAINMENU_SCENE = "MainMenu";
+	public readonly static string WAITING_SCENE = "Waiting Scene";
 	public readonly static string OUTOFBODY_SCENE = "Out Of Body";
 
 	public readonly static string WIDTH_KEY = "width";

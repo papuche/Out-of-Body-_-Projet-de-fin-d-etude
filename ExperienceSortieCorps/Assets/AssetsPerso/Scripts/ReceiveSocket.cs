@@ -22,18 +22,12 @@ public class ReceiveSocket : MonoBehaviour
 				PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 0);
 				Application.LoadLevel (Utils.OUTOFBODY_SCENE);
 			}
-			
-			//BOUTON QUITTER
-			if (message.Equals (Utils.SOCKET_MORPHING)) {
-				PlayerPrefs.SetString (Utils.PREFS_OUTOFBODY, Utils.MORPHING_PARAMETER);
-				PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
-				Application.LoadLevel (Utils.OUTOFBODY_SCENE);
-			}
-			
+
+			// BUTTON RETOUR
 			if (message.Equals (Utils.SOCKET_STOP)) {
-				Application.LoadLevel (Utils.MAINMENU_SCENE);
+				Application.LoadLevel (Utils.WAITING_SCENE);
 			}
-			
+						
 			// EXERCICE DES PORTES : PARAMETRE "PORTES ENTIERE"
 			if (message.Contains (Utils.SOCKET_PORTE_ENTIERE)) {
 				PlayerPrefs.SetString (Utils.PREFS_PARAM_DOORS, message.Split('/')[1]);
@@ -61,6 +55,13 @@ public class ReceiveSocket : MonoBehaviour
 				PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
 				Application.LoadLevel (Utils.OUTOFBODY_SCENE);
 			}
+
+			// EXERCICE SORTIE DE CORPS : PARAMETRE MORPHING
+			if (message.Equals (Utils.SOCKET_MORPHING)) {
+				PlayerPrefs.SetString (Utils.PREFS_OUTOFBODY, Utils.MORPHING_PARAMETER);
+				PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
+				Application.LoadLevel (Utils.OUTOFBODY_SCENE);
+			}
 			
 			// EXERCICE SORTIE DE CORPS : PARAMETRE BATON
 			if (message.Equals(Utils.SOCKET_BATON)) {
@@ -70,17 +71,20 @@ public class ReceiveSocket : MonoBehaviour
 			}
 			
 			// EXERCICE SORTIE DE CORPS : PARAMETRES BATON ET MORPHING
-			
 			if (message.Equals(Utils.SOCKET_BATON_MORPHING)) {
 				PlayerPrefs.SetString (Utils.PREFS_OUTOFBODY, Utils.ALL_PARAMETERS);
 				PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
 				Application.LoadLevel (Utils.OUTOFBODY_SCENE);
 			}
-
-
-
 			SocketClient.message = null;
 		}
+	}
+
+	/// <summary>
+	/// Méthode appélée lorsque l'application se ferme. Permet de réinitialiser le choix de l'avatar effectué lors de la session
+	/// </summary>
+	void OnApplicationQuit(){
+		PlayerPrefs.DeleteKey (Utils.PREFS_MODEL);
 	}
 }
 
