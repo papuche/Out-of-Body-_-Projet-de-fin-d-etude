@@ -71,32 +71,9 @@ public class AvatarController : MonoBehaviour
 			return _transformCache;
 		}
 	}
-
-
-	/*public void Awake()
-    {	
-		// check for double start
-		if(bones != null)
-			return;
-
-		// inits the bones array
-		bones = new Transform[27];
-		
-		// Initial rotations and directions of the bones.
-		initialRotations = new Quaternion[bones.Length];
-		initialLocalRotations = new Quaternion[bones.Length];
-		//initialDirections = new Vector3[bones.Length];
-
-		// Map bones to the points the Kinect tracks
-		MapBones();
-
-		// Get initial bone rotations
-		GetInitialRotations();
-
-	}*/
+	
 	public void Init()
 	{	
-		Debug.Log ("InitKinect");
 		// check for double start
 		if(bones != null)
 			return;

@@ -30,11 +30,11 @@ public class LoadScene : MonoBehaviour {
 				break;
 			}
 		}
-		PlayerPrefs.SetString ("Model",model);
+		PlayerPrefs.SetString (Utils.PREFS_MODEL,model);
 		PlayerPrefs.SetInt("gender",1);
-		PlayerPrefs.SetInt ("Session", 1);
-		PlayerPrefs.SetInt ("Condition", 0);
-		PlayerPrefs.SetInt ("Sujet", PlayerPrefs.GetInt("Sujet",-1) + 1);
+		PlayerPrefs.SetInt (Utils.PREFS_SESSION, 1);
+		PlayerPrefs.SetInt (Utils.PREFS_CONDITION, 0);
+		PlayerPrefs.SetInt (Utils.PREFS_SUJET, PlayerPrefs.GetInt(Utils.PREFS_SUJET,-1) + 1);
 		//Application.LoadLevel (1);
 		Process foo = new Process();
 		foo.StartInfo.FileName = "evalApp_DirectToRift.exe";

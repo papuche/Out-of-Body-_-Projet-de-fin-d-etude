@@ -3,6 +3,11 @@
 	public readonly static string PREFS_LAUNCH_BATON = "launchBaton";
 	public readonly static string PREFS_LAUNCH_MORPHING = "launchMorphing";
 	public readonly static string PREFS_AVATAR_INDEX = "avatarIndex";
+
+	public readonly static string PREFS_CONDITION = "Condition";
+	public readonly static string PREFS_SUJET = "Sujet";
+	public readonly static string PREFS_SESSION = "Session";
+
 	public readonly static string PREFS_MODEL = "Model";
 	public readonly static string PREFS_DOORS = "doors";
 	public readonly static string PREFS_PARAM_DOORS = "param_doors";

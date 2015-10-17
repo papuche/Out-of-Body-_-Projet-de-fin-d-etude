@@ -53,6 +53,7 @@ public class InitSceneDoors : MonoBehaviour {
 	private int _sujet;
 	private int _session;
 	private int _condition;
+	private string _doorType;
 
 	void Start () {
 		string doors = PlayerPrefs.GetString (Utils.PREFS_DOORS);
@@ -60,18 +61,21 @@ public class InitSceneDoors : MonoBehaviour {
 		if (doors.Equals (Utils.BOTTOM_DOORS)) {
 			_bottomDoors.SetActive(true);
 			_piece = _bottomDoors;
+			_doorType = "Porte basse";
 		} else if (doors.Equals (Utils.TOP_DOORS)) {
 			_topDoors.SetActive (true);
 			_piece = _topDoors;
+			_doorType = "Porte haute";
 		} else {
 			_fullDoors.SetActive (true);
 			_piece = _fullDoors;
+			_doorType = "Porte pleine";
 		}
 		_currentScale = _piece.transform.localScale;
 
 		// Assignation de labels à la condition du test et au sujet du test
-		_sujet = PlayerPrefs.GetInt ("Sujet", 0);
-		_condition = PlayerPrefs.GetInt ("Condition");		
+		_sujet = PlayerPrefs.GetInt (Utils.PREFS_SUJET, 0);
+		_condition = PlayerPrefs.GetInt (Utils.PREFS_CONDITION);		
 
 		// Création du fichier de résultats
 		_fileName = System.DateTime.Now.ToString ();
@@ -196,7 +200,6 @@ public class InitSceneDoors : MonoBehaviour {
 	}
 
 	void loadXMLFromAssest(){
-		
 		_xmlModel = new XmlDocument();
 		_textXml = (TextAsset)Resources.Load("Models", typeof(TextAsset));
 		_xmlModel.LoadXml(_textXml.text);
@@ -204,23 +207,31 @@ public class InitSceneDoors : MonoBehaviour {
 
 	void modifyTxT(){
 		int essai = 1;
-		string modelSrcvalue = _modelSrcValues [0].ToString () + "\t" + _modelSrcValues [1].ToString () + "\t" + _modelSrcValues [2].ToString ();
-		string modelDstvalue = _modelDstValues [0].ToString () + "\t" + _modelDstValues [1].ToString () + "\t" + _modelDstValues [2].ToString ();
-		string modelDiffvalue = _differenceModels [0].ToString () + "\t" + _differenceModels [1].ToString () + "\t" + _differenceModels [2].ToString ();
+		string modelSrcvalue;
+		string modelDstvalue;
+		string modelDiffvalue;
+		if (_modelSrcValues != null) {
+			modelSrcvalue = _modelSrcValues [0].ToString () + "\t" + _modelSrcValues [1].ToString () + "\t" + _modelSrcValues [2].ToString ();
+			modelDstvalue = _modelDstValues [0].ToString () + "\t" + _modelDstValues [1].ToString () + "\t" + _modelDstValues [2].ToString ();
+			modelDiffvalue = _differenceModels [0].ToString () + "\t" + _differenceModels [1].ToString () + "\t" + _differenceModels [2].ToString ();
+		} else {
+			modelSrcvalue = "0\t0\t0";
+			modelDstvalue = "0\t0\t0";
+			modelDiffvalue = "0\t0\t0";
+		}
 		foreach (bool answer in _answers) {
-			if (answer) {
-				_file.WriteLine(_sujet.ToString() + "\t" + _condition.ToString() + "\t" + essai.ToString() + "\t" + _ordreOuverture[essai-1].ToString() + "\t" + "1" + "\t" + modelSrcvalue + "\t" + modelDstvalue + "\t" + modelDiffvalue);
-			} else {
-				_file.WriteLine(_sujet.ToString() + "\t" + _condition.ToString() + "\t" + essai.ToString() + "\t" + _ordreOuverture[essai-1].ToString() + "\t" + "0" + "\t" + modelSrcvalue + "\t" + modelDstvalue + "\t" + modelDiffvalue);
-			}
+			_file.WriteLine (_sujet.ToString () + "\t" + _condition.ToString () + "\t" + essai.ToString () + "\t" + _doorType + "\t" + (_ordreOuverture [essai - 1].key.Equals(Utils.WIDTH_KEY) ? "Longueur" : "Largeur") + "\t" + _ordreOuverture [essai - 1].scale.ToString() + "\t" + (answer == true ? "1" : "0") + "\t" + modelSrcvalue + "\t" + modelDstvalue + "\t" + modelDiffvalue);
 			essai++;
 		}
 	}
+
 	void modifyXml(){
 		int indexlist = 0;
 		XmlNode nodeact = _xmlDoc.SelectSingleNode("Ouvertures");
 		foreach(XmlElement node in nodeact.SelectNodes("Ouverture")){
-			node.FirstChild.InnerText = _ordreOuverture[indexlist].ToString();
+			node.FirstChild.InnerText = _doorType;
+			node.SelectSingleNode("Modification").InnerText = _ordreOuverture[indexlist].key.Equals(Utils.WIDTH_KEY) ? "Longueur" : "Largeur";
+			node.SelectSingleNode("Taille").InnerText = _ordreOuverture[indexlist].scale.ToString();
 			if(_answers[indexlist]){
 				node.LastChild.InnerText = "Oui";
 			}else{
@@ -232,7 +243,7 @@ public class InitSceneDoors : MonoBehaviour {
 		_xmlDoc.Save(_fileName+".xml");
 	}
 
-	public void Reponse(bool rep){
+	void Reponse(bool rep){
 		_answers.Add (rep);
 		_next = true;
 	}
@@ -243,6 +254,8 @@ public class InitSceneDoors : MonoBehaviour {
 
 		for(int i = 0; i < _scales.Count; i++){
 			XmlElement el = (XmlElement)root.AppendChild(_xmlDoc.CreateElement("Ouverture"));
+			el.AppendChild(_xmlDoc.CreateElement("Type"));
+			el.AppendChild(_xmlDoc.CreateElement("Modification"));
 			el.AppendChild(_xmlDoc.CreateElement("Taille"));
 			el.AppendChild(_xmlDoc.CreateElement("Reponse"));
 		}
