@@ -1,338 +1,218 @@
 <Ouvertures>
   <Ouverture>
     <Type>Porte pleine</Type>
-    <Modification>Largeur</Modification>
-    <Taille>1.08</Taille>
+    <Modification>Longueur</Modification>
+    <Taille>1.05</Taille>
     <Reponse>Oui</Reponse>
   </Ouverture>
   <Ouverture>
     <Type>Porte pleine</Type>
     <Modification>Longueur</Modification>
-    <Taille>1.12</Taille>
+    <Taille>1.15</Taille>
     <Reponse>Oui</Reponse>
   </Ouverture>
   <Ouverture>
     <Type>Porte pleine</Type>
     <Modification>Longueur</Modification>
-    <Taille>1.06</Taille>
-    <Reponse>Non</Reponse>
+    <Taille>1.2</Taille>
+    <Reponse>Oui</Reponse>
   </Ouverture>
   <Ouverture>
     <Type>Porte pleine</Type>
     <Modification>Largeur</Modification>
-    <Taille>1.04</Taille>
-    <Reponse>Non</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
     <Taille>1.06</Taille>
     <Reponse>Non</Reponse>
   </Ouverture>
   <Ouverture>
     <Type>Porte pleine</Type>
     <Modification>Longueur</Modification>
-    <Taille>1.3</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.18</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.12</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Largeur</Modification>
-    <Taille>1.04</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.06</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.18</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.18</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Largeur</Modification>
-    <Taille>1.08</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.18</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.3</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Largeur</Modification>
-    <Taille>1.04</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.24</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.3</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.06</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.06</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.12</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.18</Taille>
-    <Reponse>Non</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.24</Taille>
+    <Taille>1.1</Taille>
     <Reponse>Non</Reponse>
   </Ouverture>
   <Ouverture>
     <Type>Porte pleine</Type>
     <Modification>Largeur</Modification>
-    <Taille>1.08</Taille>
-    <Reponse>Non</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
     <Taille>1.06</Taille>
     <Reponse>Non</Reponse>
   </Ouverture>
   <Ouverture>
     <Type>Porte pleine</Type>
     <Modification>Longueur</Modification>
-    <Taille>1.24</Taille>
-    <Reponse>Non</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.24</Taille>
-    <Reponse>Non</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.18</Taille>
-    <Reponse>Non</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.24</Taille>
-    <Reponse>Non</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.12</Taille>
-    <Reponse>Non</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Largeur</Modification>
-    <Taille>1.08</Taille>
+    <Taille>1.05</Taille>
     <Reponse>Oui</Reponse>
   </Ouverture>
   <Ouverture>
     <Type>Porte pleine</Type>
     <Modification>Largeur</Modification>
-    <Taille>1.04</Taille>
+    <Taille>1.03</Taille>
     <Reponse>Oui</Reponse>
   </Ouverture>
   <Ouverture>
     <Type>Porte pleine</Type>
     <Modification>Longueur</Modification>
-    <Taille>1.12</Taille>
+    <Taille>1.2</Taille>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Modification>Longueur</Modification>
+    <Taille>1.1</Taille>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Modification>Longueur</Modification>
+    <Taille>1.15</Taille>
     <Reponse>Oui</Reponse>
   </Ouverture>
   <Ouverture>
     <Type>Porte pleine</Type>
     <Modification>Largeur</Modification>
-    <Taille>1.08</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.24</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.18</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Largeur</Modification>
-    <Taille>1.04</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Largeur</Modification>
-    <Taille>1.04</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
     <Taille>1.06</Taille>
     <Reponse>Oui</Reponse>
   </Ouverture>
   <Ouverture>
     <Type>Porte pleine</Type>
     <Modification>Longueur</Modification>
-    <Taille>1.12</Taille>
+    <Taille>1.2</Taille>
     <Reponse>Oui</Reponse>
   </Ouverture>
   <Ouverture>
     <Type>Porte pleine</Type>
     <Modification>Longueur</Modification>
-    <Taille>1.3</Taille>
-    <Reponse>Non</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.3</Taille>
-    <Reponse>Non</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Largeur</Modification>
-    <Taille>1.08</Taille>
-    <Reponse>Non</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.12</Taille>
-    <Reponse>Non</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.24</Taille>
-    <Reponse>Non</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.24</Taille>
-    <Reponse>Non</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.18</Taille>
-    <Reponse>Non</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.3</Taille>
-    <Reponse>Non</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Longueur</Modification>
-    <Taille>1.12</Taille>
+    <Taille>1.2</Taille>
     <Reponse>Oui</Reponse>
   </Ouverture>
   <Ouverture>
     <Type>Porte pleine</Type>
     <Modification>Largeur</Modification>
-    <Taille>1.04</Taille>
+    <Taille>1.06</Taille>
     <Reponse>Oui</Reponse>
   </Ouverture>
   <Ouverture>
     <Type>Porte pleine</Type>
     <Modification>Longueur</Modification>
-    <Taille>1.3</Taille>
-    <Reponse>Oui</Reponse>
+    <Taille>1.1</Taille>
+    <Reponse>Non</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Modification>Longueur</Modification>
+    <Taille>1.2</Taille>
+    <Reponse>Non</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Modification>Longueur</Modification>
+    <Taille>1.05</Taille>
+    <Reponse>Non</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Modification>Longueur</Modification>
+    <Taille>1.1</Taille>
+    <Reponse>Non</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Modification>Longueur</Modification>
+    <Taille>1.15</Taille>
+    <Reponse>Non</Reponse>
   </Ouverture>
   <Ouverture>
     <Type>Porte pleine</Type>
     <Modification>Largeur</Modification>
-    <Taille>1.04</Taille>
+    <Taille>1.06</Taille>
     <Reponse>Oui</Reponse>
   </Ouverture>
   <Ouverture>
     <Type>Porte pleine</Type>
     <Modification>Longueur</Modification>
-    <Taille>1.3</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Largeur</Modification>
-    <Taille>1.08</Taille>
-    <Reponse>Oui</Reponse>
-  </Ouverture>
-  <Ouverture>
-    <Type>Porte pleine</Type>
-    <Modification>Largeur</Modification>
-    <Taille>1.08</Taille>
+    <Taille>1.05</Taille>
     <Reponse>Oui</Reponse>
   </Ouverture>
   <Ouverture>
     <Type>Porte pleine</Type>
     <Modification>Longueur</Modification>
+    <Taille>1.1</Taille>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Modification>Longueur</Modification>
+    <Taille>1.2</Taille>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Modification>Longueur</Modification>
+    <Taille>1.1</Taille>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Modification>Longueur</Modification>
+    <Taille>1.15</Taille>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Modification>Longueur</Modification>
+    <Taille>1.15</Taille>
+    <Reponse>Non</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Modification>Largeur</Modification>
+    <Taille>1.03</Taille>
+    <Reponse>Non</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Modification>Largeur</Modification>
     <Taille>1.06</Taille>
     <Reponse>Non</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Modification>Largeur</Modification>
+    <Taille>1.03</Taille>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Modification>Largeur</Modification>
+    <Taille>1.03</Taille>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Modification>Longueur</Modification>
+    <Taille>1.05</Taille>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Modification>Longueur</Modification>
+    <Taille>1.05</Taille>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Modification>Longueur</Modification>
+    <Taille>1.15</Taille>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Modification>Largeur</Modification>
+    <Taille>1.03</Taille>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Modification>Largeur</Modification>
+    <Taille>1.03</Taille>
+    <Reponse>Oui</Reponse>
   </Ouverture>
 </Ouvertures>

@@ -354,7 +354,7 @@ public class AvatarController : MonoBehaviour
 	// Capture the initial rotations of the bones
 	protected void GetInitialRotations()
 	{
-		Debug.Log ("InitialRotations");
+//		Debug.Log ("InitialRotations");
 		// save the initial rotation
 		if(offsetNode != null)
 		{
