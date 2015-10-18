@@ -200,3 +200,11 @@
 13	0	34	Porte pleine	Longueur	1.15	1	0	0	0	0	0	0	0	0	0
 13	0	35	Porte pleine	Largeur	1.03	1	0	0	0	0	0	0	0	0	0
 13	0	36	Porte pleine	Largeur	1.03	1	0	0	0	0	0	0	0	0	0
+13	0	1	Porte pleine	Longueur	1.02	1	0	0	0	0	0	0	0	0	0
+13	0	2	Porte pleine	Longueur	1.02	0	0	0	0	0	0	0	0	0	0
+13	0	3	Porte pleine	Largeur	1.02	1	0	0	0	0	0	0	0	0	0
+13	0	4	Porte pleine	Longueur	1.04	0	0	0	0	0	0	0	0	0	0
+13	0	5	Porte pleine	Largeur	1.04	1	0	0	0	0	0	0	0	0	0
+13	0	6	Porte pleine	Largeur	1.04	0	0	0	0	0	0	0	0	0	0
+13	0	7	Porte pleine	Longueur	1.04	1	0	0	0	0	0	0	0	0	0
+13	0	8	Porte pleine	Largeur	1.02	0	0	0	0	0	0	0	0	0	0
