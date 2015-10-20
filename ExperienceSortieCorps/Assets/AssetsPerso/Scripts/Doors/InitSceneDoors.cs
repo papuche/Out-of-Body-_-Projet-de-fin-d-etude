@@ -162,16 +162,30 @@ public class InitSceneDoors : MonoBehaviour {
 		int nbWidth = int.Parse(resSocket.Split ('_') [1]);
 		if(nbWidth > 0){
 			int widthStep = int.Parse(resSocket.Split ('_') [2]);
-			for (int i = 0; i < nbWidth; i++){
+			/*for (int i = 0; i < nbWidth; i++){
 				measures.Add (new Measure((float)(widthStep * (i + 1) / 100.0 + 1.0), Utils.WIDTH_KEY));
+			}*/
+			for(int i = 0; i < nbWidth / 2; i++){
+				measures.Add (new Measure((float)(widthStep * (i + 1) / 100.0 + 1.0), Utils.WIDTH_KEY));
+				measures.Add (new Measure((float)(-widthStep * (i + 1) / 100.0 + 1.0), Utils.WIDTH_KEY));
+			}
+			if(nbWidth % 2 != 0) {
+					measures.Add (new Measure((float)(widthStep * ((nbWidth + 1) / 2) / 100.0 + 1.0), Utils.WIDTH_KEY));
 			}
 		}
 
 		int nbHeight = int.Parse(resSocket.Split ('_') [3]);
 		if(nbHeight > 0){
 			int heightStep = int.Parse(resSocket.Split ('_') [4]);
-			for (int i = 0; i < nbHeight; i++){
+			/*for (int i = 0; i < nbHeight; i++){
 				measures.Add (new Measure((float)(heightStep * (i + 1) / 100.0 + 1.0), Utils.HEIGHT_KEY));
+			}*/
+			for(int i = 0; i < nbHeight / 2; i++){
+				measures.Add (new Measure((float)(heightStep * (i + 1) / 100.0 + 1.0), Utils.HEIGHT_KEY));
+				measures.Add (new Measure((float)(-heightStep * (i + 1) / 100.0 + 1.0), Utils.HEIGHT_KEY));
+			}
+			if(nbHeight % 2 != 0) {
+				measures.Add (new Measure((float)(heightStep * ((nbHeight + 1) / 2) / 100.0 + 1.0), Utils.HEIGHT_KEY));
 			}
 		}
 
