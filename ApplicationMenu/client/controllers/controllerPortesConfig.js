@@ -17,8 +17,8 @@ menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope) {
 		$scope.hauteur = false;
 	}
 
-	$scope.$watch('nbRepet + nbTaille + nbTailleH', function() {
-		$scope.nbEssai = ($scope.nbTaille * $scope.nbRepet) + ($scope.nbTailleH * $scope.nbRepet);
+	$scope.$watch('nbRepet + nbTailleLargeur + nbTailleHauteur', function() {
+		$scope.nbEssai = ($scope.nbTailleLargeur * $scope.nbTailleHauteur) * $scope.nbRepet;
 	});
 
 	$scope.previous = function () {
@@ -28,7 +28,7 @@ menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope) {
 
 	$scope.executer_click = function(){
 		$scope.informationsDonnees ="";
-		if ($scope.nbEssai > 0 & $scope.nbTaille == 1){
+		if ($scope.nbEssai > 0 & $scope.nbTailleLargeur == 1){
 			if($scope.hauteur){
 				testerH();
 			}
@@ -37,7 +37,7 @@ menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope) {
 				sendMessage();
 			}
 		}
-		else if ($scope.nbEssai > 0 & $scope.nbTaille > 1 & $scope.diffTaille != 0){
+		else if ($scope.nbEssai > 0 & $scope.nbTailleLargeur > 1 & $scope.diffTailleLargeur != 0){
 			if($scope.hauteur){
 				testerH();
 			}
@@ -51,10 +51,10 @@ menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope) {
 	}
 
 	testerH = function(){
-		if($scope.nbTailleH == 1){
+		if($scope.nbTailleHauteur == 1){
 			sendMessage();
 		}
-		else if ($scope.nbTailleH > 1 & $scope.diffTailleH != 0){
+		else if ($scope.nbTailleHauteur > 1 & $scope.diffTailleHauteur != 0){
 			sendMessage();
 		}
 		else{
@@ -71,7 +71,7 @@ menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope) {
 		else
 			type = "db";
 
-		var message = type + '/' + $scope.nbRepet + '_' + $scope.nbTaille + '_' + $scope.diffTaille + '_' + $scope.nbTailleH + '_' + $scope.diffTailleH;
+		var message = type + '/' + $scope.nbRepet + '_' + $scope.nbTailleLargeur + '_' + $scope.diffTailleLargeur + '_' + $scope.nbTailleHauteur + '_' + $scope.diffTailleHauteur;
 		$http.get(message);
 		$state.go('runPortes');
 	};
