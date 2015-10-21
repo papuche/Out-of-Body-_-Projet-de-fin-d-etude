@@ -20,4 +20,8 @@ menu.controller('PortesCtrl', function ($scope,$state, $rootScope) {
 	$scope.suivant_click = function(type){
 			$state.go(type);
 	}
+	$scope.previous = function () {
+		// $http.get('/stop');
+		$state.go('mainMenu');
+	}
 });

@@ -22,6 +22,11 @@ menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope) {
 		$scope.nbEssai = ($scope.nbTaille * $scope.nbRepet) + ($scope.nbTailleH * $scope.nbRepet);
 	});
 
+	$scope.previous = function () {
+		// $http.get('/stop');
+		$state.go('portes');
+	}
+
 	$scope.executer_click = function(){
 		$scope.informationsDonnees ="";
 		if ($scope.nbEssai > 0 & $scope.nbTaille == 1){

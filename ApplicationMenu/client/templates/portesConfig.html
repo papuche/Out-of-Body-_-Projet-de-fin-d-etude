@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <section  ng-controller="PortesConfigCtrl">
+	<input type="button" ng-click="previous()" value="Retour"></input>
 	<form name="formulaire" ng-submit='executer_click()'>
 		<div ng-show="hauteur">
 			<input type="number" ng-pattern="/^[0-9]*$/" min="0" step="1" name="nbTailleH" ng-init="nbTailleH=0" ng-model="nbTailleH"/>
