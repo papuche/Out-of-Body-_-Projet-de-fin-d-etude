@@ -7,6 +7,7 @@ const HTTP_PORT = '3000';
 const UNITY_PORT = '8000'; 
 
 var app = express();
+var clients_unity = [];
 
 app.get('/', function(req, res){
     if(req=="portes")
@@ -18,8 +19,38 @@ app.get('/', function(req, res){
 app.use(express.static(__dirname+"/.."));
 app.listen(HTTP_PORT);
 
-var server = net.createServer(function (socket) {    
+function getAndSendWithoutParams(socket, url) {
+    app.get('/' + url, function(req, res) {
+        console.log(url);
+        clients_unity[0].write(url);
+        res.end();
+    });
+}
 
+function getAndSendWithParams(socket, url) {
+    url += "/:values";
+    app.get('/' + url, function(req, res) {
+        var send = req.originalUrl.replace('/', '');
+        clients_unity[0].write(send);
+        res.end();
+    });
+}
+
+var server = net.createServer(function (socket) {    
+    
+    clients_unity.push(socket);
+      
+    socket.on('close', function(e) { 
+        clients_unity.splice(clients_unity.indexOf(socket), 1);
+    });
+
+    
+    process.on('uncaughtException', function (err) {
+        console.error(err.stack);
+    });
+    
+    
+    
     getAndSendWithoutParams(socket, 'avatar');
     getAndSendWithoutParams(socket, 'baton');
     getAndSendWithoutParams(socket, 'morphing');
@@ -30,33 +61,7 @@ var server = net.createServer(function (socket) {
     getAndSendWithParams(socket, 'e');
     getAndSendWithParams(socket, 'db');
     getAndSendWithParams(socket, 'dh');
-
-    socket.on('end', function() {
-        server.close();
-    });
-    
-    socket.on('error', function() {
-        console.log("error");
-    });
-    
 });
 
+server.timeout = 0;
 server.listen(UNITY_PORT);
-
-
-function getAndSendWithoutParams(socket, url) {
-    app.get('/' + url, function(req, res) {
-        //console.log(url);
-        socket.write(url);
-        res.end();
-    });
-}
-
-function getAndSendWithParams(socket, url) {
-    url += "/:values";
-    app.get('/' + url, function(req, res) {
-        var send = req.originalUrl.replace('/', '');
-        socket.write(send);
-        res.end();
-    });
-}
