@@ -10,7 +10,6 @@ menu.config(function($stateProvider, $urlRouterProvider){
 menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope) {
 	$rootScope.chemin = 'Accueil > Exercice des portes > Portes ' + $state.current.name;
 
-	console.log($state.current.name);
 	if($state.current.name == "entiere"){
 		$scope.hauteur = true;
 	}
@@ -43,28 +42,23 @@ menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope) {
 				testerH();
 			}
 			else{
-				console.log("envoyer les donnees !");
 				sendMessage();
 			}
 		}
 		else{
 			$scope.informationsDonnees = "Tous les champs nécessaires ne sont pas remplis";
-			console.log("pas assez de donnees !");
 		}
 	}
 
 	testerH = function(){
 		if($scope.nbTailleH == 1){
-			console.log("envoyer les donnees !");
 			sendMessage();
 		}
 		else if ($scope.nbTailleH > 1 & $scope.diffTailleH != 0){
-			console.log("envoyer les donnees !");
 			sendMessage();
 		}
 		else{
 			$scope.informationsDonnees = "Tous les champs nécessaires ne sont pas remplis";
-			console.log("pas assez de donnees !");
 		}
 	}
 
@@ -72,13 +66,12 @@ menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope) {
 		var type ="";
 		if($state.current.name == "entiere")
 			type ="e";
-		else if ($state.current.name == "demi-haut")
+		else if ($state.current.name == "demi_haut")
 			type ="dh";
 		else
 			type = "db";
 
 		var message = type + '/' + $scope.nbRepet + '_' + $scope.nbTaille + '_' + $scope.diffTaille + '_' + $scope.nbTailleH + '_' + $scope.diffTailleH;
-		console.log(message);
 		$http.get(message);
 		$state.go('runPortes');
 	};
