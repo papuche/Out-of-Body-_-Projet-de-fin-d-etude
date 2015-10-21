@@ -2,6 +2,11 @@
 <html ng-app="menu">
 <head>
 	<meta charset="utf-8" />
+		<!-- bootstrap -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	
 	<title>Menu Web</title>
 	<base href="/">
 	<script src="node_modules/angular/angular.js"></script>
@@ -17,9 +22,9 @@
 
 </head >
 
-<body >
+<body class="container">
 	<header>
-		<h1>Menu Web</h1>
+		<h1 class="col-md-12">Menu Web</h1>
 	</header>
 	<span>{{chemin}}</span>
 	<div ui-view></div>
