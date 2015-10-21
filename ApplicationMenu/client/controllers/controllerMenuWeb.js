@@ -11,6 +11,10 @@ menu.config(function($stateProvider, $urlRouterProvider, $locationProvider){
 		url: "/",
 		templateUrl: "client/templates/mainMenu.html"
 	})
+	.state('avatar',{
+		url: "/avatar",
+		templateUrl: "client/templates/avatar.html"
+	})
 	.state('portes',{
 		url: "/portes",
 		templateUrl: "client/templates/portes.html"
