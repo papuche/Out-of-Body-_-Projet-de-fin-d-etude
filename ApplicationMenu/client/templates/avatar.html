@@ -1,4 +1,12 @@
 <!DOCTYPE html>
 <section  ng-controller="AvatarCtrl">
-	<input type="button" ng-click="previous()" value="Retour"></input>
+	<span>Choisissez le sexe de l'avatar</span>
+	<div class="row">
+		<input type="radio" name="sexe" id="F" ng-click='sexe_selected("F")' checked> Femme</input>
+		<input type="radio" name="sexe" id="M" ng-click='sexe_selected("M")' > Homme</input>
+	</div>
+	<div class="row">
+		<input type="button" value="Retour" ng-click="previous()"></input>
+		<input type="button" value="Lancer le choix" ng-click="next()"></input>
+	</div>
 </section>
