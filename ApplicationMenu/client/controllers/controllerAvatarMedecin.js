@@ -6,8 +6,7 @@ menu.controller('AvatarMedecinCtrl', function ($scope, $state, $rootScope, $http
 	}
 
 	$scope.next = function () {
-		$http.get("validerAvatar");
-		$http.get($scope.facteurAvatar);
+		$http.get("validerAvatar/" + $scope.facteurAvatar);
 		$state.go('mainMenu');
 	}
 });

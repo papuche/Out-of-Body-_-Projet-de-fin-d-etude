@@ -18,8 +18,7 @@ menu.controller('AvatarCtrl', function ($scope, $state, $rootScope, $http) {
 	}
 
 	$scope.next = function () {
-		$http.get(sexe);
-		changeAvatar();
+		$http.get("/" + sexe + "_avatar");
 		$state.go('avatar_choix');
 	}
 
@@ -28,7 +27,7 @@ menu.controller('AvatarCtrl', function ($scope, $state, $rootScope, $http) {
 	}
 
 	$scope.sexe_selected = function(type){
-			sexe=type;
+        sexe=type;
 	}
 });
 
