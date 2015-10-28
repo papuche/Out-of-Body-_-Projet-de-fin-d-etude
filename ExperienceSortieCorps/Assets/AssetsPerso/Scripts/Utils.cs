@@ -2,7 +2,8 @@
 	public readonly static string PREFS_LAUNCH_MODEL = "launchModel";
 	public readonly static string PREFS_LAUNCH_BATON = "launchBaton";
 	public readonly static string PREFS_LAUNCH_MORPHING = "launchMorphing";
-	public readonly static string PREFS_AVATAR_INDEX = "avatarIndex";
+	public readonly static string PREFS_AVATAR_GENDER = "avatarGender";
+	public readonly static string PREFS_VALIDATE_AVATAR = SOCKET_VALIDATE;
 
 	public readonly static string PREFS_CONDITION = "Condition";
 	public readonly static string PREFS_SUJET = "Sujet";
@@ -43,5 +44,8 @@
 	public readonly static string SOCKET_PORTE_ENTIERE = "e/";
 	public readonly static string SOCKET_PORTE_DEMIHAUT = "dh/";
 	public readonly static string SOCKET_PORTE_DEMIBAS = "db/";
+
+	public readonly static string[] SOCKET_GENDER = {"M", "F"};
+	public readonly static string SOCKET_VALIDATE = "validerAvatar";
 
 }

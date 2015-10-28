@@ -1,46 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using AssemblyCSharp;
 
 public class SelectModel : MonoBehaviour
 {
 	[SerializeField]
 	private GameObject _posAvatar;
-	[SerializeField]
-	private Slider _sliderGender;
-	[SerializeField]
-	private Slider _sliderUser;
-	[SerializeField]
-	private Button _validateButton;
 
-	private string[] _chosenAvatar;
 	private GameObject[] _go_models;
 	private GameObject _avatar;
-	private int _avatarIndex;
-	private int _gender = 0;	// 0 : homme, 1 : femme
-	private int _user = 0;		// 0 : utilisateur, 1 : expérimentateur 
+
+	private int _avatarIndex = 0;
+
+	private int _gender;
 
 	private float _offsetYPosAvatar = 0.68f;
 	
 	void Start ()
 	{
-		/* Gestion des listeners */
-		_validateButton.onClick.AddListener (() => Validate ());
-		_sliderGender.onValueChanged.AddListener (delegate {
-			ChangeGender ();
-		});
-		_sliderUser.onValueChanged.AddListener (delegate {
-			ChangeUser ();
-		});
-
-		_avatarIndex = PlayerPrefs.GetInt (Utils.PREFS_AVATAR_INDEX);
-		_chosenAvatar = new string[2];
+		_gender = PlayerPrefs.GetInt (Utils.PREFS_AVATAR_GENDER); // 0: homme ; 1: femme
 
 		_go_models = Resources.LoadAll<GameObject> (Utils.MODELS_DIRECTORY [_gender]);
 		_avatar = (GameObject)Instantiate (_go_models [_avatarIndex]);
-		_avatar.name = Utils.MODELS_DIRECTORY [(int)_sliderUser.value] + _go_models [_avatarIndex].name;
-		_chosenAvatar [0] = _avatar.name;
-		_chosenAvatar [1] = _avatar.name;
+		_avatar.name = Utils.MODELS_DIRECTORY [_gender] + _go_models [_avatarIndex].name;
 
 		_avatar.transform.parent = posAvatar.transform;
 		applyOffsetY ();
@@ -77,94 +60,78 @@ public class SelectModel : MonoBehaviour
 	
 	void Update ()
 	{
-		ChangeAvatar ();	// Gestion des flèches pour le changement d'avatar
 		_avatar.transform.Rotate (0.0f, 1.0f, 0.0f);
+		if (Input.GetMouseButtonDown (0)) {
+			_avatarIndex --;
+			if (_avatarIndex < 0)
+				_avatarIndex = _go_models.Length -1;
+			ReloadAvatar();
+		}
+		else if (Input.GetMouseButtonDown (1)) {
+			_avatarIndex ++;
+			if (_avatarIndex >= _go_models.Length)
+				_avatarIndex = 0;
+			ReloadAvatar();
+		}
+		if (PlayerPrefs.GetString (Utils.PREFS_VALIDATE_AVATAR) != null) {
+			int difference = int.Parse(PlayerPrefs.GetString (Utils.PREFS_VALIDATE_AVATAR));
+			PlayerPrefs.DeleteKey(Utils.PREFS_VALIDATE_AVATAR);
+			Validate(difference);
+		}
 	}
 
-	/// <summary>
-	/// Supprime l'avatar instancié et en instancie un nouveau
-	/// </summary>
 	void ReloadAvatar ()
 	{
 		Quaternion srcRotation = _avatar.transform.localRotation;
 		Destroy (_avatar);
 		_avatar = (GameObject)Instantiate (_go_models [_avatarIndex]);
-		_avatar.name = Utils.MODELS_DIRECTORY [(int)_sliderGender.value] + _go_models [_avatarIndex].name;
+		_avatar.name = Utils.MODELS_DIRECTORY [_gender] + _go_models [_avatarIndex].name;
 		_avatar.transform.parent = posAvatar.transform;
 		applyOffsetY ();
 		_avatar.transform.localRotation = srcRotation;
 		initAvatar ();
-		_chosenAvatar [_user] = _avatar.name;
 	}
 
-	void ChangeGender ()
+	void Validate (int difference)
 	{
-		if ((int)_sliderGender.value != _gender) {	// Si le genre de l'avatar change
-			_gender = (int)_sliderGender.value;	// On sauvegarde le genre de l'avatar
-			_go_models = Resources.LoadAll<GameObject> (Utils.MODELS_DIRECTORY [_gender]);	// On charge les modèles d'avatar correspondant au sexe
-			ReloadAvatar ();								// On charge le nouvel avatar
+		GameObject src = _go_models[_avatarIndex];
+		GameObject dst = SelectOtherAvatar (src, difference);
+		if (src != null && dst != null) {
+			string models = src.name + ";" + dst.name;
+			PlayerPrefs.SetString (Utils.PREFS_MODEL, models);
+			//Destroy (_avatar);
+			/*GameObject.Find ("Canvas").SetActive (false);
+			initModel.SetActive (true);*/
+			//SocketClient.GetInstance().Write(models);
+			Application.LoadLevel(Utils.WAITING_SCENE);
 		}
 	}
 
-	void ChangeUser ()
-	{
-		if ((int)sliderUser.value != _user) {	// Si on change l'utilisateur
-			_user = (int)sliderUser.value;			// On sauvegarde l'utilisateur
-			int oldUser = (_user == 0) ? 1 : 0;
-			_chosenAvatar [oldUser] = _avatar.name;			// On sauvegarde le modele choisi par l'ancien utilisateur
-			if (!_chosenAvatar [_user].Contains (Utils.MODELS_DIRECTORY [(int)_sliderGender.value])) {
-				int gender = (int)_sliderGender.value == 0 ? 1 : 0;
-				_go_models = Resources.LoadAll<GameObject> (Utils.MODELS_DIRECTORY [gender]);	// On charge les modèles d'avatar correspondant au sexe
-				if (_chosenAvatar [_user] != null) {
-					for (int i=0; i< _go_models.Length; i++) {
-						if (_chosenAvatar [_user].Contains (_go_models [i].name)) {
-							PlayerPrefs.SetInt (Utils.PREFS_AVATAR_INDEX, i);	// On charge l'avatar choisi anciennement par l'utilisateur
-							break;
-						}
-					}
-				}
-				_sliderGender.value = gender;	// Change la position du slider qui gere le sexe et declenche le listener associé
-			}
-			else if (_chosenAvatar [_user] != null) {
-				for (int i=0; i< _go_models.Length; i++) {
-					if (_chosenAvatar [_user].Contains (_go_models [i].name)) {
-						PlayerPrefs.SetInt (Utils.PREFS_AVATAR_INDEX, i);	// On charge l'avatar choisi anciennement par l'utilisateur
-						break;
-					}
+	GameObject SelectOtherAvatar(GameObject avatar, int difference){
+		string[] weight = {"HC", "LHC", "MC", "HLC", "LC"};
+		string[] muscle = {"HM", "LHM", "MM", "HLM", "LM"};
+
+		string suffixeAvatar = "";
+
+		for (int i = 0; i < weight.Length; i++) {
+			for (int j = 0; j < muscle.Length; j++) {
+				if(avatar.name.Substring(avatar.name.LastIndexOf("ale") + 3).Equals(weight[i] + muscle[j])){
+					if(i + difference > weight.Length-1)
+						suffixeAvatar = weight[weight.Length-1];
+					else 
+						suffixeAvatar = weight[i + difference];
+					if(j + difference > muscle.Length-1)
+						suffixeAvatar += muscle[muscle.Length-1];
+					else 
+						suffixeAvatar += muscle[j + difference];
 				}
 			}
 		}
-	}
-	
-	void ChangeAvatar ()
-	{
-		if (_avatarIndex != PlayerPrefs.GetInt (Utils.PREFS_AVATAR_INDEX)) {		// Si on change d'avatar
-			_avatarIndex = PlayerPrefs.GetInt (Utils.PREFS_AVATAR_INDEX);			// On sauvegarde l'index de l'avatar
-			ReloadAvatar ();
+		foreach (GameObject character in _go_models) {
+			if(character.name.Substring(character.name.LastIndexOf("ale") + 3).Equals(suffixeAvatar))
+				return character;
 		}
-	}
-
-	void Validate ()
-	{
-		int avatarGender = 0;
-		for (int i=0; i<Utils.MODELS_DIRECTORY.Length; i++) {
-			if (_chosenAvatar [0].Contains (Utils.MODELS_DIRECTORY [i])) {
-				avatarGender = i;
-				break;
-			}
-		}
-		if (_chosenAvatar [1].Contains (Utils.MODELS_DIRECTORY [avatarGender])) {
-			GameObject src = (GameObject)Resources.Load (_chosenAvatar [0]);
-			GameObject dst = (GameObject)Resources.Load (_chosenAvatar [1]);
-			if (src != null && dst != null) {	// S'assure que les deux avatars sélectionnés sont bien de meme sexe
-				string models = _chosenAvatar [0] + ";" + _chosenAvatar [1];
-				PlayerPrefs.SetString (Utils.PREFS_MODEL, models);
-				//Destroy (_avatar);
-				/*GameObject.Find ("Canvas").SetActive (false);
-				initModel.SetActive (true);*/
-				Application.LoadLevel(Utils.WAITING_SCENE);
-			}
-		}
+		return null;
 	}
 
 	void applyOffsetY(){
@@ -179,33 +146,6 @@ public class SelectModel : MonoBehaviour
 		}
 		get {
 			return _posAvatar;
-		}
-	}
-	
-	public Slider sliderGender {
-		set {
-			_sliderGender = value;
-		}
-		get {
-			return _sliderGender;
-		}
-	}
-	
-	public Slider sliderUser {
-		set {
-			_sliderUser = value;
-		}
-		get {
-			return _sliderUser;
-		}
-	}
-
-	public Button validateButton {
-		set {
-			_validateButton = value;
-		}
-		get {
-			return _validateButton;
 		}
 	}
 }

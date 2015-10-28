@@ -5,7 +5,7 @@ public class LoadScript : MonoBehaviour {
 	[SerializeField]
 	private GameObject _initModel;
 	[SerializeField]
-	private GameObject _canvas;
+	private GameObject _selectModel;
 	[SerializeField]
 	private GameObject _baton;
 	[SerializeField]
@@ -18,7 +18,7 @@ public class LoadScript : MonoBehaviour {
 		camera.SetActive (false);
 		int launchModel = PlayerPrefs.GetInt (Utils.PREFS_LAUNCH_MODEL);
 		if (launchModel == 0) {
-			_canvas.SetActive (true);
+			_selectModel.SetActive (true);
 			//_baton.SetActive (true);
 		} else {
 			_initModel.SetActive (true);
@@ -50,13 +50,13 @@ public class LoadScript : MonoBehaviour {
 		}
 	}
 
-	public GameObject canvas {
+	public GameObject selectModel {
 		get {
-			return _canvas;
+			return _selectModel;
 		}
 		
 		set {
-			_canvas = value;
+			_selectModel = value;
 		}
 	}
 

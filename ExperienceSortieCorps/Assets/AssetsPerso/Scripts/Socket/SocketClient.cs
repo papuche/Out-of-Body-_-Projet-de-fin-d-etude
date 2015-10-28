@@ -29,14 +29,10 @@ namespace AssemblyCSharp
 		
 		private static void Receive()
 		{
-			IPHostEntry hostEntry = Dns.GetHostEntry(Utils.SERVER_IP);
-			Socket socket = null;
-			foreach (IPAddress address in hostEntry.AddressList)
-			{
-				IPEndPoint ipe = new IPEndPoint(address, Utils.SERVER_PORT);
-				socket = new Socket(ipe.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-				socket.Connect(ipe);
-			}
+			IPAddress ipAddress = IPAddress.Parse(Utils.SERVER_IP);
+			IPEndPoint remoteEP = new IPEndPoint(ipAddress, Utils.SERVER_PORT);
+			Socket socket = new Socket(remoteEP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+			socket.Connect(remoteEP);
 			
 			int bytes = 0;
 			Byte[] bytesReceived = new Byte[256];
