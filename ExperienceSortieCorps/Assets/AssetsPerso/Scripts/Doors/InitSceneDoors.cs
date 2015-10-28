@@ -120,19 +120,14 @@ public class InitSceneDoors : MonoBehaviour {
 			if(_next){
 				if(_scales.Count > 0){
 					int nbTry = 0;
-					float scale;
-					if(_ordreOuverture[_ordreOuverture.Count-1].key.Equals(Utils.WIDTH_KEY))
-					scale = _currentScale.x;
-					else 
-						scale = _currentScale.y;
-						do{
-							//Random.
-							_doorIndex = Random.Range(0,(_scales.Count));
-							nbTry++;
-							if(nbTry > 10){
-								break;
-							}
-						}while(scale == _scales[_doorIndex].scale || !_scales[_doorIndex].key.Equals(_ordreOuverture[_ordreOuverture.Count-1]));
+					do {
+						//Random.
+						_doorIndex = Random.Range(0,(_scales.Count));
+						nbTry++;
+						if(nbTry > 10){
+							break;
+						}
+					} while(_currentScale.x == _scales[_doorIndex].width && _currentScale.y == _scales[_doorIndex].height);
 
 					applyScale();
 					_next = false;
@@ -160,32 +155,18 @@ public class InitSceneDoors : MonoBehaviour {
 		int nbTries = int.Parse (resSocket.Split ('_') [0]);
 
 		int nbWidth = int.Parse(resSocket.Split ('_') [1]);
+		int nbHeight = int.Parse(resSocket.Split ('_') [3]);
 		if(nbWidth > 0){
 			int widthStep = int.Parse(resSocket.Split ('_') [2]);
-			/*for (int i = 0; i < nbWidth; i++){
-				measures.Add (new Measure((float)(widthStep * (i + 1) / 100.0 + 1.0), Utils.WIDTH_KEY));
-			}*/
-			for(int i = 0; i < nbWidth / 2; i++){
-				measures.Add (new Measure((float)(widthStep * (i + 1) / 100.0 + 1.0), Utils.WIDTH_KEY));
-				measures.Add (new Measure((float)(-widthStep * (i + 1) / 100.0 + 1.0), Utils.WIDTH_KEY));
-			}
-			if(nbWidth % 2 != 0) {
-					measures.Add (new Measure((float)(widthStep * ((nbWidth + 1) / 2) / 100.0 + 1.0), Utils.WIDTH_KEY));
-			}
-		}
-
-		int nbHeight = int.Parse(resSocket.Split ('_') [3]);
-		if(nbHeight > 0){
 			int heightStep = int.Parse(resSocket.Split ('_') [4]);
-			/*for (int i = 0; i < nbHeight; i++){
-				measures.Add (new Measure((float)(heightStep * (i + 1) / 100.0 + 1.0), Utils.HEIGHT_KEY));
-			}*/
-			for(int i = 0; i < nbHeight / 2; i++){
-				measures.Add (new Measure((float)(heightStep * (i + 1) / 100.0 + 1.0), Utils.HEIGHT_KEY));
-				measures.Add (new Measure((float)(-heightStep * (i + 1) / 100.0 + 1.0), Utils.HEIGHT_KEY));
-			}
-			if(nbHeight % 2 != 0) {
-				measures.Add (new Measure((float)(heightStep * ((nbHeight + 1) / 2) / 100.0 + 1.0), Utils.HEIGHT_KEY));
+			for (int i = 0; i < nbWidth; i++){
+				if(nbHeight > 0){
+					for (int j = 0; j < nbHeight; j++){
+						measures.Add (new Measure((float)(widthStep * (i + 1) / 100.0 + 1.0), (float)(heightStep * (j + 1) / 100.0 + 1.0)));
+					}
+				}
+				else 
+					measures.Add (new Measure((float)(widthStep * (i + 1) / 100.0 + 1.0), 1.0f));
 			}
 		}
 
@@ -200,14 +181,8 @@ public class InitSceneDoors : MonoBehaviour {
 	/// Met a jour l'échelle de la porte en fonction de la valeur de _widthIndex
 	/// </summary>
 	void applyScale(){
-		if(_scales[_doorIndex].key.Equals(Utils.WIDTH_KEY)){
-			_currentScale.x = _scales[_doorIndex].scale;
-			_currentScale.y = 1.0f;
-		}
-		else {
-			_currentScale.x = 1.0f;
-			_currentScale.y = _scales[_doorIndex].scale;
-		}
+		_currentScale.x = _scales[_doorIndex].width;
+		_currentScale.y = _scales[_doorIndex].height;
 		_ordreOuverture.Add (_scales[_doorIndex]);
 		_scales.RemoveAt(_doorIndex);
 		_piece.transform.localScale = _currentScale;
@@ -234,7 +209,7 @@ public class InitSceneDoors : MonoBehaviour {
 			modelDiffvalue = "0\t0\t0";
 		}
 		foreach (bool answer in _answers) {
-			_file.WriteLine (_sujet.ToString () + "\t" + _condition.ToString () + "\t" + essai.ToString () + "\t" + _doorType + "\t" + (_ordreOuverture [essai - 1].key.Equals(Utils.WIDTH_KEY) ? "Longueur" : "Largeur") + "\t" + _ordreOuverture [essai - 1].scale.ToString() + "\t" + (answer == true ? "1" : "0") + "\t" + modelSrcvalue + "\t" + modelDstvalue + "\t" + modelDiffvalue);
+			_file.WriteLine (_sujet.ToString () + "\t" + _condition.ToString () + "\t" + essai.ToString () + "\t" + _doorType + "\t" + _ordreOuverture [essai - 1].width.ToString() + "\t" + _ordreOuverture [essai - 1].height.ToString() + "\t" + (answer == true ? "1" : "0") + "\t" + modelSrcvalue + "\t" + modelDstvalue + "\t" + modelDiffvalue);
 			essai++;
 		}
 	}
@@ -244,8 +219,8 @@ public class InitSceneDoors : MonoBehaviour {
 		XmlNode nodeact = _xmlDoc.SelectSingleNode("Ouvertures");
 		foreach(XmlElement node in nodeact.SelectNodes("Ouverture")){
 			node.FirstChild.InnerText = _doorType;
-			node.SelectSingleNode("Modification").InnerText = _ordreOuverture[indexlist].key.Equals(Utils.WIDTH_KEY) ? "Longueur" : "Largeur";
-			node.SelectSingleNode("Taille").InnerText = _ordreOuverture[indexlist].scale.ToString();
+			node.SelectSingleNode("Longueur").InnerText = _ordreOuverture[indexlist].width.ToString();
+			node.SelectSingleNode("Hauteur").InnerText = _ordreOuverture[indexlist].height.ToString();
 			if(_answers[indexlist]){
 				node.LastChild.InnerText = "Oui";
 			}else{
@@ -269,8 +244,8 @@ public class InitSceneDoors : MonoBehaviour {
 		for(int i = 0; i < _scales.Count; i++){
 			XmlElement el = (XmlElement)root.AppendChild(_xmlDoc.CreateElement("Ouverture"));
 			el.AppendChild(_xmlDoc.CreateElement("Type"));
-			el.AppendChild(_xmlDoc.CreateElement("Modification"));
-			el.AppendChild(_xmlDoc.CreateElement("Taille"));
+			el.AppendChild(_xmlDoc.CreateElement("Longueur"));
+			el.AppendChild(_xmlDoc.CreateElement("Hauteur"));
 			el.AppendChild(_xmlDoc.CreateElement("Reponse"));
 		}
 	}
@@ -340,31 +315,31 @@ public class InitSceneDoors : MonoBehaviour {
 	}
 
 	private class Measure {
-		private float _scale;
-		private string _key;
+		private float _width;
+		private float _height;
 
-		public Measure (float scale, string key)
+		public Measure (float width, float height)
 		{
-			_scale = scale;
-			_key = key;
+			_width = width;
+			_height = height;
 		}
+		
 
-
-		public float scale {
+		public float width {
 			get {
-				return _scale;
+				return _width;
 			}
 			set {
-				_scale = value;
+				_width = value;
 			}
 		}
 
-		public string key {
+		public float height {
 			get {
-				return _key;
+				return _height;
 			}
 			set {
-				_key = value;
+				_height = value;
 			}
 		}
 	}

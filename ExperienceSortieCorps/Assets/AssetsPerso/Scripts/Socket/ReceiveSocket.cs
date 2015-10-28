@@ -18,7 +18,7 @@ public class ReceiveSocket : MonoBehaviour
 			string message = SocketClient.message;
 
 			if(message.Contains(Utils.SOCKET_VALIDATE)){
-				PlayerPrefs.SetString(Utils.PREFS_VALIDATE_AVATAR, message.Split('_')[1]);
+				PlayerPrefs.SetString(Utils.PREFS_VALIDATE_AVATAR, message.Split('/')[1]);
 				return;
 			}
 
