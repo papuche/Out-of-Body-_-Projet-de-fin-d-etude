@@ -2,24 +2,17 @@
 using System.Collections;
 
 public class AvatarGhost : MonoBehaviour {
-	bool active;
-	// Use this for initialization
-	void Start () {
-		active = false;
-	}
+	bool active = false;
 	
-	// Update is called once per frame
+
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.G)) {
-			if(active){
-				gameObject.transform.FindChild("shirtGhost").gameObject.SetActive(false);
-				gameObject.transform.FindChild("jeanGhost").gameObject.SetActive(false);
-				active = false;
-			}else{
-				gameObject.transform.FindChild("shirtGhost").gameObject.SetActive(true);
-				gameObject.transform.FindChild("jeanGhost").gameObject.SetActive(true);
-				active = true;
-			}
+		//if (Input.GetKeyDown (KeyCode.G)) {
+		if(PlayerPrefs.GetString(Utils.PREFS_GHOST) != null) {
+			PlayerPrefs.DeleteKey(Utils.PREFS_GHOST);
+			active = !active;
+			gameObject.transform.FindChild("shirtGhost").gameObject.SetActive(active);
+			gameObject.transform.FindChild("jeanGhost").gameObject.SetActive(active);
+
 		}
 	}
 }

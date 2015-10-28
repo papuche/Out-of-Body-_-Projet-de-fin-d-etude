@@ -17,9 +17,10 @@ public class ReceiveSocket : MonoBehaviour
 			
 			string message = SocketClient.message;
 
+			Debug.Log(message);
+
 			if(message.Contains(Utils.SOCKET_VALIDATE)){
 				PlayerPrefs.SetString(Utils.PREFS_VALIDATE_AVATAR, message.Split('/')[1]);
-				return;
 			}
 
 			// BUTTON AVATAR CHOICE
@@ -86,6 +87,11 @@ public class ReceiveSocket : MonoBehaviour
 				PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
 				Application.LoadLevel (Utils.OUTOFBODY_SCENE);
 			}
+
+			else if (message.Equals(Utils.SOCKET_GHOST)) {
+				PlayerPrefs.SetString(Utils.PREFS_GHOST, message);
+			}
+
 			SocketClient.message = null;
 		}
 	}
