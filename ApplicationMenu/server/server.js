@@ -19,7 +19,6 @@ app.get('/', function(req, res){
 app.use(express.static(__dirname+"/.."));
 app.listen(HTTP_PORT);
 
-console.log("test");
 
 function getAndSendWithoutParams(socket, url) {
     app.get('/' + url, function(req, res) {
@@ -56,6 +55,7 @@ var server = net.createServer(function (socket) {
     getAndSendWithoutParams(socket, 'baton');
     getAndSendWithoutParams(socket, 'morphing');
     getAndSendWithoutParams(socket, 'baton_morphing');
+	getAndSendWithoutParams(socket, 'ghost');
     getAndSendWithoutParams(socket, 'stop');
     getAndSendWithoutParams(socket, 'nothing');
     getAndSendWithoutParams(socket, 'M_avatar');

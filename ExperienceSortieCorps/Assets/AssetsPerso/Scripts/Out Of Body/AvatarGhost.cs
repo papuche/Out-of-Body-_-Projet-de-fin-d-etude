@@ -7,7 +7,7 @@ public class AvatarGhost : MonoBehaviour {
 
 	void Update () {
 		//if (Input.GetKeyDown (KeyCode.G)) {
-		if(PlayerPrefs.GetString(Utils.PREFS_GHOST) != null) {
+		if(!PlayerPrefs.GetString(Utils.PREFS_GHOST).Equals("")) {
 			PlayerPrefs.DeleteKey(Utils.PREFS_GHOST);
 			active = !active;
 			gameObject.transform.FindChild("shirtGhost").gameObject.SetActive(active);

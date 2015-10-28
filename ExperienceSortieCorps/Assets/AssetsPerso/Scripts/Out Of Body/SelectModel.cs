@@ -97,7 +97,7 @@ public class SelectModel : MonoBehaviour
 		GameObject src = _go_models[_avatarIndex];
 		GameObject dst = SelectOtherAvatar (src, difference);
 		if (src != null && dst != null) {
-			string models = src.name + ";" + dst.name;
+			string models = Utils.MODELS_DIRECTORY [_gender] + src.name + ";" + Utils.MODELS_DIRECTORY [_gender] + dst.name;
 			PlayerPrefs.SetString (Utils.PREFS_MODEL, models);
 			//Destroy (_avatar);
 			/*GameObject.Find ("Canvas").SetActive (false);
