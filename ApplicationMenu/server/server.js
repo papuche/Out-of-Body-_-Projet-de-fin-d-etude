@@ -19,6 +19,8 @@ app.get('/', function(req, res){
 app.use(express.static(__dirname+"/.."));
 app.listen(HTTP_PORT);
 
+console.log("test");
+
 function getAndSendWithoutParams(socket, url) {
     app.get('/' + url, function(req, res) {
         console.log(url);
@@ -31,6 +33,7 @@ function getAndSendWithParams(socket, url) {
     url += "/:values";
     app.get('/' + url, function(req, res) {
         var send = req.originalUrl.replace('/', '');
+        console.log(send);
         clients_unity[0].write(send);
         res.end();
     });
@@ -49,18 +52,19 @@ var server = net.createServer(function (socket) {
         console.error(err.stack);
     });
     
-    
-    
     getAndSendWithoutParams(socket, 'avatar');
     getAndSendWithoutParams(socket, 'baton');
     getAndSendWithoutParams(socket, 'morphing');
     getAndSendWithoutParams(socket, 'baton_morphing');
     getAndSendWithoutParams(socket, 'stop');
     getAndSendWithoutParams(socket, 'nothing');
+    getAndSendWithoutParams(socket, 'M_avatar');
+    getAndSendWithoutParams(socket, 'F_avatar');
     
     getAndSendWithParams(socket, 'e');
     getAndSendWithParams(socket, 'db');
     getAndSendWithParams(socket, 'dh');
+    getAndSendWithParams(socket, 'validerAvatar');
 });
 
 server.timeout = 0;
