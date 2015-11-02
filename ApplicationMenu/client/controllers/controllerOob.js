@@ -12,17 +12,20 @@ menu.controller('OobCtrl', function ($scope, $state, $http, $rootScope) {
 	$scope.next = function () {
 		if ($scope.baton && $scope.morphing){
 			$http.get('/baton_morphing');
+			$state.go('runOob', {params: 'morphing_baton'});
 		}	
 		else if ($scope.morphing){
 			$http.get('/morphing');
+			$state.go('runOob', {params: "morphing"});
 		}	
 		else if ($scope.baton){
 			$http.get('/baton');
+			$state.go('runOob', {params: "baton"});
 		}
 		else {
 			$http.get('/nothing');
+			$state.go('runOob', {params: ""});
 		}
-		$state.go('runOob');
 	};
 	$scope.exit = function () {
 		$http.get('/stop');
@@ -33,7 +36,7 @@ menu.controller('OobCtrl', function ($scope, $state, $http, $rootScope) {
 	menu.config(function($stateProvider){	
 		$stateProvider
 		.state('runOob',{
-			url: "/sortie_de_corps/application_en_cours",
+			url: "/sortie_de_corps/application_en_cours/:params",
 			templateUrl: "client/templates/runOob.html"
 	});
 });
