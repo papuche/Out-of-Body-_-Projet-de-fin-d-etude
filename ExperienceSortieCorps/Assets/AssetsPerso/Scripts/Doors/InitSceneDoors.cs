@@ -18,6 +18,9 @@ public class InitSceneDoors : MonoBehaviour {
 	[SerializeField]
 	private GameObject _text;
 
+	private float _initialScaleX;
+	private float _initialScaleY;
+
 	// Gestion de la largeur des portes
 	private GameObject _piece;
 	private int _nbDoors = 0;
@@ -72,6 +75,8 @@ public class InitSceneDoors : MonoBehaviour {
 			_doorType = "Porte pleine";
 		}
 		_currentScale = _piece.transform.localScale;
+		_initialScaleX = _currentScale.x;
+		_initialScaleY = _currentScale.y;
 
 		// Assignation de labels à la condition du test et au sujet du test
 		_sujet = PlayerPrefs.GetInt (Utils.PREFS_SUJET, 0);
@@ -162,11 +167,11 @@ public class InitSceneDoors : MonoBehaviour {
 			for (int i = 0; i < nbWidth; i++){
 				if(nbHeight > 0){
 					for (int j = 0; j < nbHeight; j++){
-						measures.Add (new Measure((float)(widthStep * (i + 1) / 100.0 + 1.0), (float)(heightStep * (j + 1) / 100.0 + 1.0)));
+						measures.Add (new Measure((float)(widthStep * (i + 1) / 100.0 + _initialScaleX), (float)(heightStep * (j + 1) / 100.0 + _initialScaleY)));
 					}
 				}
 				else 
-					measures.Add (new Measure((float)(widthStep * (i + 1) / 100.0 + 1.0), 1.0f));
+					measures.Add (new Measure((float)(widthStep * (i + 1) / 100.0 + _initialScaleX), _initialScaleY));
 			}
 		}
 

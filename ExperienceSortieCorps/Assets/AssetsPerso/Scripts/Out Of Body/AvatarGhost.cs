@@ -3,7 +3,10 @@ using System.Collections;
 
 public class AvatarGhost : MonoBehaviour {
 	bool active = false;
-	
+
+	void Start(){
+		PlayerPrefs.DeleteKey(Utils.PREFS_GHOST);
+	}
 
 	void Update () {
 		//if (Input.GetKeyDown (KeyCode.G)) {

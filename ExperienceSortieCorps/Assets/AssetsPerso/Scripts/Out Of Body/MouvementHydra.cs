@@ -7,7 +7,6 @@ public class MouvementHydra : MonoBehaviour {
 	public SixenseHands			Hand;
 	public Vector3				Sensitivity = new Vector3( 0.01f, 0.01f, 0.01f );
 	
-	protected bool				m_enabled = false;
 	protected Quaternion		m_initialRotation;
 	protected Vector3			m_initialPosition;
 	protected Vector3			m_baseControllerPosition;
@@ -43,11 +42,9 @@ public class MouvementHydra : MonoBehaviour {
 	
 	protected virtual void UpdateObject(  SixenseInput.Controller controller )
 	{
-		if ( Input.GetKeyDown (KeyCode.E) || Input.GetKeyDown (KeyCode.F) || Input.GetKeyDown (KeyCode.T)/*controller.GetButtonDown( SixenseButtons.START )*/ )
-		{
+
 			// enable position and orientation control
-			m_enabled = !m_enabled;
-			
+
 			// delta controller position is relative to this point
 			m_baseControllerPosition = new Vector3( controller.Position.x * Sensitivity.x,
 			                                       controller.Position.y * Sensitivity.y,
@@ -56,15 +53,14 @@ public class MouvementHydra : MonoBehaviour {
 			// this is the new start position
 			m_initialPosition = this.gameObject.transform.localPosition;
 			
-			gameObject.GetComponentInChildren<MeshRenderer>().enabled = m_enabled;
-		}
+			gameObject.GetComponentInChildren<MeshRenderer>().enabled = true;
+	
 		
 		/*if (m_enabled && controller.GetButtonDown (SixenseButtons.JOYSTICK)) 
 		{
 			this.gameObject.transform.Translate(0.0f,controller.JoystickY,controller.JoystickX);
 		}*/
-		if ( m_enabled )
-		{
+
 			///Déplacement du gameObject au joystick
 			m_initialPosition += new Vector3(0.0f,controller.JoystickY*0.01f,controller.JoystickX*0.01f);
 			Debug.Log(new Vector3(0.0f,controller.JoystickY,controller.JoystickX));
@@ -110,7 +106,6 @@ public class MouvementHydra : MonoBehaviour {
 			if (ActivateRotations){
 				UpdateRotation( controller );
 			}
-		}
 	}
 	 
 	protected void UpdatePosition( SixenseInput.Controller controller )
