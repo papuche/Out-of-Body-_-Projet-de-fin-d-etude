@@ -2,13 +2,11 @@ var modules = ['ui.router'];
 var menu = angular.module('menu', modules);
 
 
-menu.config(function($stateProvider, $urlRouterProvider, $locationProvider){
+menu.config(function($stateProvider, $urlRouterProvider){
 	$urlRouterProvider.otherwise("");
-	//use the HTML5 History API
-    $locationProvider.html5Mode(true);
 	$stateProvider
 	.state('mainMenu',{
-		url: "/",
+		url: "",
 		templateUrl: "client/templates/mainMenu.html"
 	})
 	.state('avatar',{
