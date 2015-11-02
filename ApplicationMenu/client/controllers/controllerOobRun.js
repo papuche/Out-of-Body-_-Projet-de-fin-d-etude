@@ -3,9 +3,10 @@ menu.controller('OobRunCtrl', function ($scope, $state, $http, $rootScope, $docu
 
 	// enlever le retour de backspace key
 	$document.on('keydown', function(e){
-          if(e.which === 8 && e.target.nodeName !== "INPUT" || e.target.nodeName !== "SELECT"){ // you can add others here.
-              e.preventDefault();
-          }
+		console.log(e);
+    	if(e.which === 8){
+        	e.preventDefault();
+      	}
  	 });	
 	$rootScope.chemin = 'Accueil > Sortie de corps > Application en cours';
 	$scope.ghost = function () {
