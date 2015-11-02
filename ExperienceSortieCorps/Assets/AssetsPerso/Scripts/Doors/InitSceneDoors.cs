@@ -161,7 +161,7 @@ public class InitSceneDoors : MonoBehaviour {
 
 		int nbWidth = int.Parse(resSocket.Split ('_') [1]);
 		int nbHeight = int.Parse(resSocket.Split ('_') [3]);
-		if(nbWidth > 0){
+		/*if(nbWidth > 0){
 			int widthStep = int.Parse(resSocket.Split ('_') [2]);
 			int heightStep = int.Parse(resSocket.Split ('_') [4]);
 			for (int i = 0; i < nbWidth; i++){
@@ -172,6 +172,44 @@ public class InitSceneDoors : MonoBehaviour {
 				}
 				else 
 					measures.Add (new Measure((float)(widthStep * (i + 1) / 100.0 + _initialScaleX), _initialScaleY));
+			}
+		}*/
+
+		if (nbWidth > 0) {
+			int widthStep = int.Parse (resSocket.Split ('_') [2]);
+			int heightStep = int.Parse (resSocket.Split ('_') [4]);
+			if (nbWidth % 2 != 0) {	// Si nbWidth est un nombre impair
+				for (int i = -nbWidth / 2; i < (nbWidth + 1) / 2; i++) {
+					if (nbHeight > 0) {
+						if (nbHeight % 2 != 0) {	// Si nbHeight est un nombre impair
+							for (int j = -nbHeight / 2; j < (nbHeight + 1) / 2; j++) {
+								measures.Add (new Measure ((float)(widthStep * i / 100.0 + 1.0) * _initialScaleX, (float)(heightStep * j / 100.0 + 1.0) * _initialScaleY));
+							}
+						} else {	// Si nbHeight est un nombre pair
+							for (int j = -nbHeight / 2; j < nbHeight / 2; j++) {
+								measures.Add (new Measure ((float)(widthStep * i / 100.0 + 1.0) * _initialScaleX, (float)(heightStep * j / 100.0 + 1.0) * _initialScaleY + heightStep * _initialScaleY / (2 * 100)));
+							}
+						}
+					} else {
+						measures.Add (new Measure ((float)(widthStep * i / 100.0 + 1.0) * _initialScaleX, _initialScaleY));
+					}
+				}
+			} else {	// Si nbWidth est un nombre pair
+				for (int i = -nbWidth / 2; i < nbWidth / 2; i++) {
+					if (nbHeight > 0) {
+						if (nbHeight % 2 != 0) {	// Si nbHeight est un nombre impair
+							for (int j = -nbHeight / 2; j < (nbHeight + 1) / 2; j++) {
+								measures.Add (new Measure ((float)(widthStep * i / 100.0 + 1.0) * _initialScaleX + widthStep * _initialScaleX / (2 * 100), (float)(heightStep * j / 100.0 + 1.0) * _initialScaleY));
+							}
+						} else {	// Si nbHeight est un nombre pair
+							for (int j = -nbHeight / 2; j < nbHeight / 2; j++) {
+								measures.Add (new Measure ((float)(widthStep * i / 100.0 + 1.0) * _initialScaleX + widthStep * _initialScaleX / (2 * 100), (float)(heightStep * j / 100.0 + 1.0) * _initialScaleY + heightStep * _initialScaleY / (2 * 100)));
+							}
+						}
+					} else {
+						measures.Add (new Measure ((float)(widthStep * i / 100.0 + 1.0) * _initialScaleX + widthStep * _initialScaleX / (2 * 100), _initialScaleY));
+					}
+				}
 			}
 		}
 
