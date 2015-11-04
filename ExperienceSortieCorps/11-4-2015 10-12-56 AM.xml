@@ -1,0 +1,26 @@
+<Ouvertures>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Longueur>0.5025</Longueur>
+    <Hauteur>0.495</Hauteur>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Longueur>0.4975</Longueur>
+    <Hauteur>0.505</Hauteur>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Longueur>0.4975</Longueur>
+    <Hauteur>0.495</Hauteur>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+  <Ouverture>
+    <Type>Porte pleine</Type>
+    <Longueur>0.5025</Longueur>
+    <Hauteur>0.505</Hauteur>
+    <Reponse>Oui</Reponse>
+  </Ouverture>
+</Ouvertures>
