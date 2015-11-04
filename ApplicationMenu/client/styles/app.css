@@ -2,3 +2,18 @@ h1{
 	color : blue;
 	font-size: 50px;
 }
+input.bigButton{
+	display:inline-block;
+	height: 100px;
+    float:none;
+    text-align:center;
+    font-size: 150%;
+}
+.btn_row{
+	margin-top: 50px;
+	text-align: center;
+}
+.exit_row{
+    float:right;
+	margin-top: 60px;
+}
