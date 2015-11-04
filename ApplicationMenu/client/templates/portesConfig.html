@@ -8,7 +8,7 @@
 			<span ng-show="formulaire.nbTailleHauteur.$error.pattern">Not a valid number</span>
 			<br>
 			<div ng-show="nbTailleHauteur>1">
-				<input type="number" ng-pattern="/^[0-9]*$/" min="1" step="1" name="diffTailleHauteur" ng-model="diffTailleHauteur"/>%
+				<input type="number" ng-pattern="/^[0-9]*$/" min="0" step="1" name="diffTailleHauteur" ng-model="diffTailleHauteur"/>%
 				<span>différence en hauteur entre les tailles</span>
 			<span ng-show="formulaire.diffTailleHauteur.$error.pattern">Not a valid number</span>
 			</div>	

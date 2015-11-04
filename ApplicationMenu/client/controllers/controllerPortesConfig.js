@@ -10,17 +10,27 @@ menu.config(function($stateProvider, $urlRouterProvider){
 menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope, $localStorage) {
 	$rootScope.chemin = 'Accueil > Exercice des portes > Portes ' + $state.current.name;
 
-	$scope.nbTailleLargeur =Number(window.localStorage["local_nbTailleLargeur"]) | 1;
-	$scope.diffTailleLargeur =Number(window.localStorage["local_diffTailleLargeur"]) | 0;
-	$scope.nbTailleHauteur =Number(window.localStorage["local_nbTailleHauteur"]) | 1;
-	$scope.diffTailleHauteur =Number(window.localStorage["local_diffTailleHauteur"]) | 0;
-	$scope.nbRepet =Number(window.localStorage["local_nbRepet"]) | 0;
+	initDemiePorte = function() {
+		$scope.nbTailleLargeur =Number(window.localStorage["local_nbTailleLargeur"]) | 1;
+		$scope.diffTailleLargeur =Number(window.localStorage["local_diffTailleLargeur"]) | 0;
+		$scope.nbTailleHauteur = Number(1) ;
+		$scope.diffTailleHauteur = Number(0);
+		$scope.nbRepet =Number(window.localStorage["local_nbRepet"]) | 0;
+	};
+
+	initHauteur = function() {
+		$scope.nbTailleHauteur =Number(window.localStorage["local_nbTailleHauteur"]) | 1;
+		$scope.diffTailleHauteur =Number(window.localStorage["local_diffTailleHauteur"]) | 0;
+	};
 
 	if($state.current.name == "entiere"){
 		$scope.hauteur = true;
+		initDemiePorte();
+		initHauteur();
 	}
 	else{
 		$scope.hauteur = false;
+		initDemiePorte();
 	}
 
 	$scope.$watch('nbRepet + nbTailleLargeur + nbTailleHauteur + diffTailleLargeur + diffTailleHauteur', function() {
@@ -49,6 +59,7 @@ menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope, $
 				testerH();
 			}
 			else{
+				console.log("envoyer les donnees !");
 				sendMessage();
 			}
 		}
@@ -87,7 +98,9 @@ menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope, $
 		window.localStorage["local_nbRepet"] = $scope.nbRepet;
 		window.localStorage["local_nbTailleLargeur"] = $scope.nbTailleLargeur;
 		window.localStorage["local_diffTailleLargeur"] = $scope.diffTailleLargeur;
-		window.localStorage["local_nbTailleHauteur"] = $scope.nbTailleHauteur;
-		window.localStorage["local_diffTailleHauteur"] = $scope.diffTailleHauteur;
+		if($scope.hauteur){
+			window.localStorage["local_nbTailleHauteur"] = $scope.nbTailleHauteur;
+			window.localStorage["local_diffTailleHauteur"] = $scope.diffTailleHauteur;
+		}
 	};
 });
