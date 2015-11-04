@@ -22,6 +22,8 @@ public class InitSceneDoors : MonoBehaviour {
 	private float _initialScaleX;
 	private float _initialScaleY;
 
+	private System.DateTime _time;
+
 	// Gestion de la largeur des portes
 	private GameObject _piece;
 	private int _nbDoors = 0;
@@ -123,6 +125,7 @@ public class InitSceneDoors : MonoBehaviour {
 				Reponse(false);
 				_next = true;
 			}
+			_ordreOuverture[_ordreOuverture.Count-1].time = (System.DateTime.Now - _time).TotalMilliseconds;
 			if(_next){
 				if(_scales.Count > 0){
 					int nbTry = 0;
@@ -144,7 +147,7 @@ public class InitSceneDoors : MonoBehaviour {
 					modifyXml ();
 					modifyTxT();
 					_file.Close ();
-					//SocketClient.GetInstance().Write("door_finish");	// Envoi de la trame de fin d'exercice des portes au client
+					SocketClient.GetInstance().Write("door_finish");	// Envoi de la trame de fin d'exercice des portes au client
 					Application.LoadLevel(Utils.WAITING_SCENE);
 				}
 			}
@@ -163,7 +166,7 @@ public class InitSceneDoors : MonoBehaviour {
 
 		int nbWidth = int.Parse(resSocket.Split ('_') [1]);
 		int nbHeight;
-		if (!PlayerPrefs.GetString (Utils.PREFS_DOORS).Equals (Utils.FULL_DOORS))
+		if(!_doorType.Equals("Porte pleine"))
 			nbHeight = 0;
 		else
 			nbHeight = int.Parse(resSocket.Split ('_') [3]);
@@ -235,6 +238,7 @@ public class InitSceneDoors : MonoBehaviour {
 		_ordreOuverture.Add (_scales[_doorIndex]);
 		_scales.RemoveAt(_doorIndex);
 		_piece.transform.localScale = _currentScale;
+		_time = System.DateTime.Now;
 	}
 
 	void loadXMLFromAssest(){
@@ -267,14 +271,15 @@ public class InitSceneDoors : MonoBehaviour {
 		int indexlist = 0;
 		XmlNode nodeact = _xmlDoc.SelectSingleNode("Ouvertures");
 		foreach(XmlElement node in nodeact.SelectNodes("Ouverture")){
-			node.FirstChild.InnerText = _doorType;
 			node.SelectSingleNode("Longueur").InnerText = _ordreOuverture[indexlist].width.ToString();
-			node.SelectSingleNode("Hauteur").InnerText = _ordreOuverture[indexlist].height.ToString();
+			if(_doorType.Equals("Porte pleine"))
+				node.SelectSingleNode("Hauteur").InnerText = _ordreOuverture[indexlist].height.ToString();
 			if(_answers[indexlist]){
-				node.LastChild.InnerText = "Oui";
+				node.SelectSingleNode("Reponse").InnerText = "Oui";
 			}else{
-				node.LastChild.InnerText = "Non";
+				node.SelectSingleNode("Reponse").InnerText = "Non";
 			}
+			node.SelectSingleNode("Temps").InnerText = _ordreOuverture[indexlist].time.ToString();
 			indexlist++;
 		}
 
@@ -289,13 +294,14 @@ public class InitSceneDoors : MonoBehaviour {
 	void createXML(){
 		_xmlDoc = new XmlDocument ();
 		XmlElement root = (XmlElement)_xmlDoc.AppendChild(_xmlDoc.CreateElement("Ouvertures"));
-
+		root.SetAttribute ("Type", _doorType);
 		for(int i = 0; i < _scales.Count; i++){
 			XmlElement el = (XmlElement)root.AppendChild(_xmlDoc.CreateElement("Ouverture"));
-			el.AppendChild(_xmlDoc.CreateElement("Type"));
 			el.AppendChild(_xmlDoc.CreateElement("Longueur"));
-			el.AppendChild(_xmlDoc.CreateElement("Hauteur"));
+			if(_doorType.Equals("Porte pleine"))
+				el.AppendChild(_xmlDoc.CreateElement("Hauteur"));
 			el.AppendChild(_xmlDoc.CreateElement("Reponse"));
+			el.AppendChild(_xmlDoc.CreateElement("Temps"));
 		}
 	}
 
@@ -366,11 +372,13 @@ public class InitSceneDoors : MonoBehaviour {
 	private class Measure {
 		private float _width;
 		private float _height;
+		private double _time;
 
 		public Measure (float width, float height)
 		{
 			_width = width;
 			_height = height;
+			_time = 0;
 		}
 		
 
@@ -389,6 +397,15 @@ public class InitSceneDoors : MonoBehaviour {
 			}
 			set {
 				_height = value;
+			}
+		}
+
+		public double time {
+			get {
+				return _time;
+			}
+			set {
+				_time = ((int)value)/1000.0;
 			}
 		}
 	}

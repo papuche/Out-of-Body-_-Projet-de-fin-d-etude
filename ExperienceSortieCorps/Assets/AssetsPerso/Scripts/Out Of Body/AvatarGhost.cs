@@ -2,9 +2,7 @@
 using System.Collections;
 
 public class AvatarGhost : MonoBehaviour {
-	bool active = false;
-
-	void Start(){
+	/*void Start(){
 		PlayerPrefs.DeleteKey(Utils.PREFS_GHOST);
 	}
 
@@ -16,6 +14,15 @@ public class AvatarGhost : MonoBehaviour {
 			gameObject.transform.FindChild("shirtGhost").gameObject.SetActive(active);
 			gameObject.transform.FindChild("jeanGhost").gameObject.SetActive(active);
 
+		}
+	}*/
+	
+	void Start(){
+		if(PlayerPrefs.GetString(Utils.PREFS_GHOST).Equals(Utils.SOCKET_GHOST)) {
+			PlayerPrefs.DeleteKey(Utils.PREFS_GHOST);
+			gameObject.transform.FindChild("shirtGhost").gameObject.SetActive(true);
+			gameObject.transform.FindChild("jeanGhost").gameObject.SetActive(true);
+			
 		}
 	}
 }
