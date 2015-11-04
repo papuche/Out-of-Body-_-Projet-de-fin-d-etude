@@ -12,6 +12,7 @@ namespace AssemblyCSharp
 	{
 		private static SocketClient _instance;
 		private static Thread _thread;
+		private static Socket _socket;
 
 		public static string message;
 
@@ -23,26 +24,24 @@ namespace AssemblyCSharp
 		
 		private SocketClient()
 		{
+			IPAddress ipAddress = IPAddress.Parse(Utils.SERVER_IP);
+			IPEndPoint remoteEP = new IPEndPoint(ipAddress, Utils.SERVER_PORT);
+			_socket = new Socket(remoteEP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+			_socket.Connect(remoteEP);
+
+			if (_socket == null) throw new Exception("Impossible de connecter la socket.");
 			_thread = new Thread(new ThreadStart(Receive));
 			_thread.Start();
 		}
 		
 		private static void Receive()
 		{
-			IPAddress ipAddress = IPAddress.Parse(Utils.SERVER_IP);
-			IPEndPoint remoteEP = new IPEndPoint(ipAddress, Utils.SERVER_PORT);
-			Socket socket = new Socket(remoteEP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-			socket.Connect(remoteEP);
-			
 			int bytes = 0;
 			Byte[] bytesReceived = new Byte[256];
-			
-			if (socket == null) throw new Exception("Impossible de connecter la socket.");
-			
 			do
 			{
 				try {
-					bytes = socket.Receive(bytesReceived, bytesReceived.Length, 0);
+					bytes = _socket.Receive(bytesReceived, bytesReceived.Length, 0);
 					message = Encoding.ASCII.GetString(bytesReceived, 0, bytes);
 				} catch(SocketException) {
 					_thread.Interrupt();
@@ -50,6 +49,10 @@ namespace AssemblyCSharp
 				}
 			}
 			while (bytes > 0);
+		}
+
+		public void Write(String message) {
+			_socket.Send (System.Text.Encoding.ASCII.GetBytes(message));
 		}
 	}
 }

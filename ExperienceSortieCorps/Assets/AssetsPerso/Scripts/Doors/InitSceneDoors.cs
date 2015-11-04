@@ -6,6 +6,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.IO;
 using System.Globalization;
+using AssemblyCSharp;
 
 public class InitSceneDoors : MonoBehaviour {
 
@@ -143,6 +144,7 @@ public class InitSceneDoors : MonoBehaviour {
 					modifyXml ();
 					modifyTxT();
 					_file.Close ();
+					SocketClient.GetInstance().Write("door_finish");	// Envoi de la trame de fin d'exercice des portes au client
 					Application.LoadLevel(Utils.WAITING_SCENE);
 				}
 			}

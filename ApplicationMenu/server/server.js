@@ -65,6 +65,11 @@ var server = net.createServer(function (socket) {
     getAndSendWithParams(socket, 'db');
     getAndSendWithParams(socket, 'dh');
     getAndSendWithParams(socket, 'validerAvatar');
+	
+	socket.on('data', function(data) {
+	console.log(data.toString());
+	
+	});
 });
 
 server.timeout = 0;
