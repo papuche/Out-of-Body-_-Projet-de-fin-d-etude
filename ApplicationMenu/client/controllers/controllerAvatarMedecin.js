@@ -3,6 +3,7 @@ menu.controller('AvatarMedecinCtrl', function ($scope, $state, $rootScope, $http
 
 	$scope.previous = function () {
 		$state.go('avatar');
+		$http.get("stop");
 	}
 
 	$scope.next = function () {
