@@ -29,7 +29,9 @@ var server = net.createServer(function (socket) {
     });
 
     socket.on('data', function(data) {
-      console.log(data);
+      if (data.toString() === "door_finish") {
+        dors_finish = true;
+      }
     });
 
     process.on('uncaughtException', function (err) {});
@@ -44,22 +46,24 @@ var server = net.createServer(function (socket) {
     getAndSendWithoutParams(socket, 'nothing');
     getAndSendWithoutParams(socket, 'M_avatar');
     getAndSendWithoutParams(socket, 'F_avatar');
-    getAndSendDorsFinish(socket);
+
+    requestDorsFinish(socket);
 
     getAndSendWithParams(socket, 'e');
     getAndSendWithParams(socket, 'db');
     getAndSendWithParams(socket, 'dh');
     getAndSendWithParams(socket, 'validerAvatar');
-	
-	socket.on('data', function(data) {
-	console.log(data.toString());
-	
-	});
 });
 server.listen(UNITY_PORT);
 
-function getAndSendDorsFinish(socket) {
-    getAndSendWithoutParams(socket, 'porte')
+function requestDorsFinish(socket) {
+    app.get('/porte', function(req, res) {
+        if (dors_finish == true) {
+            dors_finish = false
+            res.send("Fin de porte.");
+            res.end();
+        }
+    });
 };
 
 function getAndSendWithoutParams(socket, url) {
