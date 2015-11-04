@@ -144,7 +144,7 @@ public class InitSceneDoors : MonoBehaviour {
 					modifyXml ();
 					modifyTxT();
 					_file.Close ();
-					SocketClient.GetInstance().Write("door_finish");	// Envoi de la trame de fin d'exercice des portes au client
+					//SocketClient.GetInstance().Write("door_finish");	// Envoi de la trame de fin d'exercice des portes au client
 					Application.LoadLevel(Utils.WAITING_SCENE);
 				}
 			}
@@ -162,7 +162,11 @@ public class InitSceneDoors : MonoBehaviour {
 		int nbTries = int.Parse (resSocket.Split ('_') [0]);
 
 		int nbWidth = int.Parse(resSocket.Split ('_') [1]);
-		int nbHeight = int.Parse(resSocket.Split ('_') [3]);
+		int nbHeight;
+		if (!PlayerPrefs.GetString (Utils.PREFS_DOORS).Equals (Utils.FULL_DOORS))
+			nbHeight = 0;
+		else
+			nbHeight = int.Parse(resSocket.Split ('_') [3]);
 		/*if(nbWidth > 0){
 			int widthStep = int.Parse(resSocket.Split ('_') [2]);
 			int heightStep = int.Parse(resSocket.Split ('_') [4]);

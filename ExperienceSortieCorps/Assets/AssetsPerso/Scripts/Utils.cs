@@ -42,6 +42,7 @@
 	public readonly static string SOCKET_GHOST = "ghost";
 	public readonly static string SOCKET_BATON_MORPHING = "baton_morphing";
 	public readonly static string SOCKET_STOP = "stop";
+	public readonly static string SOCKET_EXIT = "exit";
 	
 	public readonly static string SOCKET_PORTE_ENTIERE = "e/";
 	public readonly static string SOCKET_PORTE_DEMIHAUT = "dh/";

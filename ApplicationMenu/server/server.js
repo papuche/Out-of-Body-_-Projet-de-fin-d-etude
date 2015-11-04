@@ -9,7 +9,7 @@ const UNITY_PORT = '8000';
 var app = express();
 var clients_unity = [];
 
-var dors_finish = false;
+var door_finish = false;
 
 app.get('/', function(req, res){
     if(req=="portes")
@@ -30,7 +30,7 @@ var server = net.createServer(function (socket) {
 
     socket.on('data', function(data) {
       if (data.toString() === "door_finish") {
-        dors_finish = true;
+        door_finish = true;
       }
     });
 
@@ -47,7 +47,7 @@ var server = net.createServer(function (socket) {
     getAndSendWithoutParams(socket, 'M_avatar');
     getAndSendWithoutParams(socket, 'F_avatar');
 
-    requestDorsFinish(socket);
+    requestDoorFinish(socket);
 
     getAndSendWithParams(socket, 'e');
     getAndSendWithParams(socket, 'db');
@@ -56,10 +56,10 @@ var server = net.createServer(function (socket) {
 });
 server.listen(UNITY_PORT);
 
-function requestDorsFinish(socket) {
+function requestDoorFinish(socket) {
     app.get('/porte', function(req, res) {
-        if (dors_finish == true) {
-            dors_finish = false
+        if (door_finish == true) {
+            door_finish = false
             res.send("Fin de porte.");
             res.end();
         }

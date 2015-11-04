@@ -5,19 +5,28 @@ using AssemblyCSharp;
 public class ReceiveSocket : MonoBehaviour
 {
 
+	private SocketClient _socketClient;
+
 	// Use this for initialization
 	void Start ()
 	{
-		SocketClient.GetInstance();
+		_socketClient = SocketClient.GetInstance();
 	}
 	
 	void Update() {
-		
-		if (SocketClient.message != null) {
-			
-			string message = SocketClient.message;
 
-			if(message.Contains(Utils.SOCKET_VALIDATE)){
+		if(Input.GetKeyDown (KeyCode.Q))
+			Application.Quit();
+
+		if (_socketClient.message != null) {
+			
+			string message = _socketClient.message;
+
+			if (message.Equals(Utils.SOCKET_EXIT)) {
+				Application.Quit();
+			}
+			
+			else if(message.Contains(Utils.SOCKET_VALIDATE)){
 				PlayerPrefs.SetString(Utils.PREFS_VALIDATE_AVATAR, message.Split('/')[1]);
 			}
 
@@ -90,7 +99,7 @@ public class ReceiveSocket : MonoBehaviour
 				PlayerPrefs.SetString(Utils.PREFS_GHOST, message);
 			}
 
-			SocketClient.message = null;
+			_socketClient.message = null;
 		}
 	}
 
@@ -98,6 +107,8 @@ public class ReceiveSocket : MonoBehaviour
 	/// Méthode appélée lorsque l'application se ferme. Permet de réinitialiser le choix de l'avatar effectué lors de la session
 	/// </summary>
 	void OnApplicationQuit(){
+		_socketClient.stopThread = false;
+		_socketClient.socket.Close ();
 		PlayerPrefs.DeleteKey (Utils.PREFS_MODEL);
 		//SocketClient.GetInstance().StopThread ();
 		//SocketClient.GetInstance ().DeleteInstance ();
