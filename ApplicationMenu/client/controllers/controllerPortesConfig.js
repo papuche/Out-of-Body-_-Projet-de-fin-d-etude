@@ -7,8 +7,14 @@ menu.config(function($stateProvider, $urlRouterProvider){
 	});
 });
 
-menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope) {
+menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope, $localStorage) {
 	$rootScope.chemin = 'Accueil > Exercice des portes > Portes ' + $state.current.name;
+
+	$scope.nbTailleLargeur =Number(window.localStorage["local_nbTailleLargeur"]) | 1;
+	$scope.diffTailleLargeur =Number(window.localStorage["local_diffTailleLargeur"]) | 0;
+	$scope.nbTailleHauteur =Number(window.localStorage["local_nbTailleHauteur"]) | 1;
+	$scope.diffTailleHauteur =Number(window.localStorage["local_diffTailleHauteur"]) | 0;
+	$scope.nbRepet =Number(window.localStorage["local_nbRepet"]) | 0;
 
 	if($state.current.name == "entiere"){
 		$scope.hauteur = true;
@@ -17,8 +23,9 @@ menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope) {
 		$scope.hauteur = false;
 	}
 
-	$scope.$watch('nbRepet + nbTailleLargeur + nbTailleHauteur', function() {
+	$scope.$watch('nbRepet + nbTailleLargeur + nbTailleHauteur + diffTailleLargeur + diffTailleHauteur', function() {
 		$scope.nbEssai = ($scope.nbTailleLargeur * $scope.nbTailleHauteur) * $scope.nbRepet;
+		saveAllValues();
 	});
 
 	$scope.previous = function () {
@@ -74,5 +81,13 @@ menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope) {
 		var message = type + '/' + $scope.nbRepet + '_' + $scope.nbTailleLargeur + '_' + $scope.diffTailleLargeur + '_' + $scope.nbTailleHauteur + '_' + $scope.diffTailleHauteur;
 		$http.get(message);
 		$state.go('runPortes');
+	};
+
+	saveAllValues=function() {
+		window.localStorage["local_nbRepet"] = $scope.nbRepet;
+		window.localStorage["local_nbTailleLargeur"] = $scope.nbTailleLargeur;
+		window.localStorage["local_diffTailleLargeur"] = $scope.diffTailleLargeur;
+		window.localStorage["local_nbTailleHauteur"] = $scope.nbTailleHauteur;
+		window.localStorage["local_diffTailleHauteur"] = $scope.diffTailleHauteur;
 	};
 });

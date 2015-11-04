@@ -1,4 +1,4 @@
-var modules = ['ui.router'];
+var modules = ['ui.router', 'ngStorage'];
 var menu = angular.module('menu', modules);
 
 
