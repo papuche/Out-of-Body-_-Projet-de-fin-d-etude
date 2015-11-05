@@ -1,6 +1,8 @@
 <div ng-controller="OobCtrl">
 	<input type="button" ng-click="previous()" value="Retour"></input>
 	<input type="checkbox" ng-model="morphing"> Morphing</input>
+	<input type="checkbox" ng-model="ghost" ng-show="morphing"></input>
+	<span ng-show="morphing">Avec le 'ghost'</span>  
 	<input type="checkbox" ng-model="baton"> Baton</input>
 	<input type="button" ng-click="next()" value="Commencer"></input> 
 </div>
