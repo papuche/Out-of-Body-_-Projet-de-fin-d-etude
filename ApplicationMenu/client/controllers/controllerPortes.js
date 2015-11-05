@@ -1,5 +1,4 @@
 menu.config(function($stateProvider, $urlRouterProvider){
-	$urlRouterProvider.otherwise("");
 	$stateProvider
 	.state('entiere',{
 		url: "/portes/entiere",
@@ -16,7 +15,11 @@ menu.config(function($stateProvider, $urlRouterProvider){
 });
 
 menu.controller('PortesCtrl', function ($scope,$state, $rootScope) {
-	$rootScope.chemin = 'Accueil > Exercice des portes';
+	$rootScope.chemin = 'Accueil';
+	$rootScope.chemin1 = 'Exercice des portes';
+	$rootScope.stateChemin1 = $state.current.name;
+	$rootScope.chemin2 = '';
+
 	$scope.suivant_click = function(type){
 			$state.go(type);
 	}

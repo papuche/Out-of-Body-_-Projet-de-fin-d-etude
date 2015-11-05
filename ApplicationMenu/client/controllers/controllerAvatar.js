@@ -10,7 +10,10 @@ menu.config(function($stateProvider, $urlRouterProvider){
 
 
 menu.controller('AvatarCtrl', function ($scope, $state, $rootScope, $http) {
-	$rootScope.chemin = 'Accueil > Avatar';
+	$rootScope.chemin = 'Accueil';
+	$rootScope.chemin1 = 'Avatar';
+	$rootScope.stateChemin1 = $state.current.name;
+	$rootScope.chemin3 = '';
 	var sexe = "F";
 
 	$scope.previous = function () {

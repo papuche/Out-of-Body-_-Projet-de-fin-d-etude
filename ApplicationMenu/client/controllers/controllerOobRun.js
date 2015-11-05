@@ -1,4 +1,9 @@
 menu.controller('OobRunCtrl', function ($scope, $state, $http, $rootScope, $document) {
+	$rootScope.chemin = 'Accueil';
+	$rootScope.chemin1 = 'Sortie de corps';
+	$rootScope.stateChemin1 = 'oob';
+	$rootScope.chemin2 = 'Application en cours';
+
 	$scope.morphing = $state.params.params.split('_')[0];
 
 	// enlever le retour de backspace key
@@ -8,7 +13,6 @@ menu.controller('OobRunCtrl', function ($scope, $state, $http, $rootScope, $docu
         	e.preventDefault();
       	}
  	 });	
-	$rootScope.chemin = 'Accueil > Sortie de corps > Application en cours';
 	$scope.ghost = function () {
 		$http.get('/ghost');
 	}

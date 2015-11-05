@@ -1,5 +1,4 @@
 menu.config(function($stateProvider, $urlRouterProvider){
-	$urlRouterProvider.otherwise("");
 	$stateProvider
 	.state('runPortes',{
 		url: "/portes/en_cours",//+$state.current.name+"/en_cours",
@@ -8,7 +7,16 @@ menu.config(function($stateProvider, $urlRouterProvider){
 });
 
 menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope, $localStorage) {
-	$rootScope.chemin = 'Accueil > Exercice des portes > Portes ' + $state.current.name;
+	$rootScope.chemin = 'Accueil';
+	$rootScope.chemin1 = 'Exercice des portes';
+	$rootScope.stateChemin1 = 'portes';
+	if($state.current.name == 'entiere')
+		$rootScope.chemin2 = 'Portes entières'
+	else if($state.current.name == 'demi_haut')
+		$rootScope.chemin2 = 'Étagères';
+	else	$rootScope.chemin2 = 'Portiques';
+	$rootScope.stateChemin2 = $state.current.name;
+	$rootScope.chemin3 = '';
 
 	initDemiePorte = function() {
 		$scope.nbTailleLargeur =Number(window.localStorage["local_nbTailleLargeur"]) | 1;

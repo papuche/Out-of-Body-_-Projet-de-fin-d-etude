@@ -1,5 +1,9 @@
 menu.controller('OobCtrl', function ($scope, $state, $http, $rootScope) {
-	$rootScope.chemin = 'Accueil > Sortie de corps';
+	// $rootScope.chemin = 'Accueil';
+	$rootScope.chemin1 = 'Sortie de corps';
+	$rootScope.stateChemin1 = $state.current.name;
+	$rootScope.chemin2 = '';
+
 	$scope.morphing = false;
 	$scope.baton = false;
 	$scope.message = '';

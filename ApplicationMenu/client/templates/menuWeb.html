@@ -28,7 +28,13 @@
 	<header>
 		<h1 class="col-md-12">Menu Principal</h1>
 	</header>
-	<span>{{chemin}}</span>
+
+	<div class="row btn-group btn-breadcrumb">
+	    <a ui-sref="mainMenu" class="btn btn-default">{{chemin}}</a>
+	    <a ui-sref="{{stateChemin1}}" class="btn btn-default" ng-if="chemin1">{{chemin1}}</a>
+	    <a ui-sref="{{stateChemin2}}" class="btn btn-default" ng-if="chemin2">{{chemin2}}</a>
+	    <a href="" class="btn btn-default" ng-if="chemin3">{{chemin3}}</a>
+	</div>
 	<div ui-view></div>
 </body>
 </html>
