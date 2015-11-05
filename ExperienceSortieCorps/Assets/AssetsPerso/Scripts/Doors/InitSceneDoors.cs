@@ -45,20 +45,13 @@ public class InitSceneDoors : MonoBehaviour {
 	private float[] _differenceModels;
 
 	// Fichier de résultats
-	private StreamWriter _file;
-	private string _path;
 	private string _fileName;
-	private TextAsset _textXml;
-	private XmlDocument _xmlDoc;
 	private XmlDocument _xmlModel;
 
 	private List<bool> _answers = new List<bool>();
 	private bool _next = false;
 	private bool _stop;
 
-	private int _sujet;
-	private int _session;
-	private int _condition;
 	private string _doorType;
 
 	void Start () {
@@ -67,23 +60,21 @@ public class InitSceneDoors : MonoBehaviour {
 		if (doors.Equals (Utils.BOTTOM_DOORS)) {
 			_bottomDoors.SetActive(true);
 			_piece = _bottomDoors;
-			_doorType = "Porte basse";
+			_doorType = FilesConst.BOTTOM_DOOR;
 		} else if (doors.Equals (Utils.TOP_DOORS)) {
 			_topDoors.SetActive (true);
 			_piece = _topDoors;
-			_doorType = "Porte haute";
+			_doorType = FilesConst.TOP_DOOR;
 		} else {
 			_fullDoors.SetActive (true);
 			_piece = _fullDoors;
-			_doorType = "Porte pleine";
+			_doorType = FilesConst.FULL_DOOR;
 		}
 		_currentScale = _piece.transform.localScale;
 		_initialScaleX = _currentScale.x;
 		_initialScaleY = _currentScale.y;
 
 		// Assignation de labels à la condition du test et au sujet du test
-		_sujet = PlayerPrefs.GetInt (Utils.PREFS_SUJET, 0);
-		_condition = PlayerPrefs.GetInt (Utils.PREFS_CONDITION);		
 
 		// Création du fichier de résultats
 		_fileName = System.DateTime.Now.ToString ();
@@ -93,7 +84,6 @@ public class InitSceneDoors : MonoBehaviour {
 		// Initialisation du tableau conprenant la largeur des portes.
 		initScales ();
 
-		createXML ();
 		loadXMLFromAssest ();
 
 		// Recupération du nom des modèles dans modelName
@@ -107,8 +97,6 @@ public class InitSceneDoors : MonoBehaviour {
 		// Mise à jour de la largeur de porte.
 		_doorIndex = Random.Range (0, _scales.Count);
 		applyScale ();
-
-		_file = new StreamWriter ("Resultat.txt",true);
 		
 		_stop = false;
 		// Ecriture de l'avancement dans la scène
@@ -144,10 +132,10 @@ public class InitSceneDoors : MonoBehaviour {
 					_text.GetComponent<Text>().text = _nbAnswers.ToString() + "/" + _nbDoors.ToString();
 				} else {
 					_stop=true;
-					modifyXml ();
-					modifyTxT();
-					_file.Close ();
-					SocketClient.GetInstance().Write("door_finish");	// Envoi de la trame de fin d'exercice des portes au client
+					createXML();
+					createTxT();
+
+					SocketClient.GetInstance().Write(Utils.SOCKET_END_DOOR);	// Envoi de la trame de fin d'exercice des portes au client
 					Application.LoadLevel(Utils.WAITING_SCENE);
 				}
 			}
@@ -166,23 +154,10 @@ public class InitSceneDoors : MonoBehaviour {
 
 		int nbWidth = int.Parse(resSocket.Split ('_') [1]);
 		int nbHeight;
-		if(!_doorType.Equals("Porte pleine"))
+		if(!_doorType.Equals(FilesConst.FULL_DOOR))
 			nbHeight = 0;
 		else
 			nbHeight = int.Parse(resSocket.Split ('_') [3]);
-		/*if(nbWidth > 0){
-			int widthStep = int.Parse(resSocket.Split ('_') [2]);
-			int heightStep = int.Parse(resSocket.Split ('_') [4]);
-			for (int i = 0; i < nbWidth; i++){
-				if(nbHeight > 0){
-					for (int j = 0; j < nbHeight; j++){
-						measures.Add (new Measure((float)(widthStep * (i + 1) / 100.0 + _initialScaleX), (float)(heightStep * (j + 1) / 100.0 + _initialScaleY)));
-					}
-				}
-				else 
-					measures.Add (new Measure((float)(widthStep * (i + 1) / 100.0 + _initialScaleX), _initialScaleY));
-			}
-		}*/
 
 		if (nbWidth > 0) {
 			int widthStep = int.Parse (resSocket.Split ('_') [2]);
@@ -243,11 +218,11 @@ public class InitSceneDoors : MonoBehaviour {
 
 	void loadXMLFromAssest(){
 		_xmlModel = new XmlDocument();
-		_textXml = (TextAsset)Resources.Load("Models", typeof(TextAsset));
-		_xmlModel.LoadXml(_textXml.text);
+		TextAsset textXml = (TextAsset)Resources.Load("Models", typeof(TextAsset));
+		_xmlModel.LoadXml(textXml.text);
 	}
 
-	void modifyTxT(){
+	void createTxT(){
 		int essai = 1;
 		string modelSrcvalue;
 		string modelDstvalue;
@@ -261,29 +236,14 @@ public class InitSceneDoors : MonoBehaviour {
 			modelDstvalue = "0\t0\t0";
 			modelDiffvalue = "0\t0\t0";
 		}
+		StreamWriter file = new StreamWriter (Path.Combine(FilesConst.SAVE_FILES_DIRECTORY, FilesConst.FILENAME_RESULT_TXT), true);
+		int sujet = PlayerPrefs.GetInt (Utils.PREFS_SUJET, 0);
+		int condition = PlayerPrefs.GetInt (Utils.PREFS_CONDITION);
 		foreach (bool answer in _answers) {
-			_file.WriteLine (_sujet.ToString () + "\t" + _condition.ToString () + "\t" + essai.ToString () + "\t" + _doorType + "\t" + _ordreOuverture [essai - 1].width.ToString() + "\t" + _ordreOuverture [essai - 1].height.ToString() + "\t" + (answer == true ? "1" : "0") + "\t" + modelSrcvalue + "\t" + modelDstvalue + "\t" + modelDiffvalue);
+			file.WriteLine (sujet.ToString () + "\t" + condition.ToString () + "\t" + essai.ToString () + "\t" + _doorType + "\t" + _ordreOuverture [essai - 1].width.ToString() + "\t" + _ordreOuverture [essai - 1].height.ToString() + "\t" + (answer == true ? "1" : "0") + "\t" + modelSrcvalue + "\t" + modelDstvalue + "\t" + modelDiffvalue);
 			essai++;
 		}
-	}
-
-	void modifyXml(){
-		int indexlist = 0;
-		XmlNode nodeact = _xmlDoc.SelectSingleNode("Ouvertures");
-		foreach(XmlElement node in nodeact.SelectNodes("Ouverture")){
-			node.SelectSingleNode("Longueur").InnerText = _ordreOuverture[indexlist].width.ToString();
-			if(_doorType.Equals("Porte pleine"))
-				node.SelectSingleNode("Hauteur").InnerText = _ordreOuverture[indexlist].height.ToString();
-			if(_answers[indexlist]){
-				node.SelectSingleNode("Reponse").InnerText = "Oui";
-			}else{
-				node.SelectSingleNode("Reponse").InnerText = "Non";
-			}
-			node.SelectSingleNode("Temps").InnerText = _ordreOuverture[indexlist].time.ToString();
-			indexlist++;
-		}
-
-		_xmlDoc.Save(_fileName+".xml");
+		file.Close ();
 	}
 
 	void Reponse(bool rep){
@@ -292,17 +252,37 @@ public class InitSceneDoors : MonoBehaviour {
 	}
 
 	void createXML(){
-		_xmlDoc = new XmlDocument ();
-		XmlElement root = (XmlElement)_xmlDoc.AppendChild(_xmlDoc.CreateElement("Ouvertures"));
-		root.SetAttribute ("Type", _doorType);
-		for(int i = 0; i < _scales.Count; i++){
-			XmlElement el = (XmlElement)root.AppendChild(_xmlDoc.CreateElement("Ouverture"));
-			el.AppendChild(_xmlDoc.CreateElement("Longueur"));
-			if(_doorType.Equals("Porte pleine"))
-				el.AppendChild(_xmlDoc.CreateElement("Hauteur"));
-			el.AppendChild(_xmlDoc.CreateElement("Reponse"));
-			el.AppendChild(_xmlDoc.CreateElement("Temps"));
+		if (PlayerPrefs.GetString (Utils.PREFS_PATH_FOLDER).Equals ("")) {
+			if (!Directory.Exists (FilesConst.SAVE_FILES_DIRECTORY)) {	// Si le répertoire contenant les résultats n'existent pas
+				Directory.CreateDirectory (FilesConst.SAVE_FILES_DIRECTORY);	// On le crée
+			}
+			int dirIndex = 0;
+			foreach (string directory in Directory.GetDirectories(FilesConst.SAVE_FILES_DIRECTORY)) {
+				string dir = directory.Remove (0, FilesConst.SAVE_FILES_DIRECTORY.Length + 1);
+				if (dir.Contains (FilesConst.USER_PREFIX_DIRECTORY) && int.Parse (dir.Remove (0, FilesConst.USER_PREFIX_DIRECTORY.Length)) > dirIndex)
+					dirIndex = int.Parse (dir.Remove (0, FilesConst.USER_PREFIX_DIRECTORY.Length));
+			}
+			PlayerPrefs.SetString (Utils.PREFS_PATH_FOLDER, Directory.CreateDirectory (FilesConst.SAVE_FILES_DIRECTORY + "/" + FilesConst.USER_PREFIX_DIRECTORY + (dirIndex + 1).ToString ()).FullName);
 		}
+		XmlDocument xmlDoc = new XmlDocument ();
+		XmlElement root = (XmlElement)xmlDoc.AppendChild(xmlDoc.CreateElement(FilesConst.ROOT_NODE));
+		root.SetAttribute ("Type", _doorType);
+
+		for (int i=0; i<_ordreOuverture.Count; i++) {
+			XmlElement el = (XmlElement)root.AppendChild(xmlDoc.CreateElement(FilesConst.OPENING_NODE));
+			el.AppendChild(xmlDoc.CreateElement(FilesConst.WIDTH_NODE)).InnerText = _ordreOuverture[i].width.ToString();
+			if(_doorType.Equals(FilesConst.FULL_DOOR)) {
+				el.AppendChild(xmlDoc.CreateElement(FilesConst.HEIGHT_NODE)).InnerText = _ordreOuverture[i].height.ToString();
+			}
+			if(_answers[i]) {
+				el.AppendChild(xmlDoc.CreateElement(FilesConst.ANSWER_NODE)).InnerText = FilesConst.ANSWER_YES;
+			} else {
+				el.AppendChild(xmlDoc.CreateElement(FilesConst.ANSWER_NODE)).InnerText = FilesConst.ANSWER_NO;
+			}
+			el.AppendChild(xmlDoc.CreateElement(FilesConst.TIME_ANSWER_NODE)).InnerText = _ordreOuverture[i].time.ToString();
+		}
+		xmlDoc.Save(Path.Combine(PlayerPrefs.GetString (Utils.PREFS_PATH_FOLDER), _fileName + FilesConst.FILE_EXTENSION));
+
 	}
 
 	float[] ReadModelsValue(string name){

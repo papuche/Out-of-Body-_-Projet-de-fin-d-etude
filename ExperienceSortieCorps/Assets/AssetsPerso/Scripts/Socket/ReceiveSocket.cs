@@ -110,8 +110,7 @@ public class ReceiveSocket : MonoBehaviour
 		_socketClient.stopThread = false;
 		_socketClient.socket.Close ();
 		PlayerPrefs.DeleteKey (Utils.PREFS_MODEL);
-		//SocketClient.GetInstance().StopThread ();
-		//SocketClient.GetInstance ().DeleteInstance ();
+		PlayerPrefs.DeleteKey (Utils.PREFS_PATH_FOLDER);
 	}
 }
 

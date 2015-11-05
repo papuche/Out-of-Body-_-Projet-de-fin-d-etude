@@ -5,6 +5,7 @@
 	public readonly static string PREFS_AVATAR_GENDER = "avatarGender";
 	public readonly static string PREFS_VALIDATE_AVATAR = SOCKET_VALIDATE;
 	public readonly static string PREFS_GHOST = "ghost";
+	public readonly static string PREFS_PATH_FOLDER = "path_folder";
 
 	public readonly static string PREFS_CONDITION = "Condition";
 	public readonly static string PREFS_SUJET = "Sujet";
@@ -51,4 +52,5 @@
 	public readonly static string[] SOCKET_GENDER = {"M", "F"};
 	public readonly static string SOCKET_VALIDATE = "validerAvatar";
 
+	public readonly static string SOCKET_END_DOOR = "door_finish";
 }
