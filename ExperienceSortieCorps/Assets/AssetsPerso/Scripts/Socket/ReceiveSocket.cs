@@ -17,9 +17,10 @@ public class ReceiveSocket : MonoBehaviour
 
 		if(Input.GetKeyDown (KeyCode.Q))
 			Application.Quit();
-
 		if (_socketClient.message != null) {
-			
+
+			Debug.Log(_socketClient.message);
+
 			string message = _socketClient.message;
 
 			if (message.Equals(Utils.SOCKET_EXIT)) {
@@ -66,37 +67,15 @@ public class ReceiveSocket : MonoBehaviour
 				PlayerPrefs.SetString (Utils.PREFS_DOORS, Utils.TOP_DOORS);
 				Application.LoadLevel (Utils.DOORS_SCENE);
 			}
-			
-			// EXERCICE SORTIE DE CORPS : SANS PARAMETRES
-			else if (message.Equals(Utils.SOCKET_NOTHING)) {
-				PlayerPrefs.SetString (Utils.PREFS_OUTOFBODY, Utils.NO_PARAMETER);
-				PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
-				Application.LoadLevel (Utils.OUTOFBODY_SCENE);
-			}
 
-			// EXERCICE SORTIE DE CORPS : PARAMETRE MORPHING
-			else if (message.Equals (Utils.SOCKET_MORPHING)) {
-				PlayerPrefs.SetString (Utils.PREFS_OUTOFBODY, Utils.MORPHING_PARAMETER);
+			// EXERCICE DE SORTIE DE CORPS
+			else if(message.Contains(Utils.SOCKET_OUT_OF_BODY)){
+				string[] parameters = message.Remove (0, Utils.SOCKET_OUT_OF_BODY.Length + 1).Split('_');
+				PlayerPrefs.SetInt(Utils.PREFS_BATON, int.Parse (parameters[0]));
+				PlayerPrefs.SetInt(Utils.PREFS_MORPHING, int.Parse (parameters[1]));
+				PlayerPrefs.SetInt(Utils.PREFS_GHOST, int.Parse (parameters[2]));
 				PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
 				Application.LoadLevel (Utils.OUTOFBODY_SCENE);
-			}
-			
-			// EXERCICE SORTIE DE CORPS : PARAMETRE BATON
-			else if (message.Equals(Utils.SOCKET_BATON)) {
-				PlayerPrefs.SetString (Utils.PREFS_OUTOFBODY, Utils.STICK_PARAMETER);
-				PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
-				Application.LoadLevel (Utils.OUTOFBODY_SCENE);
-			}
-			
-			// EXERCICE SORTIE DE CORPS : PARAMETRES BATON ET MORPHING
-			else if (message.Equals(Utils.SOCKET_BATON_MORPHING)) {
-				PlayerPrefs.SetString (Utils.PREFS_OUTOFBODY, Utils.ALL_PARAMETERS);
-				PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
-				Application.LoadLevel (Utils.OUTOFBODY_SCENE);
-			}
-
-			else if (message.Equals(Utils.SOCKET_GHOST)) {
-				PlayerPrefs.SetString(Utils.PREFS_GHOST, message);
 			}
 
 			_socketClient.message = null;
@@ -113,4 +92,3 @@ public class ReceiveSocket : MonoBehaviour
 		PlayerPrefs.DeleteKey (Utils.PREFS_PATH_FOLDER);
 	}
 }
-

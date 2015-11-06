@@ -10,34 +10,23 @@ public class LoadScript : MonoBehaviour {
 	private GameObject _baton;
 	[SerializeField]
 	private GameObject _launchMorphing;
-
-	public GameObject camera;
+	[SerializeField]
+	private GameObject _camera;
 
 	// Use this for initialization
 	void Start () {
-		camera.SetActive (false);
+		_camera.SetActive (false);
 		int launchModel = PlayerPrefs.GetInt (Utils.PREFS_LAUNCH_MODEL);
 		if (launchModel == 0) {
 			_selectModel.SetActive (true);
-			//_baton.SetActive (true);
 		} else {
 			_initModel.SetActive (true);
-			/*if (PlayerPrefs.GetInt (Utils.PREFS_LAUNCH_BATON) == 1)
+			if (PlayerPrefs.GetInt(Utils.PREFS_BATON) == 1)
 				_baton.SetActive (true);
-			else if (PlayerPrefs.GetInt (Utils.PREFS_LAUNCH_MORPHING) == 1)
+			if (PlayerPrefs.GetInt(Utils.PREFS_MORPHING) == 1)
 				_launchMorphing.SetActive (true);
-		}*/
-			string parameter = PlayerPrefs.GetString (Utils.PREFS_OUTOFBODY);
-			if (parameter.Equals (Utils.MORPHING_PARAMETER)) {
-				_launchMorphing.SetActive (true);
-			} else if (parameter.Equals (Utils.STICK_PARAMETER)) {
-				_baton.SetActive (true);
-			} else if (parameter.Equals (Utils.ALL_PARAMETERS)) {
-				_launchMorphing.SetActive (true);
-				_baton.SetActive (true);
-			}
 		}
-		camera.SetActive (true);
+		_camera.SetActive (true);
 	}
 
 	public GameObject initModel {
@@ -75,6 +64,15 @@ public class LoadScript : MonoBehaviour {
 		}
 		set {
 			_launchMorphing = value;
+		}
+	}
+
+	public GameObject camera {
+		get {
+			return _camera;
+		}
+		set {
+			_camera = value;
 		}
 	}
 }

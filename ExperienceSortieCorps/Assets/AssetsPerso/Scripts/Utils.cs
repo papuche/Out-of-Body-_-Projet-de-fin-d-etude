@@ -1,10 +1,12 @@
 ﻿public static class Utils {
 	public readonly static string PREFS_LAUNCH_MODEL = "launchModel";
-	public readonly static string PREFS_LAUNCH_BATON = "launchBaton";
-	public readonly static string PREFS_LAUNCH_MORPHING = "launchMorphing";
 	public readonly static string PREFS_AVATAR_GENDER = "avatarGender";
-	public readonly static string PREFS_VALIDATE_AVATAR = SOCKET_VALIDATE;
+
+	public readonly static string PREFS_BATON = "baton";
+	public readonly static string PREFS_MORPHING = "morphing";
 	public readonly static string PREFS_GHOST = "ghost";
+
+	public readonly static string PREFS_VALIDATE_AVATAR = SOCKET_VALIDATE;
 	public readonly static string PREFS_PATH_FOLDER = "path_folder";
 
 	public readonly static string PREFS_CONDITION = "Condition";
@@ -14,7 +16,6 @@
 	public readonly static string PREFS_MODEL = "Model";
 	public readonly static string PREFS_DOORS = "doors";
 	public readonly static string PREFS_PARAM_DOORS = "param_doors";
-	public readonly static string PREFS_OUTOFBODY = "Out of Body";
 	public readonly static string[] MODELS_DIRECTORY = {"Models/Homme/", "Models/Femme/"};
 
 	public readonly static string FULL_DOORS = "fullDoors";
@@ -44,6 +45,7 @@
 	public readonly static string SOCKET_BATON_MORPHING = "baton_morphing";
 	public readonly static string SOCKET_STOP = "stop";
 	public readonly static string SOCKET_EXIT = "exit";
+	public readonly static string SOCKET_OUT_OF_BODY = "oob";
 	
 	public readonly static string SOCKET_PORTE_ENTIERE = "e/";
 	public readonly static string SOCKET_PORTE_DEMIHAUT = "dh/";

@@ -38,12 +38,7 @@ var server = net.createServer(function (socket) {
 
     getAndSendWithoutParams(socket, 'avatar');
     getAndSendWithoutParams(socket, 'exit');
-    getAndSendWithoutParams(socket, 'baton');
-    getAndSendWithoutParams(socket, 'morphing');
-    getAndSendWithoutParams(socket, 'baton_morphing');
-	  getAndSendWithoutParams(socket, 'ghost');
     getAndSendWithoutParams(socket, 'stop');
-    getAndSendWithoutParams(socket, 'nothing');
     getAndSendWithoutParams(socket, 'M_avatar');
     getAndSendWithoutParams(socket, 'F_avatar');
 
@@ -52,6 +47,7 @@ var server = net.createServer(function (socket) {
     getAndSendWithParams(socket, 'e');
     getAndSendWithParams(socket, 'db');
     getAndSendWithParams(socket, 'dh');
+	getAndSendWithParams(socket, 'oob');
     getAndSendWithParams(socket, 'validerAvatar');
 });
 server.listen(UNITY_PORT);
