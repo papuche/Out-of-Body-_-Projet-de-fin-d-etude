@@ -35,7 +35,8 @@
 	public readonly static string HEIGHT_KEY = "height";
 
 	public readonly static string SERVER_IP = @"127.0.0.1";
-	public readonly static int SERVER_PORT = 8000;
+	public readonly static int SERVER_PORT = 3000;
+	public readonly static int SOCKET_PORT = 8000;
 
 	public readonly static string SOCKET_AVATAR = "avatar";
 	public readonly static string SOCKET_NOTHING = "nothing";

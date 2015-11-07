@@ -1,0 +1,1 @@
+node ..\ApplicationMenu\server\server.js

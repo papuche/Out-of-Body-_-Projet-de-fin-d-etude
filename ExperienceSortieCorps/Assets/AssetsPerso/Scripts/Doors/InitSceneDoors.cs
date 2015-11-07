@@ -6,7 +6,6 @@ using System.Xml;
 using System.Xml.Linq;
 using System.IO;
 using System.Globalization;
-using AssemblyCSharp;
 
 public class InitSceneDoors : MonoBehaviour {
 

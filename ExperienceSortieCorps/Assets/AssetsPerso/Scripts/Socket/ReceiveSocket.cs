@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using AssemblyCSharp;
 
 public class ReceiveSocket : MonoBehaviour
 {
@@ -18,8 +17,6 @@ public class ReceiveSocket : MonoBehaviour
 		if(Input.GetKeyDown (KeyCode.Q))
 			Application.Quit();
 		if (_socketClient.message != null) {
-
-			Debug.Log(_socketClient.message);
 
 			string message = _socketClient.message;
 
@@ -88,6 +85,7 @@ public class ReceiveSocket : MonoBehaviour
 	void OnApplicationQuit(){
 		_socketClient.stopThread = false;
 		_socketClient.socket.Close ();
+		_socketClient.StopNodeServer ();
 		PlayerPrefs.DeleteKey (Utils.PREFS_MODEL);
 		PlayerPrefs.DeleteKey (Utils.PREFS_PATH_FOLDER);
 	}

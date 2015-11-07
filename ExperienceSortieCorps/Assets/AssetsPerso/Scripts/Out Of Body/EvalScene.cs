@@ -2,12 +2,7 @@
 using System.Collections;
 
 public class EvalScene : MonoBehaviour {
-	
-	bool morph = false;
-	bool baton = false;
-	void Start(){
 
-	}
 	void Update () {
 		/*SixenseInput.Controller controller = SixenseInput.GetController( SixenseHands.RIGHT );
 		if(controller.GetButtonDown( SixenseButtons.START )){

@@ -5,15 +5,13 @@ using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
 
-namespace AssemblyCSharp
-{
 	public class SocketClient
 	{
 		private static SocketClient _instance;
 		private Thread _thread;
 		private Socket _socket;
 		
-		private Boolean _stopThread;
+		private Boolean _stopThread = false;
 		
 		private string _message;
 
@@ -21,19 +19,27 @@ namespace AssemblyCSharp
 
 		private int _nbTryReconnection = 0;
 
+		private System.Diagnostics.Process _process;
+
 		public static SocketClient GetInstance()
 		{
 			if (_instance == null)
 				_instance = new SocketClient();
 			return _instance;
 		}
-		
+	
 		private SocketClient()
-		{
-			_stopThread = false;
+		{	
 			IPAddress ipAddress = IPAddress.Parse(Utils.SERVER_IP);
-			_remoteEP = new IPEndPoint(ipAddress, Utils.SERVER_PORT);
-			
+			_remoteEP = new IPEndPoint(ipAddress, Utils.SOCKET_PORT);
+
+			string batDir = string.Format(@".");
+			_process = new System.Diagnostics.Process();
+			_process.StartInfo.WorkingDirectory = batDir;
+			_process.StartInfo.FileName = "server.bat";
+			_process.StartInfo.CreateNoWindow = true;
+			_process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+
 			_socket = new Socket (_remoteEP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 			try {
 				_socket.Connect (_remoteEP);
@@ -42,14 +48,33 @@ namespace AssemblyCSharp
 				_socket.Close();
 				new Thread (new ThreadStart (LaunchThreadConnect)).Start ();
 			}
+
+			if (UnityEditor.EditorUtility.DisplayDialog ("Adresse IP de la machine", GetLocalIP() + ":" + Utils.SERVER_PORT, "Ouvrir la page", "Quitter"))
+				Application.OpenURL("http://127.0.0.1:" + Utils.SERVER_PORT);
+	}
+	
+	private String GetLocalIP() {
+		string localIP = "?";
+		foreach (IPAddress ip in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
+		{
+			if (ip.AddressFamily == AddressFamily.InterNetwork)
+			{
+				localIP = ip.ToString();
+			}
 		}
+		return localIP;
+	}
 
 		private void Connect(){
-			if(_nbTryReconnection > 60) {
-				// Redémarrer serveur node
-				_nbTryReconnection = 0;
-			}
+			_process.Start();
 			while (!_socket.Connected && !_stopThread) {
+				if(_nbTryReconnection > 2) {
+					_process.Kill();
+					StopNodeServer();
+					Thread.Sleep(2000);
+					_process.Start();
+					_nbTryReconnection = 0;
+				}
 				try {
 					_socket = new Socket (_remoteEP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 					_socket.Connect (_remoteEP);
@@ -60,6 +85,12 @@ namespace AssemblyCSharp
 					Thread.Sleep (1000);
 					_nbTryReconnection++;
 				}
+			}
+		}
+
+		public void StopNodeServer(){
+			foreach (System.Diagnostics.Process p in System.Diagnostics.Process.GetProcessesByName("node")) {
+				p.Kill();
 			}
 		}
 	
@@ -120,4 +151,3 @@ namespace AssemblyCSharp
 			}
 		}
 	}
-}
