@@ -83,7 +83,7 @@ public class ReceiveSocket : MonoBehaviour
 	/// Méthode appélée lorsque l'application se ferme. Permet de réinitialiser le choix de l'avatar effectué lors de la session
 	/// </summary>
 	void OnApplicationQuit(){
-		_socketClient.stopThread = false;
+		_socketClient.stopThread = true;
 		_socketClient.socket.Close ();
 		_socketClient.StopNodeServer ();
 		PlayerPrefs.DeleteKey (Utils.PREFS_MODEL);

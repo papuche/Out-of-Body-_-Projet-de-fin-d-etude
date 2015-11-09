@@ -11,11 +11,12 @@ public class LoadScript : MonoBehaviour {
 	[SerializeField]
 	private GameObject _launchMorphing;
 	[SerializeField]
-	private GameObject _camera;
+	private Camera _camera;
 
 	// Use this for initialization
 	void Start () {
-		_camera.SetActive (false);
+		_camera.gameObject.SetActive (false);
+		Debug.Log (_camera);
 		int launchModel = PlayerPrefs.GetInt (Utils.PREFS_LAUNCH_MODEL);
 		if (launchModel == 0) {
 			_selectModel.SetActive (true);
@@ -26,51 +27,34 @@ public class LoadScript : MonoBehaviour {
 			if (PlayerPrefs.GetInt(Utils.PREFS_MORPHING) == 1)
 				_launchMorphing.SetActive (true);
 		}
-		_camera.SetActive (true);
+		_camera.gameObject.SetActive (true);
 	}
 
 	public GameObject initModel {
-		get {
-			return _initModel;
-		}
-
 		set {
 			_initModel = value;
 		}
 	}
 
 	public GameObject selectModel {
-		get {
-			return _selectModel;
-		}
-		
 		set {
 			_selectModel = value;
 		}
 	}
 
 	public GameObject baton {
-		get {
-			return _baton;
-		}
 		set {
 			_baton = value;
 		}
 	}
 
 	public GameObject launchMorphing {
-		get {
-			return _launchMorphing;
-		}
 		set {
 			_launchMorphing = value;
 		}
 	}
 
-	public GameObject camera {
-		get {
-			return _camera;
-		}
+	public Camera camera {
 		set {
 			_camera = value;
 		}

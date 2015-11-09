@@ -43,16 +43,21 @@ using UnityEngine;
 			_socket = new Socket (_remoteEP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 			try {
 				_socket.Connect (_remoteEP);
-				new Thread (new ThreadStart (Receive)).Start ();
-			} catch (Exception e) {
+				new Thread (() => Receive()).Start ();
+			} catch (Exception) {
 				_socket.Close();
-				new Thread (new ThreadStart (LaunchThreadConnect)).Start ();
+				new Thread (() => LaunchThreadConnect()).Start ();
 			}
 
-			if (UnityEditor.EditorUtility.DisplayDialog ("Adresse IP de la machine", GetLocalIP() + ":" + Utils.SERVER_PORT, "Ouvrir la page", "Quitter"))
-				Application.OpenURL("http://127.0.0.1:" + Utils.SERVER_PORT);
+		if (UnityEditor.EditorUtility.DisplayDialog ("Adresse IP de la machine", GetLocalIP() + ":" + Utils.SERVER_PORT, "Ouvrir la page", "Quitter"))
+			Application.OpenURL("http://" + Utils.SERVER_IP + ":" + Utils.SERVER_PORT);
 	}
-	
+
+	private void LaunchThreadConnect() {
+		Connect ();
+		new Thread (() => Receive()).Start ();
+	}
+
 	private String GetLocalIP() {
 		string localIP = "?";
 		foreach (IPAddress ip in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
@@ -88,15 +93,10 @@ using UnityEngine;
 			}
 		}
 
-		public void StopNodeServer(){
+		public void StopNodeServer() {
 			foreach (System.Diagnostics.Process p in System.Diagnostics.Process.GetProcessesByName("node")) {
-				p.Kill();
+				p.Kill ();
 			}
-		}
-	
-		private void LaunchThreadConnect(){
-			Connect ();
-			new Thread (new ThreadStart (Receive)).Start ();
 		}
 
 			private void Receive()
@@ -111,10 +111,10 @@ using UnityEngine;
 					if(message.Equals(Utils.SOCKET_EXIT))
 						_stopThread = true;
 				} catch(SocketException) {
-					/*_thread.Interrupt();
-					System.Environment.Exit(1);*/
 					_socket.Close();
-					Connect ();
+					if(!_stopThread) {
+						Connect ();
+					}
 				}
 			}
 			while (!_stopThread);

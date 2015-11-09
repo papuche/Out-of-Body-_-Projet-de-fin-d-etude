@@ -133,7 +133,7 @@ public class BotControlScript : MonoBehaviour
 		}
 
 		// if we are currently in a state called Locomotion (see line 25), then allow Jump input (Space) to set the Jump bool parameter in the Animator to true
-		if (currentBaseState.nameHash == locoState)
+		if (currentBaseState.fullPathHash == locoState)
 		{
 			if(jumpNow)
 			{
@@ -143,7 +143,7 @@ public class BotControlScript : MonoBehaviour
 		}
 		
 		// if we are in the jumping state... 
-		else if(currentBaseState.nameHash == jumpState)
+		else if(currentBaseState.fullPathHash == jumpState)
 		{
 			//  ..and not still in transition..
 			if(!anim.IsInTransition(0))
@@ -175,7 +175,7 @@ public class BotControlScript : MonoBehaviour
 		}
 		
 		// check if we are at idle, if so, let us Wave!
-		else if (currentBaseState.nameHash == idleState)
+		else if (currentBaseState.fullPathHash == idleState)
 		{
 			if(waveNow)
 			{
@@ -185,7 +185,7 @@ public class BotControlScript : MonoBehaviour
 		}
 		
 		// if we enter the waving state, reset the bool to let us wave again in future
-		if(layer2CurrentState.nameHash == waveState)
+		if(layer2CurrentState.fullPathHash == waveState)
 		{
 			anim.SetBool("Wave", false);
 		}

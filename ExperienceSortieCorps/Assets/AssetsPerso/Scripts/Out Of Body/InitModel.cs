@@ -9,9 +9,6 @@ public class InitModel : MonoBehaviour {
 
 		string[] model = PlayerPrefs.GetString (Utils.PREFS_MODEL).Split(';');
 		goSrc = (GameObject)Instantiate(Resources.Load(model[0]));
-		GameObject goDst = (GameObject)Resources.Load (model[1]);
-		PlayerPrefs.SetString ("ModelSRC", goSrc.name);
-		PlayerPrefs.SetString ("ModelDST", goDst.name);
 		goSrc.transform.parent = posAvatar.transform;
 		goSrc.name = model [0].Split ('/') [2];
 		goSrc.transform.localPosition = Vector3.zero;

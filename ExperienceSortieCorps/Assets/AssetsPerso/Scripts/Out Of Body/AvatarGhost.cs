@@ -7,7 +7,6 @@ public class AvatarGhost : MonoBehaviour {
 		if (PlayerPrefs.GetInt(Utils.PREFS_GHOST) == 1) {
 			gameObject.transform.FindChild("shirtGhost").gameObject.SetActive(true);
 			gameObject.transform.FindChild("jeanGhost").gameObject.SetActive(true);
-			
 		}
 	}
 }

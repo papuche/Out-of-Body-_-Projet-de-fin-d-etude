@@ -83,7 +83,6 @@ public class OVRPlayerController : MonoBehaviour
 
 	private float MoveScale = 1.0f;
 	private Vector3 MoveThrottle = Vector3.zero;
-	private float FallSpeed = 0.0f;
 	private OVRPose? InitialPose;
 	private float InitialYRotation = 0.0f;
 	private float MoveScaleMultiplier = 1.0f;
@@ -171,15 +170,7 @@ public class OVRPlayerController : MonoBehaviour
 		MoveThrottle.z /= motorDamp;
 
 		moveDirection += MoveThrottle * SimulationRate * Time.deltaTime;
-
-		// Gravity
-		/*if (Controller.isGrounded && FallSpeed <= 0)
-			FallSpeed = ((Physics.gravity.y * (GravityModifier * 0.002f)));
-		else
-			FallSpeed += ((Physics.gravity.y * (GravityModifier * 0.002f)) * SimulationRate * Time.deltaTime);
-
-		moveDirection.y += FallSpeed * SimulationRate * Time.deltaTime;*/
-
+		
 		// Offset correction for uneven ground
 		float bumpUpOffset = 0.0f;
 
@@ -353,7 +344,6 @@ public class OVRPlayerController : MonoBehaviour
 	{
 		Controller.Move(Vector3.zero);
 		MoveThrottle = Vector3.zero;
-		FallSpeed = 0.0f;
 	}
 
 	/// <summary>
