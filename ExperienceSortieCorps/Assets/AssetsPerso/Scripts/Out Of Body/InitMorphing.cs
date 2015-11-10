@@ -19,12 +19,12 @@ public class InitMorphing : MonoBehaviour {
 		GameObject jean = (GameObject) Instantiate(_goSrc.transform.FindChild ("jeans01Mesh").gameObject);
 		jean.name = "jeanGhost";
 		jean.transform.parent = _goSrc.transform;
-		jean.GetComponent<Renderer> ().material = jeanGhost;
+		jean.GetComponent<Renderer> ().material = _jeanGhost;
 		jean.SetActive (false);
 		GameObject shirt = (GameObject) Instantiate(_goSrc.transform.FindChild ("shirt01Mesh").gameObject);
 		shirt.name = "shirtGhost";
 		shirt.transform.parent = _goSrc.transform;
-		shirt.GetComponent<Renderer> ().material = shirtGhost;
+		shirt.GetComponent<Renderer> ().material = _shirtGhost;
 		shirt.SetActive (false);
 
 		init("high-polyMesh");
@@ -66,20 +66,12 @@ public class InitMorphing : MonoBehaviour {
 	}
 
 	public Material jeanGhost {
-		get {
-			return _jeanGhost;
-		}
-		
 		set {
 			_jeanGhost = value;
 		}
 	}
 
 	public Material shirtGhost {
-		get {
-			return _shirtGhost;
-		}
-		
 		set {
 			_shirtGhost = value;
 		}

@@ -49,8 +49,9 @@ using UnityEngine;
 				new Thread (() => LaunchThreadConnect()).Start ();
 			}
 
-		if (UnityEditor.EditorUtility.DisplayDialog ("Adresse IP de la machine", GetLocalIP() + ":" + Utils.SERVER_PORT, "Ouvrir la page", "Quitter"))
-			Application.OpenURL("http://" + Utils.SERVER_IP + ":" + Utils.SERVER_PORT);
+		/*if (UnityEditor.EditorUtility.DisplayDialog ("Adresse IP de la machine", GetLocalIP() + ":" + Utils.SERVER_PORT, "Ouvrir la page", "Quitter"))
+			Application.OpenURL("http://" + Utils.SERVER_IP + ":" + Utils.SERVER_PORT);*/
+		System.Diagnostics.Process.Start ("ShowIp");
 	}
 
 	private void LaunchThreadConnect() {
@@ -58,7 +59,7 @@ using UnityEngine;
 		new Thread (() => Receive()).Start ();
 	}
 
-	private String GetLocalIP() {
+	/*private String GetLocalIP() {
 		string localIP = "?";
 		foreach (IPAddress ip in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
 		{
@@ -68,7 +69,7 @@ using UnityEngine;
 			}
 		}
 		return localIP;
-	}
+	}*/
 
 		private void Connect(){
 			_process.Start();
@@ -134,9 +135,6 @@ using UnityEngine;
 		}
 		
 		public Boolean stopThread {
-			get {
-				return _stopThread;
-			}
 			set {
 				_stopThread = value;
 			}
