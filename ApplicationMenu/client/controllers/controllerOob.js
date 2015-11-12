@@ -14,20 +14,23 @@ menu.controller('OobCtrl', function ($scope, $state, $http, $rootScope) {
 	}
 
 	$scope.next = function () {
-		if ($scope.baton && $scope.morphing){
-			$http.get('/baton_morphing');
+		if ($scope.baton && $scope.morphing && $scope.ghost){
+			$http.get('/1_1_1');
 		}	
+		else if ($scope.baton && $scope.morphing){
+			$http.get('/1_1_0');
+		}		
+		else if ($scope.morphing && $scope.ghost){
+			$http.get('/0_1_1');
+		}			
 		else if ($scope.morphing){
-			$http.get('/morphing');
+			$http.get('/0_1_0');
 		}	
 		else if ($scope.baton){
-			$http.get('/baton');
+			$http.get('/1_0_0');
 		}
 		else {
-			$http.get('/nothing');
-		}
-		if($scope.ghost){
-			$http.get('/ghost');
+			$http.get('/0_0_0');
 		}
 		$state.go('runOob');
 	};
