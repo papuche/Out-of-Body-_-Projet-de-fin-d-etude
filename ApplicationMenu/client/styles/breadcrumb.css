@@ -33,7 +33,7 @@
   padding:6px 12px 6px 24px;
 }
 .btn-breadcrumb .btn:first-child {
-  padding:6px 6px 6px 10px;
+  padding:6px 10px 6px 10px !important;
 }
 .btn-breadcrumb .btn:last-child {
   padding:6px 18px 6px 24px;
