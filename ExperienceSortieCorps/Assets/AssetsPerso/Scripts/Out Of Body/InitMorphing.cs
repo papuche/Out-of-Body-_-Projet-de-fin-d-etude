@@ -11,21 +11,35 @@ public class InitMorphing : MonoBehaviour {
 	[SerializeField]
 	private Material _shirtGhost;
 
+	private GameObject _jean;
+	private GameObject _shirt;
+
 	void Start () {
 		string[] model = PlayerPrefs.GetString (Utils.PREFS_MODEL).Split(';');
 		_goSrc = GameObject.Find(model[0].Split('/')[2]);
 		GameObject goDst = (GameObject)Resources.Load (model [1]);
 
-		GameObject jean = (GameObject) Instantiate(_goSrc.transform.FindChild ("jeans01Mesh").gameObject);
-		jean.name = "jeanGhost";
-		jean.transform.parent = _goSrc.transform;
-		jean.GetComponent<Renderer> ().material = _jeanGhost;
-		jean.SetActive (false);
-		GameObject shirt = (GameObject) Instantiate(_goSrc.transform.FindChild ("shirt01Mesh").gameObject);
-		shirt.name = "shirtGhost";
-		shirt.transform.parent = _goSrc.transform;
-		shirt.GetComponent<Renderer> ().material = _shirtGhost;
-		shirt.SetActive (false);
+		_jean = (GameObject) Instantiate(_goSrc.transform.FindChild ("jeans01Mesh").gameObject);
+		_jean.name = "jeanGhost";
+		_jean.transform.parent = _goSrc.transform;
+		_jean.GetComponent<Renderer> ().material = _jeanGhost;
+
+		_shirt = (GameObject) Instantiate(_goSrc.transform.FindChild ("shirt01Mesh").gameObject);
+		_shirt.name = "shirtGhost";
+		_shirt.transform.parent = _goSrc.transform;
+		_shirt.GetComponent<Renderer> ().material = _shirtGhost;
+
+
+		/**
+		 * Gestion du ghost
+		 **/ 
+		if (PlayerPrefs.GetInt (Utils.PREFS_GHOST) == 1) {
+			_jean.SetActive (true);
+			_shirt.SetActive (true);
+		} else {
+			_jean.SetActive (false);
+			_shirt.SetActive (false);
+		}
 
 		init("high-polyMesh");
 		init("jeans01Mesh");
@@ -43,7 +57,7 @@ public class InitMorphing : MonoBehaviour {
 			morph.dstMesh = meshDst;
 			morph.srcMesh = meshSrc;
 		}
-		_goSrc.AddComponent<AvatarGhost> ();
+		
 		SetLayerRecursively (_goSrc, 8);
 	}
 	

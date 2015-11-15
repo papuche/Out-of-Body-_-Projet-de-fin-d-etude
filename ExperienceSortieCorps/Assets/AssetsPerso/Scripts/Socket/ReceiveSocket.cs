@@ -85,7 +85,7 @@ public class ReceiveSocket : MonoBehaviour
 	void OnApplicationQuit(){
 		_socketClient.stopThread = true;
 		_socketClient.socket.Close ();
-		_socketClient.StopNodeServer ();
+		_socketClient.StopAllProcess ();
 		PlayerPrefs.DeleteKey (Utils.PREFS_MODEL);
 		PlayerPrefs.DeleteKey (Utils.PREFS_PATH_FOLDER);
 	}
