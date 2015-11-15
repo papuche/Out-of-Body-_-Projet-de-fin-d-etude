@@ -1,6 +1,7 @@
 menu.controller('AvatarMedecinCtrl', function ($scope, $state, $rootScope, $http) {
 	$rootScope.chemin = 'Accueil';
 	$rootScope.chemin3 = 'Choix Médecin';
+	$rootScope.suivant = false;
 
 	$scope.previous = function () {
 		$state.go('avatar');

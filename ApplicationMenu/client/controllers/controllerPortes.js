@@ -19,12 +19,13 @@ menu.controller('PortesCtrl', function ($scope,$state, $rootScope) {
 	$rootScope.chemin1 = 'Exercice des portes';
 	$rootScope.stateChemin1 = $state.current.name;
 	$rootScope.chemin2 = '';
+	$rootScope.chemin3 = '';
+	$rootScope.suivant = true;
 
 	$scope.suivant_click = function(type){
 			$state.go(type);
 	}
 	$scope.previous = function () {
-		// $http.get('/stop');
 		$state.go('mainMenu');
 	}
 });

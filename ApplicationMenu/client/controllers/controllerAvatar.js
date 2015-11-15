@@ -14,6 +14,7 @@ menu.controller('AvatarCtrl', function ($scope, $state, $rootScope, $http) {
 	$rootScope.chemin1 = 'Avatar';
 	$rootScope.stateChemin1 = $state.current.name;
 	$rootScope.chemin3 = '';
+	$rootScope.suivant = true;
 	var sexe = "F";
 
 	$scope.previous = function () {

@@ -30,9 +30,14 @@
 	</header>
 
 	<div class="row btn-group btn-breadcrumb">
-	    <a ui-sref="mainMenu" class="btn btn-default">{{chemin}}</a>
-	    <a ui-sref="{{stateChemin1}}" class="btn btn-default" ng-if="chemin1">{{chemin1}}</a>
-	    <a ui-sref="{{stateChemin2}}" class="btn btn-default" ng-if="chemin2">{{chemin2}}</a>
+	    <a ui-sref="mainMenu" class="btn btn-default" ng-if="suivant;">{{chemin}}</a>
+	    <a ui-sref="{{stateChemin1}}" class="btn btn-default" ng-if="chemin1 && suivant;">{{chemin1}}</a>
+	    <a ui-sref="{{stateChemin2}}" class="btn btn-default" ng-if="chemin2 && suivant;">{{chemin2}}</a>
+
+	    <a ng-click="exit()" class="btn btn-default" ng-if="(suivant == false);">{{chemin}}</a>
+	    <a ng-click="exit(stateChemin1)" class="btn btn-default" ng-if="chemin1 && (suivant == false);">{{chemin1}}</a>
+	    <a ng-click="exit(stateChemin2)" class="btn btn-default" ng-if="chemin2 && (suivant == false);">{{chemin2}}</a>
+
 	    <a href="" class="btn btn-default" ng-if="chemin3">{{chemin3}}</a>
 	</div>
 	<div ui-view></div>

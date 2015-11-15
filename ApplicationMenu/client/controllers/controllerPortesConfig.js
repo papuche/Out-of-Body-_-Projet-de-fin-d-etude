@@ -17,6 +17,7 @@ menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope, $
 	else	$rootScope.chemin2 = 'Portiques';
 	$rootScope.stateChemin2 = $state.current.name;
 	$rootScope.chemin3 = '';
+	$rootScope.suivant = true;
 
 	initDemiePorte = function() {
 		$scope.nbTailleLargeur =Number(window.localStorage["local_nbTailleLargeur"]) | 1;
@@ -58,7 +59,6 @@ menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope, $
 				testerH();
 			}
 			else{
-				console.log("envoyer les donnees !");
 				sendMessage();
 			}
 		}
@@ -67,7 +67,6 @@ menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope, $
 				testerH();
 			}
 			else{
-				console.log("envoyer les donnees !");
 				sendMessage();
 			}
 		}

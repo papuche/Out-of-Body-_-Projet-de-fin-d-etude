@@ -20,6 +20,7 @@ menu.controller('PortesRunCtrl', function ($scope,$state,$http, $rootScope, $doc
 	$rootScope.chemin = 'Accueil';
 	$rootScope.chemin3 = 'Application en cours';
 	$rootScope.stateChemin3 = 'runPortes';
+	$rootScope.suivant = false;
 
 	$scope.end_click = function () {
 		$http.get('stop');

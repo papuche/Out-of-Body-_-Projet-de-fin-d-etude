@@ -3,6 +3,8 @@ menu.controller('OobCtrl', function ($scope, $state, $http, $rootScope) {
 	$rootScope.chemin1 = 'Sortie de corps';
 	$rootScope.stateChemin1 = $state.current.name;
 	$rootScope.chemin2 = '';
+	$rootScope.chemin3 = '';
+	$rootScope.suivant = true;
 
 	$scope.morphing = false;
 	$scope.baton = false;
