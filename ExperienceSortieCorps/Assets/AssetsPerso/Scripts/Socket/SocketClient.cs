@@ -21,6 +21,8 @@ using UnityEngine;
 
 		private System.Diagnostics.Process _process;
 
+		private System.Diagnostics.Process _showIpProcess;
+
 		public static SocketClient GetInstance()
 		{
 			if (_instance == null)
@@ -51,7 +53,7 @@ using UnityEngine;
 
 		/*if (UnityEditor.EditorUtility.DisplayDialog ("Adresse IP de la machine", GetLocalIP() + ":" + Utils.SERVER_PORT, "Ouvrir la page", "Quitter"))
 			Application.OpenURL("http://" + Utils.SERVER_IP + ":" + Utils.SERVER_PORT);*/
-		System.Diagnostics.Process.Start ("ShowIp");
+		_showIpProcess = System.Diagnostics.Process.Start ("ShowIp");
 	}
 
 	private void LaunchThreadConnect() {
@@ -94,11 +96,17 @@ using UnityEngine;
 			}
 		}
 
-		public void StopNodeServer() {
+		private void StopNodeServer() {
 			foreach (System.Diagnostics.Process p in System.Diagnostics.Process.GetProcessesByName("node")) {
 				p.Kill ();
 			}
 		}
+
+	public void StopAllProcess(){
+		StopNodeServer ();
+		if(!_showIpProcess.HasExited)
+			_showIpProcess.Kill ();
+	}
 
 			private void Receive()
 		{
