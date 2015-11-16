@@ -3,7 +3,7 @@ menu.controller('PortesRunCtrl', function ($scope,$state,$http, $rootScope, $doc
 		if($state.current.name !== 'runPortes')
 			return;
 		$http.get('/porte').then(function(resp){
-			console.log(resp);
+			//console.log(resp);
 			$state.go('mainMenu');
 			return;
 		});

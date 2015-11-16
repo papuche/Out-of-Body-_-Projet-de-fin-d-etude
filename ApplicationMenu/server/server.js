@@ -21,17 +21,18 @@ app.get('/', function(req, res){
 app.use(express.static(__dirname+"/.."));
 app.listen(HTTP_PORT);
 
+	
 var server = net.createServer(function (socket) {
     clients_unity.push(socket);
-
+	
     socket.on('close', function(e) {
         clients_unity.splice(clients_unity.indexOf(socket), 1);
     });
 
     socket.on('data', function(data) {
       if (data.toString() === "door_finish") {
-        console.log("requete doors finished");
-        dors_finish = true;
+		  console.log(data.toString());
+        door_finish = true;
       }
     });
 
@@ -43,22 +44,23 @@ var server = net.createServer(function (socket) {
     getAndSendWithoutParams('M_avatar');
     getAndSendWithoutParams('F_avatar');
 
-    requestDoorsFinish();
+	requestDoorsFinish();
 
     getAndSendWithParams('e');
     getAndSendWithParams('db');
     getAndSendWithParams('dh');
-	  getAndSendWithParams('oob');
+	getAndSendWithParams('oob');
     getAndSendWithParams('validerAvatar');
-});
-server.listen(UNITY_PORT);
+}).listen(UNITY_PORT);
 
 function requestDoorsFinish() {
   app.get('/porte', function(req, res) {
-    console.log(""ici"");
     if (door_finish == true) {
       door_finish = false;
-    }
+	  res.end();
+    } else {
+		res.sendStatus(403);
+	}
   });
 }
 
