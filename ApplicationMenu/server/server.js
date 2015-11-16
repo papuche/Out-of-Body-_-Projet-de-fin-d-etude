@@ -30,46 +30,46 @@ var server = net.createServer(function (socket) {
 
     socket.on('data', function(data) {
       if (data.toString() === "door_finish") {
-        door_finish = true;
+        console.log("requete doors finished");
+        dors_finish = true;
       }
     });
 
     process.on('uncaughtException', function (err) {});
 
-    getAndSendWithoutParams(socket, 'avatar');
-    getAndSendWithoutParams(socket, 'exit');
-    getAndSendWithoutParams(socket, 'stop');
-    getAndSendWithoutParams(socket, 'M_avatar');
-    getAndSendWithoutParams(socket, 'F_avatar');
+    getAndSendWithoutParams('avatar');
+    getAndSendWithoutParams('exit');
+    getAndSendWithoutParams('stop');
+    getAndSendWithoutParams('M_avatar');
+    getAndSendWithoutParams('F_avatar');
 
-    requestDoorFinish(socket);
+    requestDoorsFinish();
 
-    getAndSendWithParams(socket, 'e');
-    getAndSendWithParams(socket, 'db');
-    getAndSendWithParams(socket, 'dh');
-	getAndSendWithParams(socket, 'oob');
-    getAndSendWithParams(socket, 'validerAvatar');
+    getAndSendWithParams('e');
+    getAndSendWithParams('db');
+    getAndSendWithParams('dh');
+	  getAndSendWithParams('oob');
+    getAndSendWithParams('validerAvatar');
 });
 server.listen(UNITY_PORT);
 
-function requestDoorFinish(socket) {
-    app.get('/porte', function(req, res) {
-        if (door_finish == true) {
-            door_finish = false
-            res.send("Fin de porte.");
-            res.end();
-        }
-    });
-};
+function requestDoorsFinish() {
+  app.get('/porte', function(req, res) {
+    console.log(""ici"");
+    if (door_finish == true) {
+      door_finish = false;
+    }
+  });
+}
 
-function getAndSendWithoutParams(socket, url) {
+function getAndSendWithoutParams(url) {
     app.get('/' + url, function(req, res) {
         clients_unity[0].write(url);
         res.end();
     });
 }
 
-function getAndSendWithParams(socket, url) {
+function getAndSendWithParams(url) {
     url += "/:values";
     app.get('/' + url, function(req, res) {
         var send = req.originalUrl.replace('/', '');
