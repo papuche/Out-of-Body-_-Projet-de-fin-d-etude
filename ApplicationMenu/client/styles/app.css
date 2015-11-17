@@ -4,18 +4,39 @@ h1{
 	color : blue;
 	font-size: 50px;
 }
-input.bigButton{
-	display:inline-block;
-	height: 100px;
-    float:none;
-    text-align:center;
-    font-size: 150%;
-}
+
+
 .btn_row{
-	margin-top: 50px;
-	text-align: center;
 }
 .exit_row{
     float:right;
-	margin-top: 60px;
+	margin-top: 20px;
+}
+
+@media (min-width: 767px) {
+	input.bigButton{
+		display:inline-block;
+		height: 20vw;
+	    float:none;
+	    text-align:center;
+	    font-size: 2vw;
+	    margin-top: 50px;
+	    margin-bottom: 40px;
+	    padding-left: 2px;
+	    padding-right: 2px;
+	}
+}
+
+@media (max-width: 767px) {
+	input.bigButton{
+		display:inline-block;
+		height: 25vw;
+	    float:none;
+	    text-align:center;
+	    font-size: 3vw;
+	    margin-top: 20px;
+	    margin-bottom: 20px;
+	    padding-left: 8px;
+	    padding-right: 2px;
+	}
 }
