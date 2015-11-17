@@ -2,14 +2,15 @@
 using System.Collections;
 
 public class InitMorphing : MonoBehaviour {
-
-	private GameObject _goSrc;
 	
-	private float _speed=0.016f;
 	[SerializeField]
 	private Material _jeanGhost;
 	[SerializeField]
 	private Material _shirtGhost;
+
+	private float _speed = 0.016f;
+
+	private GameObject _goSrc;
 
 	private GameObject _jean;
 	private GameObject _shirt;

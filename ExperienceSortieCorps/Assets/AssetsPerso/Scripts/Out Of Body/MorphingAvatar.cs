@@ -21,19 +21,19 @@ public class MorphingAvatar : MonoBehaviour {
 
 		_initDone = true;
 		if (dstMesh == null) {
-			Debug.Log ("dstMesh est null");
+			//Debug.Log ("dstMesh est null");
 			_initDone = false;
 			return;
 		}
 
 		if (srcMesh == null) {
-			Debug.Log ("srcMesh est null");
+			//Debug.Log ("srcMesh est null");
 			_initDone = false;
 			return;
 		}
 
 		if (dstMesh.vertexCount != srcMesh.vertexCount) {
-			Debug.Log ("nombre de vertex different");
+			//Debug.Log ("nombre de vertex different");
 			_initDone = false;
 			return;
 		}

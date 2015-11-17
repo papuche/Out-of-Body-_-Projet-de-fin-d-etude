@@ -52,7 +52,7 @@ public class Morphing : MonoBehaviour {
 		{
 			if (m_Meshes[i] == null)
 			{	
-				Debug.Log("MeshMorpher mesh  " + i + " has not been setup correctly");
+				//Debug.Log("MeshMorpher mesh  " + i + " has not been setup correctly");
 				m_AnimateAutomatically = false;
 				return;
 			}
@@ -61,7 +61,7 @@ public class Morphing : MonoBehaviour {
 		//  At least two meshes
 		if (m_Meshes.Length < 2)
 		{
-			Debug.Log ("The mesh morpher needs at least 2 source meshes");
+			//Debug.Log ("The mesh morpher needs at least 2 source meshes");
 			m_AnimateAutomatically = false;
 			return;
 		}
@@ -69,13 +69,13 @@ public class Morphing : MonoBehaviour {
 		filter.sharedMesh = m_Meshes[0];
 		m_Mesh = filter.mesh;
 		int vertexCount = m_Mesh.vertexCount;
-		Debug.Log (m_Mesh.vertexCount);
+		//Debug.Log (m_Mesh.vertexCount);
 		for (int i=0;i<m_Meshes.Length;i++)
 		{
-			Debug.Log (m_Meshes[i].vertexCount);
+			//Debug.Log (m_Meshes[i].vertexCount);
 			if (m_Meshes[i].vertexCount != vertexCount)
 			{	
-				Debug.Log("Mesh " + i + " doesn't have the same number of vertices as the first mesh");
+				//Debug.Log("Mesh " + i + " doesn't have the same number of vertices as the first mesh");
 				m_AnimateAutomatically = false;
 				return;
 			}
