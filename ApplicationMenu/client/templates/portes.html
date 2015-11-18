@@ -1,22 +1,16 @@
 <!DOCTYPE html>
 <section  ng-controller="PortesCtrl">
 
-	<link rel="stylesheet" type="text/css" href="client/styles/portes.css">
-
-	<br/>
-	<div class="btn_row">
+	<div class="row-centered">
 		<input type="button" ng-click='suivant_click("entiere")' value="Portes entières" 
-			class="btn_config col-sm-3 col-sm-offset-0 col-xs-10 col-xs-offset-1 btn_portes btn btn-default"/>
+			class="btn_config col-sm-3 col-sm-offset-0 col-xs-10 btn_portes btn btn-default"/>
 
 		<input type="button" ng-click='suivant_click("demi_haut")' value="Etagères" 
-			class="btn_config col-sm-3 col-sm-offset-1 col-xs-10 col-xs-offset-1 btn_portes btn btn-default"/>
+			class="btn_config col-sm-3 col-sm-offset-1 col-xs-10 btn_portes btn btn-default"/>
 
 		<input type="button" ng-click='suivant_click("demi_bas")' value="Portiques" 
-			class="btn_config col-sm-3 col-sm-offset-1 col-xs-10 col-xs-offset-1 btn_portes btn btn-default"/>
+			class="btn_config col-sm-3 col-sm-offset-1 col-xs-10 btn_portes btn btn-default"/>
 	</div>
-	<br/>
-	<div class="previous_row">
-		<input type="button" ng-click="previous()" value="Retour" 
-				class="btn_config col-sm-2 col-sm-offset-1 col-xs-3 col-xs-offset-1"></input>
-	</div>
+	<input type="button" ng-click="previous()" value="Retour" 
+			class="btn_config col-sm-1 col-sm-offset-0 col-xs-2 col-xs-offset-1 previous_row btn btn-default">
 </section>
