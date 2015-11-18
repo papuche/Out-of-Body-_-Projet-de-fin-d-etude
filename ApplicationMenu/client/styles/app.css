@@ -1,10 +1,11 @@
 @import "breadcrumb.css";
-
+.row-centered {
+    text-align:center;
+}
 .btn_config {
     border-radius: 10px;
 	background-color: beige;	
 }
-
 .exit_row{
     float:right;
 	margin-top: 20px;
