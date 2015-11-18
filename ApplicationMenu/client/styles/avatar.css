@@ -13,27 +13,3 @@ input[type=radio]{
 	margin: 20px;
     word-wrap: break-word;
 }
-.btn-icon.right{
-	float: right;
-}
-
-@media (min-width: 767px) {
-	.btn-icon{
-		word-wrap: break-word;
-		font-size: 1.2vw;
-		color:grey;
-		border-width: 1px;
-		border-color: grey;
-		margin: 40px;
-	}
-}
-@media (max-width: 767px) {
-	.btn-icon {
-		word-wrap: break-word;
-		font-size: 4vw;
-		color:grey;
-		border-width: 1px;
-		border-color: grey;
-		margin: 20px;
-	}
-}

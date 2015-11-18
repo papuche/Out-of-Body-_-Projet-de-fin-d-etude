@@ -22,6 +22,9 @@
 .all-breadcrumb{
 	margin: 10px;
 }
+.btn-icon.right{
+	float: right;
+}
 
 @media (min-width: 767px) {
 	h1{
@@ -41,6 +44,14 @@
 	    margin-bottom: 40px;
 	    padding-left: 2px;
 	    padding-right: 2px;
+	}
+	.btn-icon{
+		word-wrap: break-word;
+		font-size: 1.2vw;
+		color:grey;
+		border-width: 1px;
+		border-color: grey;
+		margin: 40px;
 	}
 }
 
@@ -62,5 +73,13 @@
 	    margin-bottom: 20px;
 	    padding-left: 8px;
 	    padding-right: 2px;
+	}
+	.btn-icon {
+		word-wrap: break-word;
+		font-size: 4vw;
+		color:grey;
+		border-width: 1px;
+		border-color: grey;
+		margin: 20px;
 	}
 }
