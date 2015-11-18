@@ -1,7 +1,10 @@
 @import "breadcrumb.css";
 
-.btn_row{
+.btn_config {
+    border-radius: 10px;
+	background-color: beige;	
 }
+
 .exit_row{
     float:right;
 	margin-top: 20px;
