@@ -51,7 +51,7 @@ public class InitSceneDoors : MonoBehaviour {
 	private bool _next = false;
 	private bool _stop;
 
-	private string _doorType;
+	private int _doorType;
 
 	void Start () {
 		string doors = PlayerPrefs.GetString (Utils.PREFS_DOORS);
@@ -131,8 +131,7 @@ public class InitSceneDoors : MonoBehaviour {
 					_text.GetComponent<Text>().text = _nbAnswers.ToString() + "/" + _nbDoors.ToString();
 				} else {
 					_stop=true;
-					createXML();
-					createTxT();
+					CreateResultFile();
 
 					SocketClient.GetInstance().Write(Utils.SOCKET_END_DOOR);	// Envoi de la trame de fin d'exercice des portes au client
 					Application.LoadLevel(Utils.WAITING_SCENE);
@@ -153,7 +152,7 @@ public class InitSceneDoors : MonoBehaviour {
 
 		int nbWidth = int.Parse(resSocket.Split ('_') [1]);
 		int nbHeight;
-		if(!_doorType.Equals(FilesConst.FULL_DOOR))
+		if(_doorType != FilesConst.FULL_DOOR)
 			nbHeight = 0;
 		else
 			nbHeight = int.Parse(resSocket.Split ('_') [3]);
@@ -239,49 +238,49 @@ public class InitSceneDoors : MonoBehaviour {
 		int sujet = PlayerPrefs.GetInt (Utils.PREFS_SUJET, 0);
 		int condition = PlayerPrefs.GetInt (Utils.PREFS_CONDITION);
 		foreach (bool answer in _answers) {
-			file.WriteLine (sujet.ToString () + "\t" + condition.ToString () + "\t" + essai.ToString () + "\t" + _doorType + "\t" + _ordreOuverture [essai - 1].width.ToString() + "\t" + _ordreOuverture [essai - 1].height.ToString() + "\t" + (answer == true ? "1" : "0") + "\t" + modelSrcvalue + "\t" + modelDstvalue + "\t" + modelDiffvalue);
+			file.WriteLine (sujet.ToString () + "\t" + condition.ToString () + "\t" + essai.ToString () + "\t" + _doorType.ToString() + "\t" + _ordreOuverture [essai - 1].width.ToString() + "\t" + _ordreOuverture [essai - 1].height.ToString() + "\t" + (answer == true ? "1" : "0") + "\t" + modelSrcvalue + "\t" + modelDstvalue + "\t" + modelDiffvalue);
 			essai++;
 		}
 		file.Close ();
 	}
 
+	void CreateResultFile(){
+		if (!PlayerPrefs.GetString (Utils.PREFS_PATH_FOLDER).Equals ("")) {
+			string dir = PlayerPrefs.GetString (Utils.PREFS_PATH_FOLDER);
+			string username = dir.Remove (0, dir.LastIndexOf('\\') + 1).Split ('_')[0];
+
+			string modelSrcvalue;
+			string modelDstvalue;
+			string modelDiffvalue;
+			if (_modelSrcValues != null) {
+				modelSrcvalue = _modelSrcValues [0].ToString () + "\t" + _modelSrcValues [1].ToString () + "\t" + _modelSrcValues [2].ToString ();
+				modelDstvalue = _modelDstValues [0].ToString () + "\t" + _modelDstValues [1].ToString () + "\t" + _modelDstValues [2].ToString ();
+				modelDiffvalue = _differenceModels [0].ToString () + "\t" + _differenceModels [1].ToString () + "\t" + _differenceModels [2].ToString ();
+			} else {
+				modelSrcvalue = "0\t0\t0";
+				modelDstvalue = "0\t0\t0";
+				modelDiffvalue = "0\t0\t0";
+			}
+			string filename = Path.Combine(dir, username + ".txt");
+			StreamWriter file = null;
+			if(!File.Exists(filename)) {
+				file = new StreamWriter (filename, true);
+				file.WriteLine ("Essai\tCondition\tType de porte\tLargeur de porte\tHauteur de porte\tReponse\tCorpulence utilisateur\t \t \tCorpulence docteur\t \t \tDifference de corpulence\t \t \tTemps de reponse");
+			} else {
+				file = new StreamWriter (filename, true);
+			}
+
+			int condition = PlayerPrefs.GetInt (Utils.PREFS_CONDITION);
+			for (int i=0; i < _ordreOuverture.Count; i++) {
+				file.WriteLine ((i + 1).ToString () + "\t" + condition.ToString () + "\t" + _doorType.ToString() + "\t" + _ordreOuverture [i].width.ToString() + "\t" + _ordreOuverture [i].height.ToString() + "\t" + (_answers[i] == true ? "1" : "0") + "\t" + modelSrcvalue + "\t" + modelDstvalue + "\t" + modelDiffvalue + "\t" + _ordreOuverture[i].time.ToString());
+			}
+			file.Close ();
+		}
+	}
+
 	void Reponse(bool rep){
 		_answers.Add (rep);
 		_next = true;
-	}
-
-	void createXML(){
-		if (PlayerPrefs.GetString (Utils.PREFS_PATH_FOLDER).Equals ("")) {
-			if (!Directory.Exists (FilesConst.SAVE_FILES_DIRECTORY)) {	// Si le répertoire contenant les résultats n'existent pas
-				Directory.CreateDirectory (FilesConst.SAVE_FILES_DIRECTORY);	// On le crée
-			}
-			int dirIndex = 0;
-			foreach (string directory in Directory.GetDirectories(FilesConst.SAVE_FILES_DIRECTORY)) {
-				string dir = directory.Remove (0, FilesConst.SAVE_FILES_DIRECTORY.Length + 1);
-				if (dir.Contains (FilesConst.USER_PREFIX_DIRECTORY) && int.Parse (dir.Remove (0, FilesConst.USER_PREFIX_DIRECTORY.Length)) > dirIndex)
-					dirIndex = int.Parse (dir.Remove (0, FilesConst.USER_PREFIX_DIRECTORY.Length));
-			}
-			PlayerPrefs.SetString (Utils.PREFS_PATH_FOLDER, Directory.CreateDirectory (FilesConst.SAVE_FILES_DIRECTORY + "/" + FilesConst.USER_PREFIX_DIRECTORY + (dirIndex + 1).ToString ()).FullName);
-		}
-		XmlDocument xmlDoc = new XmlDocument ();
-		XmlElement root = (XmlElement)xmlDoc.AppendChild(xmlDoc.CreateElement(FilesConst.ROOT_NODE));
-		root.SetAttribute ("Type", _doorType);
-
-		for (int i=0; i<_ordreOuverture.Count; i++) {
-			XmlElement el = (XmlElement)root.AppendChild(xmlDoc.CreateElement(FilesConst.OPENING_NODE));
-			el.AppendChild(xmlDoc.CreateElement(FilesConst.WIDTH_NODE)).InnerText = _ordreOuverture[i].width.ToString();
-			if(_doorType.Equals(FilesConst.FULL_DOOR)) {
-				el.AppendChild(xmlDoc.CreateElement(FilesConst.HEIGHT_NODE)).InnerText = _ordreOuverture[i].height.ToString();
-			}
-			if(_answers[i]) {
-				el.AppendChild(xmlDoc.CreateElement(FilesConst.ANSWER_NODE)).InnerText = FilesConst.ANSWER_YES;
-			} else {
-				el.AppendChild(xmlDoc.CreateElement(FilesConst.ANSWER_NODE)).InnerText = FilesConst.ANSWER_NO;
-			}
-			el.AppendChild(xmlDoc.CreateElement(FilesConst.TIME_ANSWER_NODE)).InnerText = _ordreOuverture[i].time.ToString();
-		}
-		xmlDoc.Save(Path.Combine(PlayerPrefs.GetString (Utils.PREFS_PATH_FOLDER), _fileName + FilesConst.FILE_EXTENSION));
-
 	}
 
 	float[] ReadModelsValue(string name){
