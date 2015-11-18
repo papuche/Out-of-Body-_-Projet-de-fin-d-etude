@@ -2,15 +2,12 @@
 	public readonly static string PREFS_LAUNCH_MODEL = "launchModel";
 	public readonly static string PREFS_AVATAR_GENDER = "avatarGender";
 
-	public readonly static string PREFS_BATON = "baton";
-	public readonly static string PREFS_MORPHING = "morphing";
 	public readonly static string PREFS_GHOST = "ghost";
 
 	public readonly static string PREFS_VALIDATE_AVATAR = SOCKET_VALIDATE;
 	public readonly static string PREFS_PATH_FOLDER = "path_folder";
 
 	public readonly static string PREFS_CONDITION = "Condition";
-	public readonly static string PREFS_SUJET = "Sujet";
 	public readonly static string PREFS_SESSION = "Session";
 
 	public readonly static string PREFS_MODEL = "Model";

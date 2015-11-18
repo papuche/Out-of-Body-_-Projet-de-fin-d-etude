@@ -72,8 +72,6 @@ public class ReceiveSocket : MonoBehaviour
 				int morphing = int.Parse(parameters[1]);
 				int ghost = int.Parse(parameters[2]);
 
-				PlayerPrefs.SetInt(Utils.PREFS_BATON, baton);
-				PlayerPrefs.SetInt(Utils.PREFS_MORPHING, morphing);
 				PlayerPrefs.SetInt(Utils.PREFS_GHOST, ghost);
 				PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
 

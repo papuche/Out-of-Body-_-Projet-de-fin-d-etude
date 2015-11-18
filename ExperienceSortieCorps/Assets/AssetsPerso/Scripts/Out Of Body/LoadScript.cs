@@ -22,23 +22,36 @@ public class LoadScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		_camera.gameObject.SetActive (false);
-		int launchModel = PlayerPrefs.GetInt (Utils.PREFS_LAUNCH_MODEL);
-		if (launchModel == 0) {
-			//_selectModel.SetActive (true);
+		if (PlayerPrefs.GetInt (Utils.PREFS_LAUNCH_MODEL) == 0) {
 			_scene.AddComponent<SelectModel> ().posAvatar = _posAvatar;
 		} else {
-			//_scene.AddComponent<InitModel> ().posAvatar = _posAvatar;
 			_initModel.SetActive (true);
-			if (PlayerPrefs.GetInt(Utils.PREFS_BATON) == 1)
-				_baton.SetActive (true);
-			if (PlayerPrefs.GetInt(Utils.PREFS_MORPHING) == 1) {
-				//_launchMorphing.SetActive (true);
-				InitMorphing initMorphing = _scene.AddComponent<InitMorphing>();
-				initMorphing.jeanGhost = _jeanGhost;
-				initMorphing.shirtGhost = _shirtGhost;
+			switch (PlayerPrefs.GetInt (Utils.PREFS_CONDITION)) {
+			case 1:
+				break;
+			case 2:
+				EnableMorphing();
+				break;
+			case 3:
+				EnableBaton();
+				break;
+			case 4:
+				EnableMorphing();
+				EnableBaton();
+				break;
 			}
 		}
 		_camera.gameObject.SetActive (true);
+	}
+
+	void EnableBaton(){
+		_baton.SetActive (true);
+	}
+
+	void EnableMorphing(){
+		InitMorphing initMorphing = _scene.AddComponent<InitMorphing>();
+		initMorphing.jeanGhost = _jeanGhost;
+		initMorphing.shirtGhost = _shirtGhost;
 	}
 
 	public GameObject baton {
