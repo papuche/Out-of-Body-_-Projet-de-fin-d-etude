@@ -1,20 +1,27 @@
 @import "breadcrumb.css";
 
-h1{
-	color : blue;
-	font-size: 50px;
-}
-
-
 .btn_row{
 }
 .exit_row{
     float:right;
 	margin-top: 20px;
 }
+.bandeau{
+	background-color: #ededef;
+	margin-bottom: 20px;
+}
+.all-breadcrumb{
+	margin: 10px;
+}
 
 @media (min-width: 767px) {
-	input.bigButton{
+	h1{
+	color :#73738c;
+	font-size: 50px;
+	font-family: serif;
+	text-align:center;
+	}
+	input.btn_home{
 		display:inline-block;
 		height: 20vw;
 	    float:none;
@@ -29,7 +36,13 @@ h1{
 }
 
 @media (max-width: 767px) {
-	input.bigButton{
+	h1{
+	color :#73738c;
+	font-size: 8vw;
+	font-family: serif;
+	text-align:center;
+	}
+	input.btn_home{
 		display:inline-block;
 		height: 25vw;
 	    float:none;
