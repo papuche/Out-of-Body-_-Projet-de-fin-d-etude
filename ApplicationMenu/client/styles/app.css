@@ -1,11 +1,15 @@
 @import "breadcrumb.css";
 @import "portes.css";
+@import "avatar.css";
+
 .row-centered {
     text-align:center;
 }
 .btn_config {
     border-radius: 10px;
 	background-color: beige;	
+	border-color: grey;
+	border-width: 1px;
 }
 .exit_row{
     float:right;
