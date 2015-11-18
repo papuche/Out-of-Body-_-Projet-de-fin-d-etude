@@ -7,7 +7,7 @@ public class InitModel : MonoBehaviour {
 
 	private GameObject _goSrc;
 
-	void Start(){
+	void Awake(){
 		string[] model = PlayerPrefs.GetString (Utils.PREFS_MODEL).Split(';');
 		_goSrc = (GameObject)Instantiate(Resources.Load(model[0]));
 		_goSrc.transform.parent = _posAvatar.transform;

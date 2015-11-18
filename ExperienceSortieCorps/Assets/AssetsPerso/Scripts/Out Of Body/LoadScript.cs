@@ -14,7 +14,10 @@ public class LoadScript : MonoBehaviour {
 	[SerializeField]
 	private Material _jeanGhost;
 	[SerializeField]
-	private Material _shirtGhost; 
+	private Material _shirtGhost;
+
+	[SerializeField]
+	private GameObject _initModel;
 
 	// Use this for initialization
 	void Start () {
@@ -24,8 +27,8 @@ public class LoadScript : MonoBehaviour {
 			//_selectModel.SetActive (true);
 			_scene.AddComponent<SelectModel> ().posAvatar = _posAvatar;
 		} else {
-			_scene.AddComponent<InitModel> ().posAvatar = _posAvatar;
-			//_initModel.SetActive (true);
+			//_scene.AddComponent<InitModel> ().posAvatar = _posAvatar;
+			_initModel.SetActive (true);
 			if (PlayerPrefs.GetInt(Utils.PREFS_BATON) == 1)
 				_baton.SetActive (true);
 			if (PlayerPrefs.GetInt(Utils.PREFS_MORPHING) == 1) {
@@ -70,6 +73,12 @@ public class LoadScript : MonoBehaviour {
 	public Material shirtGhost {
 		set {
 			_shirtGhost = value;
+		}
+	}
+
+	public GameObject initModel {
+		set {
+			_initModel = value;
 		}
 	}
 }
