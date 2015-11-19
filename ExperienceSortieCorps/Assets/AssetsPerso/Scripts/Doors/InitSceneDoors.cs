@@ -131,7 +131,11 @@ public class InitSceneDoors : MonoBehaviour {
 					_text.GetComponent<Text>().text = _nbAnswers.ToString() + "/" + _nbDoors.ToString();
 				} else {
 					_stop=true;
-					CreateResultFile();
+
+					string dir = PlayerPrefs.GetString (Utils.PREFS_PATH_FOLDER);
+					string username = dir.Remove (0, dir.LastIndexOf('\\') + 1).Split ('_')[0];
+					CreateResultFile(dir, username);
+					createTxT(username);
 
 					SocketClient.GetInstance().Write(Utils.SOCKET_END_DOOR);	// Envoi de la trame de fin d'exercice des portes au client
 					Application.LoadLevel(Utils.WAITING_SCENE);
@@ -220,38 +224,84 @@ public class InitSceneDoors : MonoBehaviour {
 		_xmlModel.LoadXml(textXml.text);
 	}
 
-	void CreateResultFile(){
-		if (!PlayerPrefs.GetString (Utils.PREFS_PATH_FOLDER).Equals ("")) {
-			string dir = PlayerPrefs.GetString (Utils.PREFS_PATH_FOLDER);
-			string username = dir.Remove (0, dir.LastIndexOf('\\') + 1).Split ('_')[0];
-
-			string modelSrcvalue;
-			string modelDstvalue;
-			string modelDiffvalue;
-			if (_modelSrcValues != null) {
-				modelSrcvalue = _modelSrcValues [0].ToString () + "\t" + _modelSrcValues [1].ToString () + "\t" + _modelSrcValues [2].ToString ();
-				modelDstvalue = _modelDstValues [0].ToString () + "\t" + _modelDstValues [1].ToString () + "\t" + _modelDstValues [2].ToString ();
-				modelDiffvalue = _differenceModels [0].ToString () + "\t" + _differenceModels [1].ToString () + "\t" + _differenceModels [2].ToString ();
-			} else {
-				modelSrcvalue = "0\t0\t0";
-				modelDstvalue = "0\t0\t0";
-				modelDiffvalue = "0\t0\t0";
-			}
-			string filename = Path.Combine(dir, username + ".txt");
-			StreamWriter file = null;
-			if(!File.Exists(filename)) {
-				file = new StreamWriter (filename, true);
-				file.WriteLine ("Essai\tCondition\tType de porte\tLargeur de porte\tHauteur de porte\tReponse\tCorpulence utilisateur\t \t \tCorpulence docteur\t \t \tDifference de corpulence\t \t \tTemps de reponse");
-			} else {
-				file = new StreamWriter (filename, true);
-			}
-
-			int condition = PlayerPrefs.GetInt (Utils.PREFS_CONDITION);
-			for (int i=0; i < _ordreOuverture.Count; i++) {
-				file.WriteLine ((i + 1).ToString () + "\t" + condition.ToString () + "\t" + _doorType.ToString() + "\t" + _ordreOuverture [i].width.ToString() + "\t" + _ordreOuverture [i].height.ToString() + "\t" + (_answers[i] == true ? "1" : "0") + "\t" + modelSrcvalue + "\t" + modelDstvalue + "\t" + modelDiffvalue + "\t" + _ordreOuverture[i].time.ToString());
-			}
-			file.Close ();
+	void CreateResultFile(string dir, string username){
+		string modelSrcvalue;
+		string modelDstvalue;
+		string modelDiffvalue;
+		if (_modelSrcValues != null) {
+			modelSrcvalue = _modelSrcValues [0].ToString () + "\t" + _modelSrcValues [1].ToString () + "\t" + _modelSrcValues [2].ToString ();
+			modelDstvalue = _modelDstValues [0].ToString () + "\t" + _modelDstValues [1].ToString () + "\t" + _modelDstValues [2].ToString ();
+			modelDiffvalue = _differenceModels [0].ToString () + "\t" + _differenceModels [1].ToString () + "\t" + _differenceModels [2].ToString ();
+		} else {
+			modelSrcvalue = "0\t0\t0";
+			modelDstvalue = "0\t0\t0";
+			modelDiffvalue = "0\t0\t0";
 		}
+		string filename = Path.Combine(dir, username + ".txt");
+		StreamWriter file = null;
+		if(!File.Exists(filename)) {
+			file = new StreamWriter (filename, true);
+			file.WriteLine ("Essai\tCondition\tType de porte\tLargeur de porte\tHauteur de porte\tReponse\tCorpulence utilisateur\t \t \tCorpulence docteur\t \t \tDifference de corpulence\t \t \tTemps de reponse");
+		} else {
+			file = new StreamWriter (filename, true);
+		}
+		int condition = PlayerPrefs.GetInt (Utils.PREFS_CONDITION);
+		for (int i=0; i < _ordreOuverture.Count; i++) {
+			file.WriteLine ((i + 1).ToString () + "\t" + condition.ToString () + "\t" + _doorType.ToString() + "\t" + _ordreOuverture [i].width.ToString() + "\t" + _ordreOuverture [i].height.ToString() + "\t" + (_answers[i] == true ? "1" : "0") + "\t" + modelSrcvalue + "\t" + modelDstvalue + "\t" + modelDiffvalue + "\t" + _ordreOuverture[i].time.ToString());
+		}
+		file.Close ();
+	}
+
+	void createTxT(string username){
+		string modelSrcvalue;
+		string modelDstvalue;
+		string modelDiffvalue;
+		if (_modelSrcValues != null) {
+			modelSrcvalue = _modelSrcValues [0].ToString () + "\t" + _modelSrcValues [1].ToString () + "\t" + _modelSrcValues [2].ToString ();
+			modelDstvalue = _modelDstValues [0].ToString () + "\t" + _modelDstValues [1].ToString () + "\t" + _modelDstValues [2].ToString ();
+			modelDiffvalue = _differenceModels [0].ToString () + "\t" + _differenceModels [1].ToString () + "\t" + _differenceModels [2].ToString ();
+		} else {
+			modelSrcvalue = "0\t0\t0";
+			modelDstvalue = "0\t0\t0";
+			modelDiffvalue = "0\t0\t0";
+		}
+		
+		string fileName = Path.Combine (FilesConst.SAVE_FILES_DIRECTORY, FilesConst.FILENAME_RESULT_TXT);
+		StreamWriter fileWritter = null; 
+		
+		string SEPERATOR = "\t";
+		
+		if (!File.Exists (fileName)) {
+			fileWritter = new StreamWriter (fileName);
+			fileWritter.WriteLine ("Participant" + SEPERATOR + 
+			                       "Choix patient" + SEPERATOR + SEPERATOR + SEPERATOR + 
+			                       "Choix experimentateur" + SEPERATOR + SEPERATOR + SEPERATOR + 
+			                       "Difference corpulence" + SEPERATOR + SEPERATOR + SEPERATOR + 
+			                       "Type porte" + SEPERATOR + 
+			                       "Moyenne largeur OUI" + SEPERATOR + SEPERATOR + SEPERATOR + SEPERATOR + 
+			                       "PSE" + SEPERATOR + SEPERATOR + SEPERATOR + SEPERATOR + 
+			                       "JND");
+			fileWritter.WriteLine (SEPERATOR + SEPERATOR + SEPERATOR + SEPERATOR + SEPERATOR + SEPERATOR +SEPERATOR + SEPERATOR + SEPERATOR + SEPERATOR + SEPERATOR +
+			                       "C1" + SEPERATOR + "C2" + SEPERATOR + "C3" + SEPERATOR + "C4" + SEPERATOR +
+			                       "C1" + SEPERATOR + "C2" + SEPERATOR + "C3" + SEPERATOR + "C4" + SEPERATOR + 
+			                       "C1" + SEPERATOR + "C2" + SEPERATOR + "C3" + SEPERATOR + "C4");
+		} else {
+			fileWritter = new StreamWriter (fileName, true);
+		}
+				
+		int nbOui = 0;
+		float moyenne = 0;
+		for (int i=0; i<_answers.Count; i++) {
+			if (_answers[i]) {
+				moyenne += _ordreOuverture[i].width;
+				nbOui ++;
+			}
+		}
+		moyenne = (nbOui > 0)? moyenne/nbOui : 0;
+		
+		fileWritter.WriteLine (username +SEPERATOR + modelSrcvalue + SEPERATOR + modelDstvalue + SEPERATOR + modelDiffvalue + SEPERATOR + _doorType + SEPERATOR + moyenne);
+
+		fileWritter.Close ();
 	}
 
 	void Reponse(bool rep){
