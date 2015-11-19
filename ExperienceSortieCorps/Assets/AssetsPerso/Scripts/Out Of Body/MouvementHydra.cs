@@ -3,133 +3,76 @@ using System.Collections;
 
 public class MouvementHydra : MonoBehaviour {
 	
-	public bool 				ActivateRotations;
-	public SixenseHands			Hand;
-	public Vector3				Sensitivity = new Vector3( 0.01f, 0.01f, 0.01f );
 	
-	protected Quaternion		m_initialRotation;
-	protected Vector3			m_initialPosition;
-	protected Vector3			m_baseControllerPosition;
+	[SerializeField]
+	private SixenseHands _hand;
+	[SerializeField]
+	private GameObject _avatarPosition;
 	
-	// Use this for initialization
+	private Vector3 _sensitivity = new Vector3( 0.001f, 0.001f, 0.001f );
+	private Quaternion m_initialRotation;
+	private Vector3 m_initialPosition;
+	
+	private Vector3 tmpPosition;
+	
+	
 	void Start () {
+		/***
+		 * TODO : Gérer le replacement du baton apres que l'avatar soit detecte par la kinect
+		 ***/ 
 		m_initialRotation = this.gameObject.transform.localRotation;
-		m_initialPosition = this.gameObject.transform.localPosition;
+		_avatarPosition = _avatarPosition.transform.FindChild (PlayerPrefs.GetString (Utils.PREFS_MODEL).Split (';') [0].Split ('/') [2]).gameObject;
+		m_initialPosition = _avatarPosition.transform.localPosition;
+		m_initialPosition.y += 0.8f;
+		m_initialPosition.z -= 0.28f;
+		
+		tmpPosition = m_initialPosition;
+		
+		gameObject.GetComponentInChildren<MeshRenderer>().enabled = true;
 	}
 	
-	// Update is called once per frame
 	void Update () {
-		if ( Hand == SixenseHands.UNKNOWN )
+		if ( _hand != SixenseHands.UNKNOWN )
 		{
-			return;
-		}
-		
-		SixenseInput.Controller controller = SixenseInput.GetController( Hand );
-		if ( controller != null && controller.Enabled )  
-		{		
-			UpdateObject(controller);
+			SixenseInput.Controller controller = SixenseInput.GetController( _hand );
+			if ( controller != null && controller.Enabled ) { 
+				UpdatePosition(controller);
+				UpdateRotation(controller);
+			}
 		}
 	}
 	
-	/*void OnGUI()
+	void UpdatePosition(SixenseInput.Controller controller)
 	{
-		if ( !m_enabled )
-		{
-			GUI.Box( new Rect( Screen.width / 2 - 100, Screen.height - 40, 200, 30 ),  "Press Start To Move/Rotate" );
+		Vector3 controllerPosition = new Vector3(controller.Position.x * _sensitivity.x, controller.Position.y * _sensitivity.y, controller.Position.z * _sensitivity.z);
+		
+		if (controller.GetButtonDown (SixenseButtons.TRIGGER)) 
+			tmpPosition = m_initialPosition - controllerPosition;
+		
+		this.gameObject.transform.localPosition = tmpPosition + controllerPosition;
+	}
+	
+	void UpdateRotation(SixenseInput.Controller controller) {
+		Quaternion controllerRotation = new Quaternion( controller.Rotation.x, controller.Rotation.y, controller.Rotation.z, controller.Rotation.w);		
+		
+		this.gameObject.transform.localRotation = m_initialRotation * controllerRotation;
+	}
+	
+	public GameObject avatarPosition {
+		get {
+			return _avatarPosition;
 		}
-	}*/
-	
-	
-	protected virtual void UpdateObject(  SixenseInput.Controller controller )
-	{
-
-			// enable position and orientation control
-
-			// delta controller position is relative to this point
-			m_baseControllerPosition = new Vector3( controller.Position.x * Sensitivity.x,
-			                                       controller.Position.y * Sensitivity.y,
-			                                       controller.Position.z * Sensitivity.z );
-			
-			// this is the new start position
-			m_initialPosition = this.gameObject.transform.localPosition;
-			
-			gameObject.GetComponentInChildren<MeshRenderer>().enabled = true;
-	
-		
-		/*if (m_enabled && controller.GetButtonDown (SixenseButtons.JOYSTICK)) 
-		{
-			this.gameObject.transform.Translate(0.0f,controller.JoystickY,controller.JoystickX);
-		}*/
-
-			///Déplacement du gameObject au joystick
-			m_initialPosition += new Vector3(0.0f,controller.JoystickY*0.01f,controller.JoystickX*0.01f);
-			Debug.Log(new Vector3(0.0f,controller.JoystickY,controller.JoystickX));
-			
-			//Déplacement en profondeur du gameObject via RB RT
-			if(controller.GetButton( SixenseButtons.BUMPER )){
-				m_initialPosition += new Vector3(0.005f,0.0f,0.0f);
-			}else if (controller.GetButton( SixenseButtons.TRIGGER )){
-				m_initialPosition -= new Vector3(0.005f,0.0f,0.0f);
-			}
-			
-			// Rotation suivant l'axe Y via les boutons 1 & 3
-			if(controller.GetButton( SixenseButtons.ONE )){
-				m_initialRotation.y += 0.005f;
-			}else if (controller.GetButton( SixenseButtons.THREE )){
-				m_initialRotation.y -= 0.005f;
-			}
-			
-			// Rotation suivant l'axe Z via les boutons 2 & 4
-			if(controller.GetButton( SixenseButtons.TWO )){
-				m_initialRotation.z += 0.005f;
-			}else if (controller.GetButton( SixenseButtons.FOUR )){
-				m_initialRotation.z -= 0.005f;
-			}
-			
-			// Modifie la sensibilité via les boutons 2 & 4
-			if(controller.GetButton( SixenseButtons.TWO )){
-				Sensitivity += new Vector3(0.00001f,0.00001f,0.00001f);
-				/*m_baseControllerPosition = new Vector3( -controller.Position.z * Sensitivity.x,
-				                                      	 controller.Position.y * Sensitivity.y,
-				                                      	 controller.Position.x * Sensitivity.z );*/
-			}else if (controller.GetButton( SixenseButtons.FOUR )){
-				if(Sensitivity.x > 0.0f){
-					Sensitivity -= new Vector3(0.00001f,0.00001f,0.00001f);
-					/*m_baseControllerPosition = new Vector3( -controller.Position.z * Sensitivity.x,
-				                                       	controller.Position.y * Sensitivity.y,
-				                                       	controller.Position.x * Sensitivity.z );*/
-				}
-			}
-			
-			UpdatePosition( controller );
-			
-			if (ActivateRotations){
-				UpdateRotation( controller );
-			}
-	}
-	 
-	protected void UpdatePosition( SixenseInput.Controller controller )
-	{
-		Vector3 controllerPosition = new Vector3( controller.Position.x * Sensitivity.x,
-		                                         controller.Position.y * Sensitivity.y,
-		                                         controller.Position.z * Sensitivity.z );
-		
-		// distance controller has moved since enabling positional control
-		Vector3 vDeltaControllerPos = controllerPosition - m_baseControllerPosition;
-		
-		// update the localposition of the object
-		this.gameObject.transform.localPosition = m_initialPosition + vDeltaControllerPos;
+		set {
+			_avatarPosition = value;
+		}
 	}
 	
-	
-	protected void UpdateRotation( SixenseInput.Controller controller )
-	{
-		Quaternion controllerRotation = new Quaternion( controller.Rotation.x,
-		                                               controller.Rotation.y,
-		                                               controller.Rotation.z,
-		                                               controller.Rotation.w);
-		
-		this.gameObject.transform.localRotation = controllerRotation * m_initialRotation;
-		//controller.Rotation.z
+	public SixenseHands hand{
+		get {
+			return _hand;
+		}
+		set {
+			_hand = value;
+		}
 	}
 }

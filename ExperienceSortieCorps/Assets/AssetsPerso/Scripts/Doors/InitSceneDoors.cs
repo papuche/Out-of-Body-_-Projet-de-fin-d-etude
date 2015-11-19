@@ -220,30 +220,6 @@ public class InitSceneDoors : MonoBehaviour {
 		_xmlModel.LoadXml(textXml.text);
 	}
 
-	void createTxT(){
-		int essai = 1;
-		string modelSrcvalue;
-		string modelDstvalue;
-		string modelDiffvalue;
-		if (_modelSrcValues != null) {
-			modelSrcvalue = _modelSrcValues [0].ToString () + "\t" + _modelSrcValues [1].ToString () + "\t" + _modelSrcValues [2].ToString ();
-			modelDstvalue = _modelDstValues [0].ToString () + "\t" + _modelDstValues [1].ToString () + "\t" + _modelDstValues [2].ToString ();
-			modelDiffvalue = _differenceModels [0].ToString () + "\t" + _differenceModels [1].ToString () + "\t" + _differenceModels [2].ToString ();
-		} else {
-			modelSrcvalue = "0\t0\t0";
-			modelDstvalue = "0\t0\t0";
-			modelDiffvalue = "0\t0\t0";
-		}
-		StreamWriter file = new StreamWriter (Path.Combine(FilesConst.SAVE_FILES_DIRECTORY, FilesConst.FILENAME_RESULT_TXT), true);
-		int sujet = PlayerPrefs.GetInt (Utils.PREFS_SUJET, 0);
-		int condition = PlayerPrefs.GetInt (Utils.PREFS_CONDITION);
-		foreach (bool answer in _answers) {
-			file.WriteLine (sujet.ToString () + "\t" + condition.ToString () + "\t" + essai.ToString () + "\t" + _doorType.ToString() + "\t" + _ordreOuverture [essai - 1].width.ToString() + "\t" + _ordreOuverture [essai - 1].height.ToString() + "\t" + (answer == true ? "1" : "0") + "\t" + modelSrcvalue + "\t" + modelDstvalue + "\t" + modelDiffvalue);
-			essai++;
-		}
-		file.Close ();
-	}
-
 	void CreateResultFile(){
 		if (!PlayerPrefs.GetString (Utils.PREFS_PATH_FOLDER).Equals ("")) {
 			string dir = PlayerPrefs.GetString (Utils.PREFS_PATH_FOLDER);
