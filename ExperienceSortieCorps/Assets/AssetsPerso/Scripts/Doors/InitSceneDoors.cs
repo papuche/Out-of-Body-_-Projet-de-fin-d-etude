@@ -270,7 +270,9 @@ public class InitSceneDoors : MonoBehaviour {
 		StreamWriter fileWritter = null; 
 		
 		string SEPERATOR = "\t";
-		
+
+		bool newFile = false;
+
 		if (!File.Exists (fileName)) {
 			fileWritter = new StreamWriter (fileName);
 			fileWritter.WriteLine ("Participant" + SEPERATOR + 
@@ -285,10 +287,13 @@ public class InitSceneDoors : MonoBehaviour {
 			                       "C1" + SEPERATOR + "C2" + SEPERATOR + "C3" + SEPERATOR + "C4" + SEPERATOR +
 			                       "C1" + SEPERATOR + "C2" + SEPERATOR + "C3" + SEPERATOR + "C4" + SEPERATOR + 
 			                       "C1" + SEPERATOR + "C2" + SEPERATOR + "C3" + SEPERATOR + "C4");
+
+			newFile = true;
+
 		} else {
 			fileWritter = new StreamWriter (fileName, true);
 		}
-				
+		
 		int nbOui = 0;
 		float moyenne = 0;
 		for (int i=0; i<_answers.Count; i++) {
@@ -298,8 +303,20 @@ public class InitSceneDoors : MonoBehaviour {
 			}
 		}
 		moyenne = (nbOui > 0)? moyenne/nbOui : 0;
-		
-		fileWritter.WriteLine (username +SEPERATOR + modelSrcvalue + SEPERATOR + modelDstvalue + SEPERATOR + modelDiffvalue + SEPERATOR + _doorType + SEPERATOR + moyenne);
+
+		string[] lines = File.ReadAllLines (fileName);
+		string lastLine = lines[lines.Length -1];
+
+		int condition = PlayerPrefs.GetInt (Utils.PREFS_CONDITION);
+
+		if (!lastLine.Split (SEPERATOR) [0].Equals (username) || newFile) {	// Ajoute une ligne
+			fileWritter.WriteLine (username +SEPERATOR + modelSrcvalue + SEPERATOR + modelDstvalue + SEPERATOR + modelDiffvalue + SEPERATOR + _doorType + SEPERATOR + moyenne);
+		} else {	// Met a jour la derniere ligne
+			// moyenne oui = 10+condition
+			// pse = 14+condition
+			// jnd = 18+condition
+		}
+
 
 		fileWritter.Close ();
 	}

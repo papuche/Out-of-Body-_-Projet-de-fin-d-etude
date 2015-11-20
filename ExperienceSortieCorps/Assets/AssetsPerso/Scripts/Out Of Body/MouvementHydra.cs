@@ -13,20 +13,17 @@ public class MouvementHydra : MonoBehaviour {
 	private Quaternion m_initialRotation;
 	private Vector3 m_initialPosition;
 	
-	private Vector3 tmpPosition;
+	private Vector3 _tmpPosition;
 	
 	
-	void Start () {
-		/***
-		 * TODO : Gérer le replacement du baton apres que l'avatar soit detecte par la kinect
-		 ***/ 
+	void Start () { 
 		m_initialRotation = this.gameObject.transform.localRotation;
-		_avatarPosition = _avatarPosition.transform.FindChild (PlayerPrefs.GetString (Utils.PREFS_MODEL).Split (';') [0].Split ('/') [2]).gameObject;
-		m_initialPosition = _avatarPosition.transform.localPosition;
-		m_initialPosition.y += 0.8f;
-		m_initialPosition.z -= 0.28f;
 		
-		tmpPosition = m_initialPosition;
+		_avatarPosition = _avatarPosition.transform.FindChild (PlayerPrefs.GetString (Utils.PREFS_MODEL).Split (';') [0].Split ('/') [2]).gameObject;
+		GetInitialPositionAvatar ();
+		
+		_tmpPosition = m_initialPosition;
+		
 		
 		gameObject.GetComponentInChildren<MeshRenderer>().enabled = true;
 	}
@@ -42,14 +39,21 @@ public class MouvementHydra : MonoBehaviour {
 		}
 	}
 	
+	void GetInitialPositionAvatar(){
+		m_initialPosition = _avatarPosition.transform.localPosition;
+		m_initialPosition.y += 0.3f;
+		m_initialPosition.z -= 0.28f;
+	}
+	
 	void UpdatePosition(SixenseInput.Controller controller)
 	{
 		Vector3 controllerPosition = new Vector3(controller.Position.x * _sensitivity.x, controller.Position.y * _sensitivity.y, controller.Position.z * _sensitivity.z);
 		
-		if (controller.GetButtonDown (SixenseButtons.TRIGGER)) 
-			tmpPosition = m_initialPosition - controllerPosition;
-		
-		this.gameObject.transform.localPosition = tmpPosition + controllerPosition;
+		if (controller.GetButtonDown (SixenseButtons.TRIGGER)) {
+			GetInitialPositionAvatar();
+			_tmpPosition = m_initialPosition - controllerPosition;
+		}
+		this.gameObject.transform.localPosition = _tmpPosition + controllerPosition;
 	}
 	
 	void UpdateRotation(SixenseInput.Controller controller) {
