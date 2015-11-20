@@ -53,6 +53,8 @@ public class InitSceneDoors : MonoBehaviour {
 
 	private int _doorType;
 
+	string SEPARATOR = "\t";
+	
 	void Start () {
 		string doors = PlayerPrefs.GetString (Utils.PREFS_DOORS);
 
@@ -132,11 +134,13 @@ public class InitSceneDoors : MonoBehaviour {
 				} else {
 					_stop=true;
 
-					string dir = PlayerPrefs.GetString (Utils.PREFS_PATH_FOLDER);
-					string username = dir.Remove (0, dir.LastIndexOf('\\') + 1).Split ('_')[0];
-					CreateResultFile(dir, username);
-					createTxT(username);
+					string directory = PlayerPrefs.GetString (Utils.PREFS_PATH_FOLDER);
+					if(!string.Empty.Equals(directory)){
+						string username = directory.Remove (0, directory.LastIndexOf('\\') + 1).Split ('_')[0];
 
+						CreateResultFile(directory, username);
+						createTxT(username);
+					}
 					SocketClient.GetInstance().Write(Utils.SOCKET_END_DOOR);	// Envoi de la trame de fin d'exercice des portes au client
 					Application.LoadLevel(Utils.WAITING_SCENE);
 				}
@@ -152,18 +156,20 @@ public class InitSceneDoors : MonoBehaviour {
 
 		string resSocket = PlayerPrefs.GetString (Utils.PREFS_PARAM_DOORS);
 
-		int nbTries = int.Parse (resSocket.Split ('_') [0]);
+		string[] parameters = resSocket.Split ('_');
 
-		int nbWidth = int.Parse(resSocket.Split ('_') [1]);
+		int nbTries = int.Parse (parameters [0]);
+
+		int nbWidth = int.Parse(parameters [1]);
 		int nbHeight;
 		if(_doorType != FilesConst.FULL_DOOR)
 			nbHeight = 0;
 		else
-			nbHeight = int.Parse(resSocket.Split ('_') [3]);
+			nbHeight = int.Parse(parameters [3]);
 
 		if (nbWidth > 0) {
-			int widthStep = int.Parse (resSocket.Split ('_') [2]);
-			int heightStep = int.Parse (resSocket.Split ('_') [4]);
+			int widthStep = int.Parse (parameters [2]);
+			int heightStep = int.Parse (parameters [4]);
 			if (nbWidth % 2 != 0) {	// Si nbWidth est un nombre impair
 				for (int i = -nbWidth / 2; i < (nbWidth + 1) / 2; i++) {
 					if (nbHeight > 0) {
@@ -199,7 +205,7 @@ public class InitSceneDoors : MonoBehaviour {
 			}
 		}
 
-		for (int i = 0; i<nbTries; i++) {
+		for (int i = 0; i < nbTries; i++) {
 			_scales.AddRange(measures);
 		}
 		_nbDoors = _scales.Count;
@@ -229,25 +235,34 @@ public class InitSceneDoors : MonoBehaviour {
 		string modelDstvalue;
 		string modelDiffvalue;
 		if (_modelSrcValues != null) {
-			modelSrcvalue = _modelSrcValues [0].ToString () + "\t" + _modelSrcValues [1].ToString () + "\t" + _modelSrcValues [2].ToString ();
-			modelDstvalue = _modelDstValues [0].ToString () + "\t" + _modelDstValues [1].ToString () + "\t" + _modelDstValues [2].ToString ();
-			modelDiffvalue = _differenceModels [0].ToString () + "\t" + _differenceModels [1].ToString () + "\t" + _differenceModels [2].ToString ();
+			modelSrcvalue = _modelSrcValues [0].ToString () + SEPARATOR + _modelSrcValues [1].ToString () + SEPARATOR + _modelSrcValues [2].ToString ();
+			modelDstvalue = _modelDstValues [0].ToString () + SEPARATOR + _modelDstValues [1].ToString () + SEPARATOR + _modelDstValues [2].ToString ();
+			modelDiffvalue = _differenceModels [0].ToString () + SEPARATOR + _differenceModels [1].ToString () + SEPARATOR + _differenceModels [2].ToString ();
 		} else {
-			modelSrcvalue = "0\t0\t0";
-			modelDstvalue = "0\t0\t0";
-			modelDiffvalue = "0\t0\t0";
+			modelSrcvalue = "0" + SEPARATOR + "0 " + SEPARATOR + "0";
+			modelDstvalue = "0" + SEPARATOR + "0 " + SEPARATOR + "0";
+			modelDiffvalue = "0" + SEPARATOR + "0 " + SEPARATOR + "0";
 		}
 		string filename = Path.Combine(dir, username + ".txt");
 		StreamWriter file = null;
 		if(!File.Exists(filename)) {
 			file = new StreamWriter (filename, true);
-			file.WriteLine ("Essai\tCondition\tType de porte\tLargeur de porte\tHauteur de porte\tReponse\tCorpulence utilisateur\t \t \tCorpulence docteur\t \t \tDifference de corpulence\t \t \tTemps de reponse");
+			file.WriteLine ("Essai" + SEPARATOR + 
+			                "Condition" + SEPARATOR + 
+			                "Type de porte" + SEPARATOR + 
+			                "Largeur de porte" + SEPARATOR + 
+			                "Hauteur de porte" + SEPARATOR + 
+			                "Reponse" + SEPARATOR + 
+			                "Corpulence utilisateur" + SEPARATOR + SEPARATOR + SEPARATOR + 
+			                "Corpulence docteur" + SEPARATOR + SEPARATOR + SEPARATOR + 
+			                "Difference de corpulence" + SEPARATOR + SEPARATOR + SEPARATOR + 
+			                "Temps de reponse");
 		} else {
 			file = new StreamWriter (filename, true);
 		}
 		int condition = PlayerPrefs.GetInt (Utils.PREFS_CONDITION);
-		for (int i=0; i < _ordreOuverture.Count; i++) {
-			file.WriteLine ((i + 1).ToString () + "\t" + condition.ToString () + "\t" + _doorType.ToString() + "\t" + _ordreOuverture [i].width.ToString() + "\t" + _ordreOuverture [i].height.ToString() + "\t" + (_answers[i] == true ? "1" : "0") + "\t" + modelSrcvalue + "\t" + modelDstvalue + "\t" + modelDiffvalue + "\t" + _ordreOuverture[i].time.ToString());
+		for (int nbDoor=0; nbDoor < _ordreOuverture.Count; nbDoor++) {
+			file.WriteLine ((nbDoor + 1).ToString () + SEPARATOR + condition.ToString () + SEPARATOR + _doorType.ToString() + SEPARATOR + _ordreOuverture [nbDoor].width.ToString() + SEPARATOR + _ordreOuverture [nbDoor].height.ToString() + SEPARATOR + (_answers[nbDoor] == true ? "1" : "0") + SEPARATOR + modelSrcvalue + SEPARATOR + modelDstvalue + SEPARATOR + modelDiffvalue + SEPARATOR + _ordreOuverture[nbDoor].time.ToString());
 		}
 		file.Close ();
 	}
@@ -257,42 +272,38 @@ public class InitSceneDoors : MonoBehaviour {
 		string modelDstvalue;
 		string modelDiffvalue;
 		if (_modelSrcValues != null) {
-			modelSrcvalue = _modelSrcValues [0].ToString () + "\t" + _modelSrcValues [1].ToString () + "\t" + _modelSrcValues [2].ToString ();
-			modelDstvalue = _modelDstValues [0].ToString () + "\t" + _modelDstValues [1].ToString () + "\t" + _modelDstValues [2].ToString ();
-			modelDiffvalue = _differenceModels [0].ToString () + "\t" + _differenceModels [1].ToString () + "\t" + _differenceModels [2].ToString ();
+			modelSrcvalue = _modelSrcValues [0].ToString () + SEPARATOR + _modelSrcValues [1].ToString () + SEPARATOR + _modelSrcValues [2].ToString ();
+			modelDstvalue = _modelDstValues [0].ToString () + SEPARATOR + _modelDstValues [1].ToString () + SEPARATOR + _modelDstValues [2].ToString ();
+			modelDiffvalue = _differenceModels [0].ToString () + SEPARATOR + _differenceModels [1].ToString () + SEPARATOR + _differenceModels [2].ToString ();
 		} else {
-			modelSrcvalue = "0\t0\t0";
-			modelDstvalue = "0\t0\t0";
-			modelDiffvalue = "0\t0\t0";
+			modelSrcvalue = "0" + SEPARATOR + "0 " + SEPARATOR + "0";
+			modelDstvalue = "0" + SEPARATOR + "0 " + SEPARATOR + "0";
+			modelDiffvalue = "0" + SEPARATOR + "0 " + SEPARATOR + "0";
 		}
 		
 		string fileName = Path.Combine (FilesConst.SAVE_FILES_DIRECTORY, FilesConst.FILENAME_RESULT_TXT);
 		StreamWriter fileWritter = null; 
 		
-		string SEPERATOR = "\t";
-
 		bool newFile = false;
-
+		
 		if (!File.Exists (fileName)) {
 			fileWritter = new StreamWriter (fileName);
-			fileWritter.WriteLine ("Participant" + SEPERATOR + 
-			                       "Choix patient" + SEPERATOR + SEPERATOR + SEPERATOR + 
-			                       "Choix experimentateur" + SEPERATOR + SEPERATOR + SEPERATOR + 
-			                       "Difference corpulence" + SEPERATOR + SEPERATOR + SEPERATOR + 
-			                       "Type porte" + SEPERATOR + 
-			                       "Moyenne largeur OUI" + SEPERATOR + SEPERATOR + SEPERATOR + SEPERATOR + 
-			                       "PSE" + SEPERATOR + SEPERATOR + SEPERATOR + SEPERATOR + 
+			fileWritter.WriteLine ("Participant" + SEPARATOR + 
+			                       "Choix patient" + SEPARATOR + SEPARATOR + SEPARATOR + 
+			                       "Choix experimentateur" + SEPARATOR + SEPARATOR + SEPARATOR + 
+			                       "Difference corpulence" + SEPARATOR + SEPARATOR + SEPARATOR + 
+			                       "Type porte" + SEPARATOR + 
+			                       "Moyenne largeur OUI" + SEPARATOR + SEPARATOR + SEPARATOR + SEPARATOR + 
+			                       "PSE" + SEPARATOR + SEPARATOR + SEPARATOR + SEPARATOR + 
 			                       "JND");
-			fileWritter.WriteLine (SEPERATOR + SEPERATOR + SEPERATOR + SEPERATOR + SEPERATOR + SEPERATOR +SEPERATOR + SEPERATOR + SEPERATOR + SEPERATOR + SEPERATOR +
-			                       "C1" + SEPERATOR + "C2" + SEPERATOR + "C3" + SEPERATOR + "C4" + SEPERATOR +
-			                       "C1" + SEPERATOR + "C2" + SEPERATOR + "C3" + SEPERATOR + "C4" + SEPERATOR + 
-			                       "C1" + SEPERATOR + "C2" + SEPERATOR + "C3" + SEPERATOR + "C4");
-
+			fileWritter.WriteLine (SEPARATOR + SEPARATOR + SEPARATOR + SEPARATOR + SEPARATOR + SEPARATOR +SEPARATOR + SEPARATOR + SEPARATOR + SEPARATOR + SEPARATOR +
+			                       "C1" + SEPARATOR + "C2" + SEPARATOR + "C3" + SEPARATOR + "C4" + SEPARATOR +
+			                       "C1" + SEPARATOR + "C2" + SEPARATOR + "C3" + SEPARATOR + "C4" + SEPARATOR + 
+			                       "C1" + SEPARATOR + "C2" + SEPARATOR + "C3" + SEPARATOR + "C4");
+			
 			newFile = true;
-
-		} else {
-			fileWritter = new StreamWriter (fileName, true);
-		}
+			fileWritter.Close ();
+		} 
 		
 		int nbOui = 0;
 		float moyenne = 0;
@@ -302,25 +313,74 @@ public class InitSceneDoors : MonoBehaviour {
 				nbOui ++;
 			}
 		}
-		moyenne = (nbOui > 0)? moyenne/nbOui : 0;
+		moyenne = (nbOui > 0) ? moyenne / nbOui : 0;
+		
+		float pse = 0;
+		float jnd = 0;
 
 		string[] lines = File.ReadAllLines (fileName);
-		string lastLine = lines[lines.Length -1];
 
+		string[] parameters = lines[lines.Length -1].Split('\t');
+		
 		int condition = PlayerPrefs.GetInt (Utils.PREFS_CONDITION);
 
-		if (!lastLine.Split (SEPERATOR) [0].Equals (username) || newFile) {	// Ajoute une ligne
-			fileWritter.WriteLine (username +SEPERATOR + modelSrcvalue + SEPERATOR + modelDstvalue + SEPERATOR + modelDiffvalue + SEPERATOR + _doorType + SEPERATOR + moyenne);
+		string emptyParam = "/";
+
+		if (!parameters [0].Equals (username) || newFile) {	// Ajoute une ligne
+			fileWritter = new StreamWriter (fileName, true);
+			string res = username + SEPARATOR + modelSrcvalue + SEPARATOR + modelDstvalue + SEPARATOR + modelDiffvalue + SEPARATOR + _doorType + SEPARATOR;
+			for(int i=1; i<5; i++) {
+				if(condition == i) res += moyenne + SEPARATOR;
+				else res += emptyParam + SEPARATOR;
+			}
+			for(int i=1; i<5; i++) {
+				if(condition == i) res += pse.ToString() + SEPARATOR;
+				else res += emptyParam + SEPARATOR;
+			}
+			for(int i=1; i<5; i++) {
+				if(condition == i) res += jnd.ToString() + SEPARATOR;
+				else res += emptyParam + SEPARATOR;
+			}
+			fileWritter.WriteLine (res);
+			fileWritter.Close ();
 		} else {	// Met a jour la derniere ligne
-			// moyenne oui = 10+condition
-			// pse = 14+condition
-			// jnd = 18+condition
+			string res = "";
+
+			for(int i=0; i<11; i++)
+				res += parameters[i] + SEPARATOR;
+
+			res += WriteOrUpdateMoyenne(condition, moyenne, parameters);
+			res += WriteOrUpdatePSE(condition, pse, parameters);
+			res += WriteOrUpdateJND(condition, jnd, parameters);
+
+			lines[lines.Length -1] = res;
+			File.WriteAllLines(fileName, lines);
 		}
-
-
-		fileWritter.Close ();
 	}
 
+	string WriteOrUpdateMoyenne(int condition, float moyenne, string[] parameters){
+		return WriteOrUpdateParameter(condition, parameters, moyenne, 10);
+	}
+	
+	string WriteOrUpdatePSE(int condition, float pse, string[] parameters){
+		return WriteOrUpdateParameter(condition, parameters, pse, 14);
+	}
+	
+	string WriteOrUpdateJND(int condition, float jnd, string[] parameters){
+		return WriteOrUpdateParameter(condition, parameters, jnd, 18);
+	}
+
+	string WriteOrUpdateParameter(int condition, string[] parameters, float newValue, int baseIndex){
+		string res = "";
+		for(int i=1; i<5; i++) {
+			if(condition == i)
+				res += newValue.ToString() + SEPARATOR;
+			else 
+				res += parameters[baseIndex + i] + SEPARATOR;
+		}
+		return res;
+	}
+	
 	void Reponse(bool rep){
 		_answers.Add (rep);
 		_next = true;
@@ -348,9 +408,8 @@ public class InitSceneDoors : MonoBehaviour {
 	
 	float[] calculEcart(float[] src, float[] dst){
 		float[] resultat = new float[3];
-		resultat [0] = (dst [0] - src [0]) / src [0] * 100; 
-		resultat [1] = (dst [1] - src [1]) / src [1] * 100;
-		resultat [2] = (dst [2] - src [2]) / src [2] * 100;
+		for(int i = 0; i < resultat.Length; i++)
+			resultat [i] = (dst [i] - src [i]) / src [i] * 100; 
 		return resultat;
 	}
 	
