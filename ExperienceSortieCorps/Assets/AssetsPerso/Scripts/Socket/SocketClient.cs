@@ -35,12 +35,10 @@ public class SocketClient
 		IPAddress ipAddress = IPAddress.Parse(Utils.SERVER_IP);
 		_remoteEP = new IPEndPoint(ipAddress, Utils.SOCKET_PORT);
 
-		string batDir = string.Format(@".");
 		_process = new System.Diagnostics.Process();
-		_process.StartInfo.WorkingDirectory = batDir;
-		_process.StartInfo.FileName = "server.bat";
-		_process.StartInfo.CreateNoWindow = true;
 		_process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+		_process.StartInfo.FileName = "cmd.exe";
+		_process.StartInfo.Arguments = "/c node ..\\ApplicationMenu\\server\\server.js";
 
 		_socket = new Socket (_remoteEP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 		try {
@@ -82,6 +80,7 @@ public class SocketClient
 	}
 
 	private void StopNodeServer() {
+		_process.Kill ();
 		foreach (System.Diagnostics.Process p in System.Diagnostics.Process.GetProcessesByName("node")) {
 			p.Kill ();
 		}
