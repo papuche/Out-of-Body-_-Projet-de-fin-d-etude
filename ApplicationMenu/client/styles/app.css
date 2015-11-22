@@ -1,6 +1,6 @@
 @import "breadcrumb.css";
 @import "portes.css";
-@import "avatar.css";
+@import "avatar&oob.css";
 @import "avatar_medecin.css";
 
 .row-centered {
@@ -80,7 +80,7 @@
 	}
 	.btn-icon {
 		word-wrap: break-word;
-		font-size: 4vw;
+		font-size: 3.5vw;
 		color:grey;
 		border-width: 1px;
 		border-color: grey;
