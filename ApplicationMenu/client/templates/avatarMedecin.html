@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <section  ng-controller="AvatarMedecinCtrl">
-	<span>Choisissez le facteur de réduction de l'avatar pour le morfing</span>
-	<div class="row">
-			<input type="number" ng-pattern="/^[0-9]*$/" min="1" step="1" name="facteurAvatar" ng-init="facteurAvatar=1" ng-model="facteurAvatar"/>
+	<div class="instructions">Choisissez le facteur de réduction de l'avatar pour le morphing</div>
+	<div class="row-centered">
+			<input type="number" ng-pattern="/^[0-9]*$/" min="1" step="1" name="facteurAvatar" ng-init="facteurAvatar=1" ng-model="facteurAvatar" class="number-input"/>
 	</div>
-	<span>Attendez que le patient est fait son choix d'avatar pour valider</span>
+	<div class="warning-msg">Attendez que le patient ait fait son choix d'avatar pour valider</div>
 	<div class="row">
-		<input type="button" value="Retour" ng-click="previous()"></input>
-		<input type="button" value="Valider les avatars" ng-click="next()"></input>
+		<a class="btn btn-icon btn_config" ng-click="previous()">
+			<i class="fa fa-chevron-left fa-lg"></i> Retour</a>
+		<a class="btn btn-icon right validate btn_config" ng-click="next()">
+			<i class="fa fa-check fa-lg"></i> Valider les avatars</a>
 	</div>
 </section>

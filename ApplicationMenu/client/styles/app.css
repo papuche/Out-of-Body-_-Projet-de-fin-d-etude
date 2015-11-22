@@ -1,6 +1,7 @@
 @import "breadcrumb.css";
 @import "portes.css";
 @import "avatar.css";
+@import "avatar_medecin.css";
 
 .row-centered {
     text-align:center;
@@ -24,6 +25,9 @@
 }
 .btn-icon.right{
 	float: right;
+}
+.btn-icon.validate{
+	color:green;
 }
 
 @media (min-width: 767px) {
