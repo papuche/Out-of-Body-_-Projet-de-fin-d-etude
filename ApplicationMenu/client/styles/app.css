@@ -3,6 +3,7 @@
 @import "portes_config.css";
 @import "avatar&oob.css";
 @import "avatar_medecin.css";
+@import "run.css";
 
 .row-centered {
     text-align:center;
