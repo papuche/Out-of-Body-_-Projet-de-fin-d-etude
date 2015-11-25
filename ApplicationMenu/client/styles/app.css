@@ -28,6 +28,9 @@
 .btn-icon.right{
 	float: right;
 }
+.btn-icon.left{
+	float: left;
+}
 .btn-icon.validate{
 	color:green;
 }

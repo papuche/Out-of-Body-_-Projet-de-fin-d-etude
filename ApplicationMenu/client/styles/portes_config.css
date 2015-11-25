@@ -1,18 +1,35 @@
-.hauteur {
-	border-style: dotted;
- 	border-width: 0px 1px 0px 1px; 
-	height:120px;
+@media (min-width: 767px) {
+	.bordure{
+		border-style: dotted;
+	 	border-width: 0px 1px 0px 1px; 
+	}
+	.inline-block-config {
+		display: inline-block;
+		float: none;
+		vertical-align:top;
+		height: 260px;
+	}
+	.agencement{
+		display: block;
+	}
 }
 
-.inline-block {
-	display: inline-block;
-	float: none;
+@media (max-width: 767px) {
+	.bordure{
+		border-style: dotted;
+	 	border-width: 1px 0px 1px 0px; 
+	}
+	.inline-block-config {
+		padding-top: 15px;
+		padding-bottom: 15px;
+		display: inline-block;
+		float: none;
+		vertical-align:top;
+	}
+	.agencement{
+	}
 }
 
 .repdetitions {
 	float: right;
-}
-
-.formula {
-	display: inline-block;
 }
