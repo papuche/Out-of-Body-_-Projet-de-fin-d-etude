@@ -6,11 +6,12 @@ from pylab import *
 #sys.argv[3] = Fichier de resultat du patient
 #exemple : py drawGraphe.py Participant1 1 "Resultats/Participant1_11-25-2015 10-14-29 AM/Participant1.txt"
 
+username = sys.argv[1]
+condition = sys.argv[2]
 filename = sys.argv[3]
 
 f = open(filename, 'r')
 
-username = sys.argv[1]
 
 valueArray = []
 heightArray = []
@@ -24,8 +25,7 @@ def isInList(value, heightArray):
 
 for line in f:
     splittedLine = line.split('\t', 15)
-    condition = splittedLine[1]
-    if condition == sys.argv[2] :
+    if splittedLine[1] == condition :
         height = float(splittedLine[3])
         answer = int(splittedLine[5])
         valueArray.append({'height': height, 'answer': answer})
@@ -33,17 +33,24 @@ for line in f:
             heightArray.append(height)
 
 averageArray = []
-nbRepetition = len(valueArray) / len(heightArray)
 
-for height in heightArray :
-    sum = 0
-    for value in valueArray:
-        if value['height'] == height :
-            sum = sum + value['answer']
-    averageArray.append({'height': height, 'answer': sum / nbRepetition})
+valueArray = sorted(valueArray, key=lambda value: value['height'])
 
-averageArray = sorted(averageArray, key=lambda average: average['height'])
+height = valueArray[0]['height']
+sum = 0
+cpt = 0
 
+for value in valueArray:
+    if height != value['height'] :
+        averageArray.append({'height': height, 'answer': sum / cpt})
+        sum = 0
+        cpt = 0
+        height = value['height']
+    sum = sum + value['answer']
+    cpt = cpt + 1        
+
+averageArray.append({'height': height, 'answer': sum / cpt})
+	
 x = []
 y = []
 for average in averageArray:
