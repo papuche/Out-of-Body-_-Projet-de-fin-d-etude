@@ -4,7 +4,7 @@ from pylab import *
 #sys.argv[1] = Nom du participant
 #sys.argv[2] = Condition
 #sys.argv[3] = Fichier de resultat du patient
-#exemple : py drawGraphe.py Participant1 1 "Resultats/Participant1_11-25-2015 10-14-29 AM/Participant1.txt"
+#exemple : py drawGraphe.py Participant1 1 "Resultats\Participant1_11-25-2015 10-14-29 AM\Participant1.txt"
 
 username = sys.argv[1]
 condition = sys.argv[2]
@@ -77,6 +77,43 @@ savefig(directory + username + "_cond" + condition)
 
 #show()	# Commenter si on ne veut pas faire l'affichage
 
+valInf = averageArray[0]
+valSup = 0
+
+for average in averageArray :
+    if average['answer'] < 0.5 :
+        valInf = average
+    else :
+        valSup = average
+        break
+				
+try :
+    a = (valSup['answer'] - valInf['answer']) / (valSup['height'] - valInf['height'])
+    b = valSup['answer'] - a * valSup['height']
+
+    pse = (0.5 - b) / a
+
+except :
+    pse = 0
 
 
+resultFile = open('Resultats/Resultat.txt', 'r+')
 
+lines = resultFile.readlines()
+
+resultFile.close()
+resultFile = open('Resultats/Resultat.txt', 'w')
+
+for line in lines :
+    parameters = line.split('\t')
+    if parameters[0] == username :
+        res = ""
+        for index in range(0, len(line.split('\t'))) :
+            if index == 14 + int(condition) : 
+                res = res + str(pse) + '\t'
+            else :
+                res = res + parameters[index] + '\t'
+        line = res
+    resultFile.write(line)
+	
+resultFile.close()
