@@ -105,7 +105,7 @@ resultFile.close()
 resultFile = open('Resultats/Resultat.txt', 'w')
 
 for line in lines :
-    parameters = line.split('\t')
+    parameters = line.replace("\n", "").split('\t')
     if parameters[0] == username :
         res = ""
         for index in range(0, len(line.split('\t'))) :
@@ -113,7 +113,7 @@ for line in lines :
                 res = res + str(pse) + '\t'
             else :
                 res = res + parameters[index] + '\t'
-        line = res
+        line = res + '\n'
     resultFile.write(line)
 	
 resultFile.close()
