@@ -1,4 +1,7 @@
-﻿public static class Utils {
+﻿/// <summary>
+/// Class containing all the values used by the scripts
+/// </summary>
+public static class Utils {
 	public readonly static string PREFS_LAUNCH_MODEL = "launchModel";
 	public readonly static string PREFS_AVATAR_GENDER = "avatarGender";
 

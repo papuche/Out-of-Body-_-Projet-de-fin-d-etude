@@ -21,32 +21,23 @@ public class MorphingAvatar : MonoBehaviour {
 
 		_initDone = true;
 		if (dstMesh == null) {
-			//Debug.Log ("dstMesh est null");
 			_initDone = false;
 			return;
 		}
 
 		if (srcMesh == null) {
-			//Debug.Log ("srcMesh est null");
 			_initDone = false;
 			return;
 		}
 
 		if (dstMesh.vertexCount != srcMesh.vertexCount) {
-			//Debug.Log ("nombre de vertex different");
 			_initDone = false;
 			return;
 		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	//	SixenseInput.Controller controller = SixenseInput.GetController( SixenseHands.RIGHT );
 
-		/*if (Input.GetKeyDown (KeyCode.Z) || Input.GetKeyDown (KeyCode.F)) {
-			startMorph = true;
-		}*/
-		if (_initDone/* && startMorph*/) {
+	void Update () {
+		if (_initDone) {
 			float deltaTime = Time.deltaTime * _speed;
 			_time += deltaTime;
 			float tmp = Mathf.Clamp(_time,0,1);

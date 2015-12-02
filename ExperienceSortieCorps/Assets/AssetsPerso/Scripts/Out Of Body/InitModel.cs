@@ -1,10 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Instantiate the avatar in the scene
+/// </summary>
 public class InitModel : MonoBehaviour {
+	/// <summary>
+	/// The gameObject in which the avatar will be instantiated
+	/// </summary>
 	[SerializeField]
 	private GameObject _posAvatar;
 
+	/// <summary>
+	/// The instantiated avatar
+	/// </summary>
 	private GameObject _goSrc;
 
 	void Awake(){
@@ -18,6 +27,9 @@ public class InitModel : MonoBehaviour {
 		initKinect();
 	}
 
+	/// <summary>
+	/// Initialize the Kinect
+	/// </summary>
 	void initKinect(){
 		GameObject modelRoot = _goSrc.transform.FindChild ("python").gameObject;
 
@@ -55,7 +67,9 @@ public class InitModel : MonoBehaviour {
 		ctrl.Init ();
 	}
 
-
+	/// <summary>
+	/// Init the avatar
+	/// </summary>
 	void initAvatar(){
 		GameObject modelRoot = _goSrc.transform.FindChild ("python").gameObject;
 

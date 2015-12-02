@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Init morphing.
+/// </summary>
 public class InitMorphing : MonoBehaviour {
 	
 	[SerializeField]
@@ -8,8 +11,14 @@ public class InitMorphing : MonoBehaviour {
 	[SerializeField]
 	private Material _shirtGhost;
 
+	/// <summary>
+	/// The morphing's speed
+	/// </summary>
 	private float _speed = 0.016f;
 
+	/// <summary>
+	/// The avatar in the scene
+	/// </summary>
 	private GameObject _goSrc;
 
 	private GameObject _jean;
@@ -30,25 +39,17 @@ public class InitMorphing : MonoBehaviour {
 		_shirt.transform.parent = _goSrc.transform;
 		_shirt.GetComponent<Renderer> ().material = _shirtGhost;
 
-
-		/**
-		 * Gestion du ghost
-		 **/ 
-		if (PlayerPrefs.GetInt (Utils.PREFS_GHOST) == 1) {
-			_jean.SetActive (true);
-			_shirt.SetActive (true);
-		} else {
-			_jean.SetActive (false);
-			_shirt.SetActive (false);
-		}
+		bool activateGhost = (PlayerPrefs.GetInt (Utils.PREFS_GHOST) == 1);
+		_jean.SetActive (activateGhost);
+		_shirt.SetActive (activateGhost);
 
 		init("high-polyMesh");
 		init("jeans01Mesh");
 		init("shirt01Mesh");
 		
-		if(model[0].Contains(Utils.MODELS_DIRECTORY[0])) {
+		if(model[0].Contains(Utils.MODELS_DIRECTORY[0])) {	// If the avatar is a man
 			init("male1591Mesh");
-		}else {
+		}else {	// If the avatar is a woman
 			init("female1605Mesh");
 		}
 
@@ -61,14 +62,12 @@ public class InitMorphing : MonoBehaviour {
 		
 		SetLayerRecursively (_goSrc, 8);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
+	/// <summary>
+	/// Initializes the morphing for the avatar's limb specified by his name
+	/// </summary>
+	/// <param name="name">The name of the avatar's limb</param>
 	void init(string name){
-		
 		MorphingAvatar morph = _goSrc.transform.FindChild (name).gameObject.AddComponent<MorphingAvatar> ();
 		morph.speed = _speed;
 	}

@@ -3,23 +3,42 @@ using System.Collections;
 using UnityEngine.UI;
 using System.IO;
 
+/// <summary>
+/// Script launched when the user has to select an avatar
+/// </summary>
 public class SelectModel : MonoBehaviour
 {
+	/// <summary>
+	/// Refers to the positionAvatar Gameobject of the scene
+	/// </summary>
 	[SerializeField]
 	private GameObject _posAvatar;
 
+	/// <summary>
+	/// An array containing all the models ( = avatars )
+	/// </summary>
 	private GameObject[] _go_models;
+
+	/// <summary>
+	/// The model shown in the scene
+	/// </summary>
 	private GameObject _avatar;
 
+	/// <summary>
+	/// The index of the avatar in the avatar list
+	/// </summary>
 	private int _avatarIndex = 0;
 
+	/// <summary>
+	/// The _gender chosen by the user
+	/// </summary>
 	private int _gender;
 
 	private float _offsetYPosAvatar = 0.68f;
 	
 	void Start ()
 	{
-		_gender = PlayerPrefs.GetInt (Utils.PREFS_AVATAR_GENDER); // 0: homme ; 1: femme
+		_gender = PlayerPrefs.GetInt (Utils.PREFS_AVATAR_GENDER); // 0: man ; 1: woman
 
 		_go_models = Resources.LoadAll<GameObject> (Utils.MODELS_DIRECTORY [_gender]);
 		_avatar = (GameObject)Instantiate (_go_models [_avatarIndex]);
@@ -30,7 +49,10 @@ public class SelectModel : MonoBehaviour
 		_avatar.transform.localRotation = new Quaternion (0.0f, 0.0f, 0.0f, 0.0f);
 		initAvatar ();
 	}
-	
+
+	/// <summary>
+	/// Initialize the avatar
+	/// </summary>
 	void initAvatar ()
 	{
 		GameObject modelRoot = _avatar.transform.FindChild ("python").gameObject;
@@ -61,25 +83,28 @@ public class SelectModel : MonoBehaviour
 	void Update ()
 	{
 		_avatar.transform.Rotate (0.0f, 1.0f, 0.0f);
-		if (Input.GetMouseButtonDown (0)) {
+		if (Input.GetMouseButtonDown (0)) {	// If right button of the mouse is pressed
 			_avatarIndex --;
 			if (_avatarIndex < 0)
 				_avatarIndex = _go_models.Length -1;
 			ReloadAvatar();
 		}
-		else if (Input.GetMouseButtonDown (1)) {
+		else if (Input.GetMouseButtonDown (1)) {	// If left button of the mouse is pressed
 			_avatarIndex ++;
 			if (_avatarIndex >= _go_models.Length)
 				_avatarIndex = 0;
 			ReloadAvatar();
 		}
-		if (!string.Empty.Equals(PlayerPrefs.GetString (Utils.PREFS_VALIDATE_AVATAR))) {
+		if (!string.Empty.Equals(PlayerPrefs.GetString (Utils.PREFS_VALIDATE_AVATAR))) {	// If the user validates the current avatar in the Web interface
 			int difference = int.Parse(PlayerPrefs.GetString (Utils.PREFS_VALIDATE_AVATAR));
 			PlayerPrefs.DeleteKey(Utils.PREFS_VALIDATE_AVATAR);
 			Validate(difference);
 		}
 	}
 
+	/// <summary>
+	/// Delete the current avatar in the scene and instantiate a new avatar
+	/// </summary>
 	void ReloadAvatar ()
 	{
 		Quaternion srcRotation = _avatar.transform.localRotation;
@@ -92,6 +117,10 @@ public class SelectModel : MonoBehaviour
 		initAvatar ();
 	}
 
+	/// <summary>
+	/// Validate the selected avatar
+	/// </summary>
+	/// <param name="difference">The difference between the chosen avatar and the one chosen by the experimentator</param>
 	void Validate (int difference)
 	{
 		GameObject src = _go_models[_avatarIndex];
@@ -105,6 +134,9 @@ public class SelectModel : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Create the directory which will contains the user's files
+	/// </summary>
 	void CreateNewDirectory(){
 		if (!Directory.Exists (FilesConst.SAVE_FILES_DIRECTORY)) {	// Si le répertoire contenant les résultats n'existent pas
 			Directory.CreateDirectory (FilesConst.SAVE_FILES_DIRECTORY);	// On le crée
@@ -119,7 +151,13 @@ public class SelectModel : MonoBehaviour
 		PlayerPrefs.SetString (Utils.PREFS_PATH_FOLDER, Directory.CreateDirectory (FilesConst.SAVE_FILES_DIRECTORY + "/" + FilesConst.USER_PREFIX_DIRECTORY + (dirIndex + 1).ToString () + "_" + time).FullName);
 	}
 
-	private GameObject SelectOtherAvatar(GameObject avatar, int difference){
+	/// <summary>
+	/// Selects the experimentator's avatar, taking care with the difference between the two models
+	/// </summary>
+	/// <returns>The experimentator's avatar</returns>
+	/// <param name="avatar">The user's avatar</param>
+	/// <param name="difference">The difference between the two models</param>
+	GameObject SelectOtherAvatar(GameObject avatar, int difference){
 		string[] weight = {"HC", "LHC", "MC", "HLC", "LC"};
 		string[] muscle = {"HM", "LHM", "MM", "HLM", "LM"};
 

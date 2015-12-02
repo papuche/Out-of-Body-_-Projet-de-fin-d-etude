@@ -13,8 +13,7 @@ public class Morphing : MonoBehaviour {
 	private int    m_DstMesh = -1;
 	private float  m_Weight = -1;
 	private Mesh   m_Mesh;
-	
-	/// Set the current morph in    
+	  
 	public void SetComplexMorph (int srcIndex, int dstIndex, float t)
 	{
 		if (m_SrcMesh == srcIndex && m_DstMesh == dstIndex && Mathf.Approximately(m_Weight, t))
@@ -52,7 +51,6 @@ public class Morphing : MonoBehaviour {
 		{
 			if (m_Meshes[i] == null)
 			{	
-				//Debug.Log("MeshMorpher mesh  " + i + " has not been setup correctly");
 				m_AnimateAutomatically = false;
 				return;
 			}
@@ -61,7 +59,6 @@ public class Morphing : MonoBehaviour {
 		//  At least two meshes
 		if (m_Meshes.Length < 2)
 		{
-			//Debug.Log ("The mesh morpher needs at least 2 source meshes");
 			m_AnimateAutomatically = false;
 			return;
 		}
@@ -69,13 +66,10 @@ public class Morphing : MonoBehaviour {
 		filter.sharedMesh = m_Meshes[0];
 		m_Mesh = filter.mesh;
 		int vertexCount = m_Mesh.vertexCount;
-		//Debug.Log (m_Mesh.vertexCount);
 		for (int i=0;i<m_Meshes.Length;i++)
 		{
-			//Debug.Log (m_Meshes[i].vertexCount);
 			if (m_Meshes[i].vertexCount != vertexCount)
 			{	
-				//Debug.Log("Mesh " + i + " doesn't have the same number of vertices as the first mesh");
 				m_AnimateAutomatically = false;
 				return;
 			}

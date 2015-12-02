@@ -6,14 +6,22 @@ using System.Text;
 using UnityEngine;
 using System.Linq;
 
+/// <summary>
+/// Class used to communicate between Unity and the server
+/// </summary>
 public class SocketClient
 {
 	private static SocketClient _instance;
+
 	private Thread _thread;
+
 	private Socket _socket;
 
 	private Boolean _stopThread = false;
 
+	/// <summary>
+	/// Contains the messages received from the socket
+	/// </summary>
 	private string _message;
 
 	private IPEndPoint _remoteEP;
@@ -24,13 +32,20 @@ public class SocketClient
 
 	private System.Diagnostics.Process _showIpProcess;
 
+	/// <summary>
+	/// Gets the instance of the class
+	/// </summary>
+	/// <returns>The instance</returns>
 	public static SocketClient GetInstance()
 	{
 		if (_instance == null)
 			_instance = new SocketClient();
 		return _instance;
 	}
-	
+
+	/// <summary>
+	/// Constructor called only once (Singleton)
+	/// </summary>
 	private SocketClient()
 	{
 		System.Diagnostics.Process process = new System.Diagnostics.Process
@@ -48,27 +63,24 @@ public class SocketClient
 
 		string output = process.StandardOutput.ReadToEnd ();
 
-		//string ssid = output.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault(l => l.Contains("SSID") && !l.Contains("BSSID")).Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries)[1].TrimStart();
-
 		try {
 			output.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault(l => l.Contains("Canal")).Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries)[1].TrimStart();
 		}
 		catch {
-			//if (!ssid.Contains ("Out Of Body")) {
-				new System.Diagnostics.Process {
-					StartInfo =
-					{
-						WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-						FileName = "cmd.exe",
-						Arguments = "/c netsh wlan set hostednetwork mode=allow ssid=\"Out Of Body\" key=outofbody && netsh wlan start hostednetwork"
-					}
-				}.Start ();
-			//}
+			new System.Diagnostics.Process {
+				StartInfo =
+				{
+					WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+					FileName = "cmd.exe",
+					Arguments = "/c netsh wlan set hostednetwork mode=allow ssid=\"Out Of Body\" key=outofbody && netsh wlan start hostednetwork"
+				}
+			}.Start ();
 		}
 
 		IPAddress ipAddress = IPAddress.Parse(Utils.SERVER_IP);
 		_remoteEP = new IPEndPoint(ipAddress, Utils.SOCKET_PORT);
 
+		// Run the node server
 		_process = new System.Diagnostics.Process () {
 			StartInfo = 
 			{
@@ -78,6 +90,7 @@ public class SocketClient
 			}
 		};
 
+		// Connect the socket
 		_socket = new Socket (_remoteEP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 		try {
 			_socket.Connect (_remoteEP);
@@ -86,14 +99,22 @@ public class SocketClient
 			_socket.Close();
 			new Thread (() => LaunchThreadConnect()).Start ();
 		}
+
+		// Open a dialog showing the ip address
 		_showIpProcess = System.Diagnostics.Process.Start ("ShowIp");
 	}
 
+	/// <summary>
+	/// Run the thread who read the content of the socket
+	/// </summary>
 	private void LaunchThreadConnect() {
 		Connect ();
 		new Thread (() => Receive()).Start ();
 	}
-	
+
+	/// <summary>
+	/// Connect the socket
+	/// </summary>
 	private void Connect(){
 		_process.Start();
 		while (!_socket.Connected && !_stopThread) {
@@ -117,18 +138,27 @@ public class SocketClient
 		}
 	}
 
+	/// <summary>
+	/// Stop the node server
+	/// </summary>
 	private void StopNodeServer() {
 		foreach (System.Diagnostics.Process p in System.Diagnostics.Process.GetProcessesByName("node")) {
 			p.Kill ();
 		}
 	}
 
+	/// <summary>
+	/// Stop every processes launched by Unity
+	/// </summary>
 	public void StopAllProcess(){
 		StopNodeServer ();
 		if(_showIpProcess != null && !_showIpProcess.HasExited)
 			_showIpProcess.Kill ();
 	}
 
+	/// <summary>
+	/// Read the datas in the socket
+	/// </summary>
 	private void Receive()
 	{
 		int bytes = 0;
@@ -149,11 +179,15 @@ public class SocketClient
 		}
 		while (!_stopThread);
 	}
-		
+
+	/// <summary>
+	/// Write the specified message on the socket.
+	/// </summary>
+	/// <param name="message">Message.</param>
 	public void Write(String message) {
 		_socket.Send (System.Text.Encoding.ASCII.GetBytes(message));
 	}
-		
+
 	public Socket socket {
 		get {
 		return _socket;

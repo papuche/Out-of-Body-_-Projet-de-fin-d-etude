@@ -1,29 +1,45 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Script used to enable the morphing, the stick, or nothing. Depending with the message received on the socket
+/// </summary>
 public class LoadScript : MonoBehaviour {
-	
+
+	/// <summary>
+	/// The stick (Razor Hydra)
+	/// </summary>
 	[SerializeField]
 	private GameObject _baton;
+
+	/// <summary>
+	/// The _camera of the scene
+	/// </summary>
 	[SerializeField]
 	private Camera _camera;
-	[SerializeField]
-	private GameObject _scene;
+
+	/// <summary>
+	/// The gameObject in which the avatar will be instantiated
+	/// </summary>
 	[SerializeField]
 	private GameObject _posAvatar;
+	
 	[SerializeField]
 	private Material _jeanGhost;
+
 	[SerializeField]
 	private Material _shirtGhost;
-	
+
+	/// <summary>
+	/// The gameObject containing the script who will instantiate the avatar
+	/// </summary>
 	[SerializeField]
 	private GameObject _initModel;
-	
-	// Use this for initialization
+
 	void Start () {
 		_camera.gameObject.SetActive (false);
 		if (PlayerPrefs.GetInt (Utils.PREFS_LAUNCH_MODEL) == 0) {
-			_scene.AddComponent<SelectModel> ().posAvatar = _posAvatar;
+			gameObject.AddComponent<SelectModel> ().posAvatar = _posAvatar;
 		} else {
 			_initModel.SetActive (true);
 			switch (PlayerPrefs.GetInt (Utils.PREFS_CONDITION)) {
@@ -43,13 +59,19 @@ public class LoadScript : MonoBehaviour {
 		}
 		_camera.gameObject.SetActive (true);
 	}
-	
+
+	/// <summary>
+	/// Add the stick to the scene and enables the Razor Hydra
+	/// </summary>
 	void EnableBaton(){
 		_baton.SetActive (true);
 	}
-	
+
+	/// <summary>
+	/// Enables the morphing on the avatar
+	/// </summary>
 	void EnableMorphing(){
-		InitMorphing initMorphing = _scene.AddComponent<InitMorphing> ();
+		InitMorphing initMorphing = gameObject.AddComponent<InitMorphing> ();
 		initMorphing.jeanGhost = _jeanGhost;
 		initMorphing.shirtGhost = _shirtGhost;
 	}
@@ -65,12 +87,7 @@ public class LoadScript : MonoBehaviour {
 			_camera = value;
 		}
 	}
-	
-	public GameObject scene {
-		set {
-			_scene = value;
-		}
-	}
+
 	public GameObject posAvatar {
 		set {
 			_posAvatar = value;
