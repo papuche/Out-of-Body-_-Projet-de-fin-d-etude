@@ -296,11 +296,9 @@ public class InitSceneDoors : MonoBehaviour {
 			                       "Difference corpulence" + SEPARATOR + SEPARATOR + SEPARATOR + 
 			                       "Type porte" + SEPARATOR + 
 			                       "Moyenne largeur OUI" + SEPARATOR + SEPARATOR + SEPARATOR + SEPARATOR + 
-			                       "PSE" + SEPARATOR + SEPARATOR + SEPARATOR + SEPARATOR + 
-			                       "JND");
+			                       "PSE");
 			fileWritter.WriteLine (SEPARATOR + SEPARATOR + SEPARATOR + SEPARATOR + SEPARATOR + SEPARATOR +SEPARATOR + SEPARATOR + SEPARATOR + SEPARATOR + SEPARATOR +
 			                       "C1" + SEPARATOR + "C2" + SEPARATOR + "C3" + SEPARATOR + "C4" + SEPARATOR +
-			                       "C1" + SEPARATOR + "C2" + SEPARATOR + "C3" + SEPARATOR + "C4" + SEPARATOR + 
 			                       "C1" + SEPARATOR + "C2" + SEPARATOR + "C3" + SEPARATOR + "C4");
 			
 			newFile = true;
@@ -339,10 +337,6 @@ public class InitSceneDoors : MonoBehaviour {
 				if(condition == i) res += pse.ToString() + SEPARATOR;
 				else res += emptyParam + SEPARATOR;
 			}
-			for(int i=1; i<5; i++) {
-				if(condition == i) res += jnd.ToString() + SEPARATOR;
-				else res += emptyParam + SEPARATOR;
-			}
 			fileWritter.WriteLine (res);
 			fileWritter.Close ();
 		} else {	// Met a jour la derniere ligne
@@ -353,7 +347,6 @@ public class InitSceneDoors : MonoBehaviour {
 
 			res += WriteOrUpdateMoyenne(condition, moyenne, parameters);
 			res += WriteOrUpdatePSE(condition, pse, parameters);
-			res += WriteOrUpdateJND(condition, jnd, parameters);
 
 			lines[lines.Length -1] = res;
 			File.WriteAllLines(fileName, lines);
@@ -383,10 +376,6 @@ public class InitSceneDoors : MonoBehaviour {
 	
 	string WriteOrUpdatePSE(int condition, float pse, string[] parameters){
 		return WriteOrUpdateParameter(condition, parameters, pse, 14);
-	}
-	
-	string WriteOrUpdateJND(int condition, float jnd, string[] parameters){
-		return WriteOrUpdateParameter(condition, parameters, jnd, 18);
 	}
 
 	string WriteOrUpdateParameter(int condition, string[] parameters, float newValue, int baseIndex){

@@ -1,12 +1,16 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// 
+/// </summary>
 public class ReceiveSocket : MonoBehaviour
 {
-
+	/// <summary>
+	/// 
+	/// </summary>
 	private SocketClient _socketClient;
-
-	// Use this for initialization
+	
 	void Start ()
 	{
 		_socketClient = SocketClient.GetInstance();
@@ -14,21 +18,26 @@ public class ReceiveSocket : MonoBehaviour
 	
 	void Update() {
 
+		// If Q Button pressed, finish the application
 		if(Input.GetKeyDown (KeyCode.Q))
 			Application.Quit();
+
+		// If message received on the socket
 		if (_socketClient.message != null) {
 
+			// get the message
 			string message = _socketClient.message;
 
+			// finish the application
 			if (message.Equals(Utils.SOCKET_EXIT)) {
 				Application.Quit();
 			}
-			
+
+			// 
 			else if(message.Contains(Utils.SOCKET_VALIDATE)){
 				PlayerPrefs.SetString(Utils.PREFS_VALIDATE_AVATAR, message.Split('/')[1]);
 			}
 
-			// BUTTON AVATAR CHOICE
 			else if (message.Contains (Utils.SOCKET_AVATAR)) {
 				for(int i=0; i<Utils.SOCKET_GENDER.Length; i++){
 					if(message.Substring(0, 1).Equals(Utils.SOCKET_GENDER[i])) {
@@ -39,33 +48,28 @@ public class ReceiveSocket : MonoBehaviour
 				Application.LoadLevel (Utils.OUTOFBODY_SCENE);
 			}
 
-			// BUTTON RETOUR
 			else if (message.Equals (Utils.SOCKET_STOP)) {
 				Application.LoadLevel (Utils.WAITING_SCENE);
 			}
 						
-			// EXERCICE DES PORTES : PARAMETRE "PORTES ENTIERE"
 			else if (message.Contains (Utils.SOCKET_PORTE_ENTIERE)) {
 				PlayerPrefs.SetString (Utils.PREFS_PARAM_DOORS, message.Split('/')[1]);
 				PlayerPrefs.SetString (Utils.PREFS_DOORS, Utils.FULL_DOORS);
 				Application.LoadLevel (Utils.DOORS_SCENE);
 			}
 			
-			// EXERCICE DES PORTES : PARAMETRE "DEMI-PORTES BASSES"
 			else if (message.Contains (Utils.SOCKET_PORTE_DEMIBAS)) {
 				PlayerPrefs.SetString (Utils.PREFS_PARAM_DOORS, message.Split('/')[1]);
 				PlayerPrefs.SetString (Utils.PREFS_DOORS, Utils.BOTTOM_DOORS);
 				Application.LoadLevel (Utils.DOORS_SCENE);
 			}
 			
-			// EXERCICE DES PORTES : PARAMETRE "DEMI-PORTES HAUTES"
 			else if (message.Contains (Utils.SOCKET_PORTE_DEMIHAUT)) {
 				PlayerPrefs.SetString (Utils.PREFS_PARAM_DOORS, message.Split('/')[1]);
 				PlayerPrefs.SetString (Utils.PREFS_DOORS, Utils.TOP_DOORS);
 				Application.LoadLevel (Utils.DOORS_SCENE);
 			}
 
-			// EXERCICE DE SORTIE DE CORPS
 			else if(message.Contains(Utils.SOCKET_OUT_OF_BODY)){
 				string[] parameters = message.Remove (0, Utils.SOCKET_OUT_OF_BODY.Length + 1).Split('_');
 				int baton = int.Parse(parameters[0]);
@@ -86,7 +90,6 @@ public class ReceiveSocket : MonoBehaviour
 
 				Application.LoadLevel (Utils.OUTOFBODY_SCENE);
 			}
-
 			_socketClient.message = null;
 		}
 	}
@@ -95,7 +98,7 @@ public class ReceiveSocket : MonoBehaviour
 	/// Méthode appélée lorsque l'application se ferme. Permet de réinitialiser le choix de l'avatar effectué lors de la session
 	/// </summary>
 	void OnApplicationQuit(){
-		_socketClient.stopThread = true;
+		_socketClient.stopThread = true;	// Met fin 
 		_socketClient.socket.Close ();
 		_socketClient.StopAllProcess ();
 		PlayerPrefs.DeleteKey (Utils.PREFS_MODEL);

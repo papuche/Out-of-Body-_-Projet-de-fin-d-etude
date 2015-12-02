@@ -1,4 +1,5 @@
 menu.controller('OobCtrl', function ($scope, $state, $http, $rootScope) {
+	// Breadcrumb settings
 	$rootScope.chemin = 'Accueil';
 	$rootScope.chemin1 = 'Sortie de corps';
 	$rootScope.stateChemin1 = $state.current.name;
@@ -6,14 +7,18 @@ menu.controller('OobCtrl', function ($scope, $state, $http, $rootScope) {
 	$rootScope.chemin3 = '';
 	$rootScope.suivant = true;
 
+
 	$scope.morphing = false;
 	$scope.baton = false;
 	$scope.message = '';
 
+	// Previous function : back to menu
 	$scope.previous = function () {
-		// $http.get('/stop');
 		$state.go('mainMenu');
 	}
+
+	/*Next function : send "oob" to server to run Unity's exercice 
+					AND "X_X_X" for configure the scene whith baton, morphing, ghost AND go to the next state*/
 
 	$scope.next = function () {
 		if ($scope.baton && $scope.morphing && $scope.ghost){
@@ -36,16 +41,5 @@ menu.controller('OobCtrl', function ($scope, $state, $http, $rootScope) {
 		}
 		$state.go('runOob');
 	};
-	$scope.exit = function () {
-		$http.get('/stop');
-		$state.go('mainMenu');
-	}
-	});
 
-	menu.config(function($stateProvider){	
-		$stateProvider
-		.state('runOob',{
-			url: "/sortie_de_corps/application_en_cours",
-			templateUrl: "client/templates/runOob.html"
-	});
 });
