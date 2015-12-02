@@ -17,7 +17,9 @@ menu.controller('OobCtrl', function ($scope, $state, $http, $rootScope) {
 		$state.go('mainMenu');
 	}
 
-	// Next function : send "oob" to server to run exercice AND "X_X_X" for configure the scene whith baton, morphing, ghost AND go to the next state
+	/*Next function : send "oob" to server to run Unity's exercice 
+					AND "X_X_X" for configure the scene whith baton, morphing, ghost AND go to the next state*/
+
 	$scope.next = function () {
 		if ($scope.baton && $scope.morphing && $scope.ghost){
 			$http.get('oob/1_1_1');

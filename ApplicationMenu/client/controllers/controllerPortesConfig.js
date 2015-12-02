@@ -36,13 +36,13 @@ menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope, $
 		initDemiePorte();
 	}
 
-	// Watch function to up-to-date result value and save all
+	// Watch function to update result value and save all values
 	$scope.$watch('nbRepet + nbTailleLargeur + nbTailleHauteur + diffTailleLargeur + diffTailleHauteur', function() {
 		$scope.nbEssai = ($scope.nbTailleLargeur * $scope.nbTailleHauteur) * $scope.nbRepet;
 		saveAllValues();
 	});
 
-	// Function exectue click on "run exercice" button click : check if all values are corrects
+	// Function exectute click on "run exercice" button click : check if all values are corrects
 	$scope.executer_click = function(){
 		$scope.informationsDonnees ="";
 		if ($scope.nbEssai > 0 & $scope.nbTailleLargeur == 1){

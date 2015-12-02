@@ -8,14 +8,14 @@ menu.controller('OobRunCtrl', function ($scope, $state, $http, $rootScope, $docu
 	$rootScope.stateChemin3 = $state.current.name;
 	$rootScope.suivant = false;
 
-	// Block backspace key action to go back
+	// Stop backspace key event
 	$document.on('keydown', function(e){
     	if(e.which === 8){
         	e.preventDefault();
       	}
  	 });
 
-	// Exit function on "go to menu" button click : send "stop" to finish exercice AND go to menu state
+	// Exit function on "go to menu" button click : send "stop" to finish Unity's exercice AND go to menu state
 	$scope.exit = function () {
 		$http.get('stop');
 		$state.go('mainMenu');

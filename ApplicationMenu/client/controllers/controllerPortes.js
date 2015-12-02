@@ -7,7 +7,7 @@ menu.controller('PortesCtrl', function ($scope,$state, $rootScope) {
 	$rootScope.chemin3 = '';
 	$rootScope.suivant = true;
 
-	// Next function : go to next state (doors configuration) whith type of doors as paramaters
+	// Next function : go to next state (doors configuration) with type of doors as paramaters
 	$scope.suivant_click = function(type){
 			$state.go(type);
 	}

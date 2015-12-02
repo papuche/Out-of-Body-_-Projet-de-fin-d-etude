@@ -10,7 +10,7 @@ menu.controller('AvatarMedecinCtrl', function ($scope, $state, $rootScope, $http
 		$http.get("stop");
 	}
 
-	// Next function : send "validerAvatar" to menu to validate the one choose by the patient AND the redction factor chose by the doctor
+	// Next function : send "validerAvatar" to menu to validate the one choose by the patient AND the reduction factor choose by the doctor
 	$scope.next = function () {
 		$http.get("validerAvatar/" + $scope.facteurAvatar);
 		$state.go('mainMenu');

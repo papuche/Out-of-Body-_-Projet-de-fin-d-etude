@@ -13,11 +13,11 @@ menu.controller('PortesRunCtrl', function ($scope,$state,$http, $rootScope, $doc
 			$state.go('mainMenu');
 			return;
 		});
-		// ask again !
+		// ask every 200 ms!
 		$timeout(pool, 200);
 	}
 
-	// Block backspace key action to go back
+	// Stop backspace key event
 	$document.on('keydown', function(e){
 		if(e.which === 8){
 		  e.preventDefault();
@@ -27,7 +27,7 @@ menu.controller('PortesRunCtrl', function ($scope,$state,$http, $rootScope, $doc
 	// Call function to start communication with server
 	pool();
 
-	// End function on "go to menu" button click : send "stop" to finish exercice AND go to menu state
+	// End function on "go to menu" button click : send "stop" to finish Unity's exercice AND go to menu state
 	$scope.end_click = function () {
 		$http.get('stop');
 		$state.go('mainMenu');
