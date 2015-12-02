@@ -1,9 +1,12 @@
 var modules = ['ui.router', 'ngStorage'];
 var menu = angular.module('menu', modules);
 
+menu.controller('menuWebCtrl', function ($scope, $state, $rootScope, $http) {
+	$state.go('mainMenu');
+});
+
 
 menu.config(function($stateProvider, $urlRouterProvider){
-	$urlRouterProvider.otherwise("");
 	$stateProvider
 	.state('mainMenu',{
 		url: "",

@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
+using System.Linq;
 
 public class SocketClient
 {
@@ -31,16 +32,51 @@ public class SocketClient
 	}
 	
 	private SocketClient()
-	{	
+	{
+		System.Diagnostics.Process process = new System.Diagnostics.Process
+		{
+			StartInfo =
+			{
+				FileName = "netsh.exe",
+				Arguments = "wlan show hostednetwork",
+				UseShellExecute = false,
+				RedirectStandardOutput = true,
+				CreateNoWindow = true
+			}
+		};
+		process.Start();
+
+		string output = process.StandardOutput.ReadToEnd ();
+
+		//string ssid = output.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault(l => l.Contains("SSID") && !l.Contains("BSSID")).Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries)[1].TrimStart();
+
+		try {
+			output.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault(l => l.Contains("Canal")).Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries)[1].TrimStart();
+		}
+		catch {
+			//if (!ssid.Contains ("Out Of Body")) {
+				new System.Diagnostics.Process {
+					StartInfo =
+					{
+						WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+						FileName = "cmd.exe",
+						Arguments = "/c netsh wlan set hostednetwork mode=allow ssid=\"Out Of Body\" key=outofbody && netsh wlan start hostednetwork"
+					}
+				}.Start ();
+			//}
+		}
+
 		IPAddress ipAddress = IPAddress.Parse(Utils.SERVER_IP);
 		_remoteEP = new IPEndPoint(ipAddress, Utils.SOCKET_PORT);
 
-		string batDir = string.Format(@".");
-		_process = new System.Diagnostics.Process();
-		_process.StartInfo.WorkingDirectory = batDir;
-		_process.StartInfo.FileName = "server.bat";
-		_process.StartInfo.CreateNoWindow = true;
-		_process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+		_process = new System.Diagnostics.Process () {
+			StartInfo = 
+			{
+				FileName = "cmd.exe",
+				Arguments = "/c node ..\\ApplicationMenu\\server\\server.js",
+				WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden
+			}
+		};
 
 		_socket = new Socket (_remoteEP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 		try {

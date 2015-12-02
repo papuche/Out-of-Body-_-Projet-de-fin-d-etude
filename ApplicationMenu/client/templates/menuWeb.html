@@ -6,6 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 	
 	<title>Out of Body</title>
 	<script src="node_modules/angular/angular.js"></script>
@@ -20,26 +21,29 @@
 	<script src="client/controllers/controllerPortesConfig.js"></script>
 	<script src="client/controllers/controllerAvatar.js"></script>
 	<script src="client/controllers/controllerAvatarMedecin.js"></script>
+	<script src="client/directives/directiveChrono.js"></script>
 	<link rel="stylesheet" type="text/css" href="client/styles/app.css">
 
 </head >
 
-<body class="container">
-	<header>
-		<h1 class="col-md-12">Menu Principal</h1>
+<body  ng-controller='menuWebCtrl'>	
+	<header class="bandeau">
+		<h1 class="col-sm-12 col-xs-12">Menu Principal</h1>
+
+		<div class="all-breadcrumb btn-group btn-breadcrumb">
+		    <a ui-sref="mainMenu" class="btn btn-default" ng-if="suivant;">{{chemin}}</a>
+		    <a ui-sref="{{stateChemin1}}" class="btn btn-default" ng-if="chemin1 && suivant;">{{chemin1}}</a>
+		    <a ui-sref="{{stateChemin2}}" class="btn btn-default" ng-if="chemin2 && suivant;">{{chemin2}}</a>
+
+		    <a ng-click="exit()" class="btn btn-default" ng-if="(suivant == false);">{{chemin}}</a>
+		    <a ng-click="exit(stateChemin1)" class="btn btn-default" ng-if="chemin1 && (suivant == false);">{{chemin1}}</a>
+		    <a ng-click="exit(stateChemin2)" class="btn btn-default" ng-if="chemin2 && (suivant == false);">{{chemin2}}</a>
+
+		    <a href="" class="btn btn-default" ng-if="chemin3">{{chemin3}}</a>
+		</div>
 	</header>
 
-	<div class="row btn-group btn-breadcrumb">
-	    <a ui-sref="mainMenu" class="btn btn-default" ng-if="suivant;">{{chemin}}</a>
-	    <a ui-sref="{{stateChemin1}}" class="btn btn-default" ng-if="chemin1 && suivant;">{{chemin1}}</a>
-	    <a ui-sref="{{stateChemin2}}" class="btn btn-default" ng-if="chemin2 && suivant;">{{chemin2}}</a>
 
-	    <a ng-click="exit()" class="btn btn-default" ng-if="(suivant == false);">{{chemin}}</a>
-	    <a ng-click="exit(stateChemin1)" class="btn btn-default" ng-if="chemin1 && (suivant == false);">{{chemin1}}</a>
-	    <a ng-click="exit(stateChemin2)" class="btn btn-default" ng-if="chemin2 && (suivant == false);">{{chemin2}}</a>
-
-	    <a href="" class="btn btn-default" ng-if="chemin3">{{chemin3}}</a>
-	</div>
 	<div ui-view></div>
 </body>
 </html>

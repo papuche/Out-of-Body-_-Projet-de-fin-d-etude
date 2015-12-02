@@ -1,0 +1,651 @@
+%==========================================================================
+%
+%    bba8_bi_ana.m        -  analyzer for Body-Based Attention experiments
+%                            (Exp. 8, bilateral)
+%
+%    Originally Written   -  Marc Grosjean    -  25/04/12
+%    Last Modified        -  Marc Grosjean    -  04/05/12
+%
+%--------------------------------------------------------------------------
+%
+%  Data Format: number of front responses (total number of responses = 20)
+%               1 row per participant; first column corresponds to participant
+%               number; remaing columns correspond to SOAs for 4 successive
+%               conditions (left hand, right hand, no hand, both hands):
+%
+%    1        -       -17 ms
+%    2        -       -34 ms
+%    3        -       -50 ms
+%    4        -       -67 ms
+%    5        -        17 ms
+%    6        -        34 ms
+%    7        -        50 ms
+%    8        -        67 ms
+%
+%==========================================================================
+
+% clear screen and all variables
+clc
+clear
+
+
+%-- Set and Declare Constants --%
+
+% file name, extension, labels - ALWAYS CHECK !!!
+file_name = 'BBA8_Bilateral_propright';
+disc_file_name = 'BBA8_Bilateral_discarded';
+file_ext = '.txt';
+ana_labels = ['L','C'];
+
+% save figures: 0=don't save, 1=save
+save_figures = 1;
+
+% replace missing values: 0=no replacement, 1=replacement
+replace_flag = 1;
+
+% number of responses per condition - ALWAYS CHECK !!!
+nb_resp_cond = 20;
+% nb hand positions and SOAs
+nb_hand_pos = 4;
+nb_SOA = 8;
+% SOA, nb_responses
+SOA = [-67 -50 -34 -17 17 34 50 67];
+nb_responses = nb_resp_cond*ones(nb_SOA,1)';
+
+% min and max values allowed for PSE and JND
+PSE_min = -67;
+PSE_max = 67;
+JND_min = 0;
+JND_max = 100;
+
+% threshold probability
+TH_prob = 0.5;
+
+% set graphics defaults
+set_graph_defaults;
+fig_size = [80 10 1200 680];
+
+% font sizes
+font_size = 12;
+label_size = 14;
+
+% initialize
+N = 0;
+N_no_fit = [];
+Cond_no_fit = [];
+VP_numbers = [];
+PSE_sum_data = zeros(1,nb_hand_pos);
+PSE_group_means = zeros(1,nb_hand_pos);
+SL_sum_data = zeros(1,nb_hand_pos);
+SL_group_means = zeros(1,nb_hand_pos);
+FP_sum_data = zeros(nb_hand_pos,2);
+FP_group_means = zeros(nb_hand_pos,2);
+JND_sum_data = zeros(1,nb_hand_pos);
+JND_group_means = zeros(1,nb_hand_pos);
+
+
+%-- Get Information --%
+
+% ask how to analyze
+disp(' ');
+disp('How would you like to fit the data?');
+disp(' ');
+disp('  1 = with a logistic function');
+disp('  2 = with a cumulative Gaussian');
+disp(' ');
+ana_method = input('-> ');
+
+% ask what to view
+disp(' ');
+disp(' ');
+disp('What would you like to view?');
+disp(' ');
+disp('  1 = participant and group data');
+disp('  2 = only group data');
+disp('  3 = nothing');
+disp(' ');
+view_data = input('-> ');
+
+
+%-- Load, Analyze, View, and Save Data --%
+
+% load nb of front responses into the matrix 'nb_front_responses'
+nb_front_responses = dlmread([file_name,file_ext]);
+% actual participant (VP) numbers
+VP = squeeze(nb_front_responses(:,1));
+% remove participant numbers from data array
+nb_front_responses = squeeze(nb_front_responses(:,2:end));
+
+% number of participants (rows) and columns
+[nb_participants nb_cols] = size(nb_front_responses);
+
+% reformat SOA order: -67 -50 etc.
+temp = nb_front_responses;
+for hand_pos = 1:nb_hand_pos,
+    nb_front_responses(:,1+(nb_SOA*(hand_pos-1))) = temp(:,4+(nb_SOA*(hand_pos-1)));
+    nb_front_responses(:,2+(nb_SOA*(hand_pos-1))) = temp(:,3+(nb_SOA*(hand_pos-1)));
+    nb_front_responses(:,3+(nb_SOA*(hand_pos-1))) = temp(:,2+(nb_SOA*(hand_pos-1)));
+    nb_front_responses(:,4+(nb_SOA*(hand_pos-1))) = temp(:,1+(nb_SOA*(hand_pos-1)));
+end
+
+% create proportion of front responses
+prop_front_responses = nb_front_responses./nb_responses(1);
+% get rid of bad values: 0->0.0001, 1->0.9999
+index = find(prop_front_responses==0);
+new_prop_front_responses(index) = 0.0001;
+index = find(prop_front_responses==1);
+new_prop_front_responses(index) = 0.9999;
+clear index;
+
+% load list of participants to discard
+discarded = load([disc_file_name,file_ext]);
+
+
+% participant loop
+for participant = 1:nb_participants,
+
+   % participant musn't be on list of particiapnts to discard
+   if isempty(find(VP(participant)==discarded)),
+
+        % increment N counter
+        N = N+1;
+        
+        % participant nb array
+        VP_numbers = [VP_numbers VP(participant)];
+
+        % participant message
+        clc
+        disp(' ');
+        disp(['Analyzing Participant ',num2str(N),'  (VP',int2str(VP(participant)),')']);
+
+
+        %-- Determine Threshold Values --%
+
+        % initialize arrays
+        PSE_data = zeros(1,nb_hand_pos);
+        SL_data = zeros(1,nb_hand_pos);
+        JND_data = zeros(1,nb_hand_pos);
+        R = zeros(1,nb_hand_pos);
+        FP = zeros(nb_hand_pos,2);
+        
+        % hand positions
+        for hp = 1:nb_hand_pos,
+            switch ana_method,
+                case 1,
+                    % my maximum likelihood - with exp((a-x)/b)
+                    % parameters used to start the search
+                    bs = [0 30];
+                    % use maximum likelihood defined for binomial
+                    options = optimset('Display','notify');
+                    [bf fval exitflag] = fminsearch('logistic_likelihood_function', bs, options, SOA', nb_front_responses(participant,[1+((hp-1)*nb_SOA):nb_SOA+((hp-1)*nb_SOA)])', nb_responses');
+                    % obtain threshold point by taking the inverse of the logistic
+                    PSE_data(hp) = bf(1) - bf(2) .* log(1 ./ TH_prob - 1); %= bf(1) for 0.5
+                    % assign fitted parameter values
+                    SL_data(hp) = bf(2);
+                    FP(hp,1) = bf(1);
+                    FP(hp,2) = bf(2);
+                    % obtain JND (=TH(.75)-TH(.25)/2) by taking the inverse of the logistic
+                    JND_data(hp) = ((bf(1) - bf(2) .* log(1 ./ 0.75 - 1)) - (bf(1) - bf(2) .* log(1 ./ 0.25 - 1)))/2;
+                    % obtain correlation coefficient between observed and predicted values
+                    r = corrcoef(prop_front_responses(participant,[1+((hp-1)*nb_SOA):nb_SOA+((hp-1)*nb_SOA)]),(1./(1+exp((FP(hp,1)-SOA)./FP(hp,2))))');
+                    R(hp) = r(1,2);
+                case 2,
+                    % psignifit maximum likelihood - with cumulative Gaussian
+                    % create data structure
+                    dat = [SOA', prop_front_responses(participant,[1+((hp-1)*nb_SOA):nb_SOA+((hp-1)*nb_SOA)])', nb_responses'];
+                    % set parameters
+                    shape = 'cumulative Gaussian';
+                    prefs = batch2('shape', shape, 'n_intervals', 1, 'verbose', 'false');
+                    output_prefs = batch2('write_pa', 'pa', 'write_th', 'th', 'write_st', 'st');
+                    % perform nonlinear fit with psignifit and obtain fitted parameters
+                    psignifit(dat, [prefs output_prefs]);
+                    % obtain threshold point by taking the inverse of the cumulative normal
+                    PSE_data(hp) = findthreshold(shape, pa.est, [TH_prob]); %= pa.est(1) = th.est(2) for 0.5
+                    % assign fitted parameter values
+                    SL_data(hp) = pa.est(2);
+                    FP(hp,1) = pa.est(1);
+                    FP(hp,2) = pa.est(2);
+                    % obtain JND (=TH(.75)-TH(.25)/2) by taking the inverse of the cumulative normal
+                    JND_data(hp) = (findthreshold(shape, pa.est, [0.75]) - findthreshold(shape, pa.est, [0.25]))/2;
+                    % obtain correlation coefficient between observed and predicted values
+                    r = corrcoef(prop_front_responses(participant,[1+((hp-1)*nb_SOA):nb_SOA+((hp-1)*nb_SOA)]),cumulativegaussian(SOA,FP(hp,1),FP(hp,2)));
+                    R(hp) = r(1,2);
+            end
+        end
+        
+        % replace undetermined fits
+        if replace_flag == 1,
+            % with mean of other conditions
+            % find and select values with determined fits using TH & JND values
+            keep_index = find((PSE_data>=PSE_min) & (PSE_data<=PSE_max) & (JND_data>=JND_min) & (JND_data<=JND_max));
+            PSE_keep = PSE_data(keep_index);
+            SL_keep = SL_data(keep_index);
+            JND_keep = JND_data(keep_index);
+            % obtain mean of TH, SL, and JND values
+            PSE_mean = mean(PSE_keep);
+            SL_mean = mean(SL_keep);
+            JND_mean = mean(JND_keep);
+            % replace undetermined fits for TH, SL, and JND
+            replace_index = find((PSE_data<PSE_min) | (PSE_data>PSE_max)  | (JND_data<JND_min)  | (JND_data>JND_max));
+            PSE_data(replace_index) = PSE_mean;
+            SL_data(replace_index) = SL_mean;
+            JND_data(replace_index) = JND_mean;
+            % update no-fit counter
+            if ~isempty(replace_index),
+                N_no_fit = [N_no_fit VP(participant)];
+                Cond_no_fit = [Cond_no_fit length(replace_index)];
+            end
+            % clear
+            clear keep_index PSE_keep SL_keep PSE_mean SL_mean replace_index;
+        end % replace
+        
+        % assign data for anova files
+        PSE_anova(N,:) = PSE_data;  % threshold (.5)
+        SL_anova(N,:) = SL_data;  % "slope", standard deviation
+        JND_anova(N,:) = JND_data;  % just noticeable difference
+
+
+        %-- Sum Data --%
+
+        PSE_sum_data = PSE_sum_data+PSE_data;
+        SL_sum_data = SL_sum_data+SL_data;
+        FP_sum_data = FP_sum_data+FP;
+        JND_sum_data = JND_sum_data+JND_data;
+
+
+        %-- View Participant Data --%
+
+        if view_data < 2,
+
+            % create figure
+            figure('Name',['  Participant ',num2str(N),'  (VP',int2str(VP(participant)),')'],'Position',fig_size);
+
+            % subplots
+            for hp = 1:nb_hand_pos,
+
+                % x label
+                if hp>2,
+                    x_label = 'SOA (ms)';
+                else
+                    x_label = ' ';
+                end
+                % y label
+                if hp==1 || hp==3,
+                    y_label = 'P(Right Responses)';
+                else
+                    y_label = ' ';
+                end
+                % title label
+                switch hp,
+                    case 1,
+                        t_label = 'Left Hand';
+                    case 2,
+                        t_label = 'Right Hand';
+                    case 3,
+                        t_label = 'No Hands';
+                    case 4,
+                        t_label = 'Both Hands';
+                end
+                switch hp,
+                    case 1,
+                        color_label = 'g';
+                    case 2,
+                        color_label = 'b';
+                    case 3,
+                        color_label = 'k';
+                    case 4,
+                        color_label = 'r';
+                end
+
+                % create subplot
+                subplot(2,2,hp)
+                plot(SOA,prop_front_responses(participant,[1+((hp-1)*nb_SOA):nb_SOA+((hp-1)*nb_SOA)]),[color_label,'o'])
+                hold on
+                % fitted function
+                l_x = -80:0.1:80;
+                if ana_method == 1,
+                    % logistic
+                    l_y = 1./(1+exp((FP(hp,1)-l_x)./FP(hp,2)));
+                else
+                    % cumulative Gaussian
+                    l_y = cumulativegaussian(l_x,FP(hp,1),FP(hp,2));
+                end
+                plot(l_x,l_y,[color_label,'-'])
+                % threshold
+                % vertical line
+                v_x = [PSE_data(hp),PSE_data(hp)];
+                v_y = [-0.1,TH_prob];
+                plot(v_x,v_y,[color_label,':'])
+                % horizontal line
+                h_x = [-80,PSE_data(hp)];
+                h_y = [TH_prob,TH_prob];
+                plot(h_x,h_y,[color_label,':'])
+                % settings
+                set(gca,'FontSize',font_size)
+                xlabel(x_label,'FontSize',label_size)
+                ylabel(y_label,'FontSize',label_size)
+                title(t_label,'FontSize',label_size)
+                text(30,0.1,['r^2 = ',num2str(R(hp)^2,2)],'FontSize',9,'Color',color_label)
+                text(30,0,['\tau = ',num2str(PSE_data(hp),3)],'FontSize',9,'Color',color_label)
+                axis([-80 80 -0.1 1.1])
+                clickplots
+                hold off
+
+            end % subplot
+
+            pause
+
+            % save figure
+            if (save_figures == 1)
+                orient landscape;
+                if (participant < 10)
+                    eval(['print ',file_name,'_',ana_labels(ana_method),'_1.VP0',int2str(VP(participant)),'.tif -dtiff']);
+                else
+                    eval(['print ',file_name,'_',ana_labels(ana_method),'_1.VP',int2str(VP(participant)),'.tif -dtiff']);
+                end
+            end
+
+            close
+
+            % create figure
+            figure('Name',['  Participant ',num2str(N),'  (VP',int2str(VP(participant)),')'],'Position',fig_size);
+
+            % black background
+            %colordef(gcf,'black')
+
+            % create subplot
+            subplot(1,2,1)
+            for hp = 1:nb_hand_pos,
+                switch hp,
+                    case 1,
+                        color_label = 'g';
+                    case 2,
+                        color_label = 'b';
+                    case 3,
+                        color_label = 'k';
+                    case 4,
+                        color_label = 'r';
+                end
+                plot(SOA,prop_front_responses(participant,[1+((hp-1)*nb_SOA):nb_SOA+((hp-1)*nb_SOA)]),[color_label,'o'])
+                hold on
+                % fitted logistic function
+                l_x = -80:0.1:80;
+                if ana_method == 1,
+                    % logistic
+                    l_y = 1./(1+exp((FP(hp,1)-l_x)./FP(hp,2)));
+                else
+                    % cumulative Gaussian
+                    l_y = cumulativegaussian(l_x,FP(hp,1),FP(hp,2));
+                end
+                plot(l_x,l_y,[color_label,'-'])
+            end
+            % settings
+            set(gca,'FontSize',font_size)
+            x_label = 'SOA (ms)';
+            y_label = 'P(Right Responses)';
+            xlabel(x_label,'FontSize',label_size)
+            ylabel(y_label,'FontSize',label_size)
+            legend('Left','','Right','','None','','Both','')
+            axis([-80 80 -0.1 1.1])
+            hold off
+
+            % create subplot
+            subplot(3,2,2)
+            bar(PSE_data,'k')
+            hold on
+            % zero line
+            h_x = [1,4];
+            h_y = [0,0];
+            plot(h_x,h_y,'k-')
+            % settings
+            set(gca,'FontSize',font_size)
+            y_label = 'PSE (ms)';
+            ylabel(y_label,'FontSize',label_size)
+            set(gca,'XTickLabel',{'Left', 'Right', 'None', 'Both'})
+            axis([-inf inf min(PSE_data)-5 max(PSE_data)+5])
+            hold off
+            
+            % create subplot
+            subplot(3,2,4)
+            bar(SL_data,'k')
+            hold on
+            % zero line
+            h_x = [1,4];
+            h_y = [0,0];
+            plot(h_x,h_y,'k-')
+            % settings
+            set(gca,'FontSize',font_size)
+            x_label = 'Hand Position';
+            y_label = '"Slope"/SD (ms)';
+            xlabel(x_label,'FontSize',label_size)
+            ylabel(y_label,'FontSize',label_size)
+            set(gca,'XTickLabel',{'Left', 'Right', 'None', 'Both'})
+            axis([-inf inf min(SL_data)-5 max(SL_data)+5])
+            hold off
+
+            % create subplot
+            subplot(3,2,6)
+            bar(JND_data,'k')
+            hold on
+            % zero line
+            h_x = [1,4];
+            h_y = [0,0];
+            plot(h_x,h_y,'k-')
+            % settings
+            set(gca,'FontSize',font_size)
+            x_label = 'Hand Position';
+            y_label = 'JND (ms)';
+            xlabel(x_label,'FontSize',label_size)
+            ylabel(y_label,'FontSize',label_size)
+            set(gca,'XTickLabel',{'Left', 'Right', 'None', 'Both'})
+            axis([-inf inf min(JND_data)-5 max(JND_data)+5])
+            hold off
+
+            pause
+            
+            % save figure
+            if (save_figures == 1)
+                orient landscape;
+                if (participant < 10)
+                    eval(['print ',file_name,'_',ana_labels(ana_method),'_2.VP0',int2str(VP(participant)),'.tif -dtiff']);
+                else
+                    eval(['print ',file_name,'_',ana_labels(ana_method),'_2.VP',int2str(VP(participant)),'.tif -dtiff']);
+                end
+            end
+
+            close
+
+        end % view participant data
+
+    end % discard participant
+
+end % participant loop
+
+
+%-- Compute Group Mean Data --%
+
+% means
+PSE_group_means = PSE_sum_data./N;
+SL_group_means = SL_sum_data./N;
+FP_group_means = FP_sum_data./N;
+JND_group_means = JND_sum_data./N;
+
+% clear
+clear PSE_sum_data SL_sum_data FP_sum_data JND_sum_data;
+
+
+%-- View Group Mean Data --%
+
+if view_data < 3,
+
+    % create figure
+    figure('Name',['  Group  '], 'Position',fig_size);
+
+    % black background
+    %colordef(gcf,'black')
+
+    % create subplot
+    subplot(1,2,1)
+    for hp = 1:nb_hand_pos,
+        switch hp,
+            case 1,
+                color_label = 'g';
+            case 2,
+                color_label = 'b';
+            case 3,
+                color_label = 'k';
+            case 4,
+                color_label = 'r';
+        end
+        plot(SOA,mean(prop_front_responses(:,[1+((hp-1)*nb_SOA):nb_SOA+((hp-1)*nb_SOA)])),[color_label,'-o'])
+        hold on
+        %         % mean fitted function
+        %         l_x = -80:0.1:80;
+        %         if ana_method == 1,
+        %             % logistic
+        %             l_y = 1./(1+exp((FP_group_means(hp,1)-l_x)./FP_group_means(hp,2)));
+        %         else
+        %             % cumulative Gaussian
+        %             l_y = cumulativegaussian(l_x,FP_group_means(hp,1),FP_group_means(hp,2));
+        %         end
+        %         plot(l_x,l_y,[color_label,'-'])
+    end
+    % settings
+    set(gca,'FontSize',font_size)
+    x_label = 'SOA (ms)';
+    y_label = 'Mean P(Right Responses)';
+    xlabel(x_label,'FontSize',label_size)
+    ylabel(y_label,'FontSize',label_size)
+    legend('Left','Right','None','Both')
+    axis([-80 80 -0.1 1.1])
+    hold off
+
+    % create subplot
+    subplot(3,2,2)
+    bar(PSE_group_means,'k')
+    hold on
+    % zero line
+    h_x = [1,4];
+    h_y = [0,0];
+    plot(h_x,h_y,'k-')
+    % settings
+    set(gca,'FontSize',font_size)
+    y_label = 'Mean PSE (ms)';
+    ylabel(y_label,'FontSize',label_size)
+    set(gca,'XTickLabel',{'Left', 'Right', 'None', 'Both'})
+    axis([-inf inf min(PSE_group_means)-5 max(PSE_group_means)+5])
+    hold off
+
+    % create subplot
+    subplot(3,2,4)
+    bar(SL_group_means,'k')
+    hold on
+    % zero line
+    h_x = [1,4];
+    h_y = [0,0];
+    plot(h_x,h_y,'k-')
+    % settings
+    set(gca,'FontSize',font_size)
+    x_label = 'Hand Position';
+    y_label = 'Mean "Slope"/SD (ms)';
+    xlabel(x_label,'FontSize',label_size)
+    ylabel(y_label,'FontSize',label_size)
+    set(gca,'XTickLabel',{'Left', 'Right', 'None', 'Both'})
+    axis([-inf inf min(SL_group_means)-5 max(SL_group_means)+5])
+    hold off
+
+    % create subplot
+    subplot(3,2,6)
+    bar(JND_group_means,'k')
+    hold on
+    % zero line
+    h_x = [1,4];
+    h_y = [0,0];
+    plot(h_x,h_y,'k-')
+    % settings
+    set(gca,'FontSize',font_size)
+    x_label = 'Hand Position';
+    y_label = 'Mean JND (ms)';
+    xlabel(x_label,'FontSize',label_size)
+    ylabel(y_label,'FontSize',label_size)
+    set(gca,'XTickLabel',{'Left', 'Right', 'None', 'Both'})
+    axis([-inf inf min(JND_group_means)-5 max(JND_group_means)+5])
+    hold off
+
+    pause
+
+    % save figure
+    if (save_figures == 1)
+        orient landscape;
+        eval(['print ',file_name,'_',ana_labels(ana_method),'.Group.tif -dtiff']);
+    end
+
+    close
+
+end % view group data
+
+
+%-- Save Group Mean Data --%
+
+% message
+disp(' ');
+disp(['Saving Group Means ...']);
+disp(' ');
+
+% PSE - open anova file and save group anova data
+if replace_flag == 1,
+    [fid mess] = fopen(['BBA8_PSE_',ana_labels(ana_method),'r',file_ext],'w');
+else
+    [fid mess] = fopen(['BBA8_PSE_',ana_labels(ana_method),file_ext],'w');
+end
+% add participant nb and hand position order
+PSE_anova(:,nb_hand_pos+1) = VP_numbers';
+% labels
+fprintf(fid,'left right none both vp\n');
+% data
+fprintf(fid,'%8.2f %8.2f %8.2f %8.2f %8i\n',PSE_anova');
+fclose(fid);
+
+% SL - open anova file and save group anova data
+if replace_flag == 1,
+    [fid mess] = fopen(['BBA8_SL_',ana_labels(ana_method),'r',file_ext],'w');
+else
+    [fid mess] = fopen(['BBA8_SL_',ana_labels(ana_method),file_ext],'w');
+end
+% add participant nb and hand position order
+SL_anova(:,nb_hand_pos+1) = VP_numbers';
+% labels
+fprintf(fid,'left right none both vp\n');
+% data
+fprintf(fid,'%8.2f %8.2f %8.2f %8.2f %8i\n',SL_anova');
+fclose(fid);
+
+% JND - open anova file and save group anova data
+if replace_flag == 1,
+    [fid mess] = fopen(['BBA8_JND_',ana_labels(ana_method),'r',file_ext],'w');
+else
+    [fid mess] = fopen(['BBA8_JND_',ana_labels(ana_method),file_ext],'w');
+end
+% add participant nb and hand position order
+JND_anova(:,nb_hand_pos+1) = VP_numbers';
+% labels
+fprintf(fid,'left right none both vp\n');
+% data
+fprintf(fid,'%8.2f %8.2f %8.2f %8.2f %8i\n',JND_anova');
+fclose(fid);
+
+% display replacement info
+if replace_flag == 1 & ~isempty(N_no_fit),
+    disp(['Participants with bad fits (% unfit conditions):']);
+    disp(' ');
+    for p = 1:length(N_no_fit),
+        disp(['  ',num2str(N_no_fit(p)),' (',num2str(100*(Cond_no_fit(p)/(nb_hand_pos)),3),'%)']);
+    end
+    disp(' ');
+end
+
+% clear all variables
+clear
+
+
+%=============================  End of Program  =============================%

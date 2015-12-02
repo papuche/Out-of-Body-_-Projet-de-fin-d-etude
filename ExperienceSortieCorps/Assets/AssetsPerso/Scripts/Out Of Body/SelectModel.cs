@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.IO;
 
 public class SelectModel : MonoBehaviour
 {
@@ -72,7 +73,7 @@ public class SelectModel : MonoBehaviour
 				_avatarIndex = 0;
 			ReloadAvatar();
 		}
-		if (!PlayerPrefs.GetString (Utils.PREFS_VALIDATE_AVATAR).Equals("")) {
+		if (!string.Empty.Equals(PlayerPrefs.GetString (Utils.PREFS_VALIDATE_AVATAR))) {
 			int difference = int.Parse(PlayerPrefs.GetString (Utils.PREFS_VALIDATE_AVATAR));
 			PlayerPrefs.DeleteKey(Utils.PREFS_VALIDATE_AVATAR);
 			Validate(difference);
@@ -96,17 +97,29 @@ public class SelectModel : MonoBehaviour
 		GameObject src = _go_models[_avatarIndex];
 		GameObject dst = SelectOtherAvatar (src, difference);
 		if (src != null && dst != null) {
+			CreateNewDirectory();
 			string models = Utils.MODELS_DIRECTORY [_gender] + src.name + ";" + Utils.MODELS_DIRECTORY [_gender] + dst.name;
 			PlayerPrefs.SetString (Utils.PREFS_MODEL, models);
-			//Destroy (_avatar);
-			/*GameObject.Find ("Canvas").SetActive (false);
-			initModel.SetActive (true);*/
-			//SocketClient.GetInstance().Write(models);
+			PlayerPrefs.SetInt (Utils.PREFS_CONDITION, 1);
 			Application.LoadLevel(Utils.WAITING_SCENE);
 		}
 	}
 
-	GameObject SelectOtherAvatar(GameObject avatar, int difference){
+	void CreateNewDirectory(){
+		if (!Directory.Exists (FilesConst.SAVE_FILES_DIRECTORY)) {	// Si le répertoire contenant les résultats n'existent pas
+			Directory.CreateDirectory (FilesConst.SAVE_FILES_DIRECTORY);	// On le crée
+		}
+		int dirIndex = 0;
+		foreach (string directory in Directory.GetDirectories(FilesConst.SAVE_FILES_DIRECTORY)) {
+			string dir = directory.Remove (0, FilesConst.SAVE_FILES_DIRECTORY.Length + 1);
+			if (dir.Contains (FilesConst.USER_PREFIX_DIRECTORY) && int.Parse (dir.Remove (0, FilesConst.USER_PREFIX_DIRECTORY.Length).Split('_')[0]) > dirIndex)
+				dirIndex = int.Parse (dir.Remove (0, FilesConst.USER_PREFIX_DIRECTORY.Length).Split('_')[0]);
+		}
+		string time = System.DateTime.Now.ToString ().Replace ("/", "-").Replace (":", "-");
+		PlayerPrefs.SetString (Utils.PREFS_PATH_FOLDER, Directory.CreateDirectory (FilesConst.SAVE_FILES_DIRECTORY + "/" + FilesConst.USER_PREFIX_DIRECTORY + (dirIndex + 1).ToString () + "_" + time).FullName);
+	}
+
+	private GameObject SelectOtherAvatar(GameObject avatar, int difference){
 		string[] weight = {"HC", "LHC", "MC", "HLC", "LC"};
 		string[] muscle = {"HM", "LHM", "MM", "HLM", "LM"};
 

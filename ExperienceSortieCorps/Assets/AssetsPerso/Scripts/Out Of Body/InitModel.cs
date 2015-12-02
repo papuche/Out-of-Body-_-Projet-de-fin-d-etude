@@ -7,25 +7,23 @@ public class InitModel : MonoBehaviour {
 
 	private GameObject _goSrc;
 
-	void Start(){
+	void Awake(){
 		string[] model = PlayerPrefs.GetString (Utils.PREFS_MODEL).Split(';');
 		_goSrc = (GameObject)Instantiate(Resources.Load(model[0]));
 		_goSrc.transform.parent = _posAvatar.transform;
 		_goSrc.name = model [0].Split ('/') [2];
 		_goSrc.transform.localPosition = Vector3.zero;
-		/*Vector3 vector = Vector3.zero;
-		vector.y -= 0.5f;
-		goSrc.transform.localPosition = vector;*/
 		_goSrc.transform.localRotation = new Quaternion(0.0f,0.0f,0.0f,0.0f);
 		initAvatar();
 		initKinect();
 	}
 
 	void initKinect(){
+		GameObject modelRoot = _goSrc.transform.FindChild ("python").gameObject;
+
 		AvatarControllerClassic ctrl = _goSrc.AddComponent <AvatarControllerClassic>();
 		
 		ctrl.verticalMovement = true;
-		GameObject modelRoot = _goSrc.transform.FindChild ("python").gameObject;
 		
 		ctrl.HipCenter = modelRoot.transform.FindChild("Hips");
 		ctrl.Spine = modelRoot.transform.FindChild ("Hips/Spine");

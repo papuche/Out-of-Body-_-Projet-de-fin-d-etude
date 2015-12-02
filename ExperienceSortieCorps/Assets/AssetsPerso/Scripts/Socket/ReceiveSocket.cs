@@ -68,10 +68,22 @@ public class ReceiveSocket : MonoBehaviour
 			// EXERCICE DE SORTIE DE CORPS
 			else if(message.Contains(Utils.SOCKET_OUT_OF_BODY)){
 				string[] parameters = message.Remove (0, Utils.SOCKET_OUT_OF_BODY.Length + 1).Split('_');
-				PlayerPrefs.SetInt(Utils.PREFS_BATON, int.Parse (parameters[0]));
-				PlayerPrefs.SetInt(Utils.PREFS_MORPHING, int.Parse (parameters[1]));
-				PlayerPrefs.SetInt(Utils.PREFS_GHOST, int.Parse (parameters[2]));
+				int baton = int.Parse(parameters[0]);
+				int morphing = int.Parse(parameters[1]);
+				int ghost = int.Parse(parameters[2]);
+
+				PlayerPrefs.SetInt(Utils.PREFS_GHOST, ghost);
 				PlayerPrefs.SetInt (Utils.PREFS_LAUNCH_MODEL, 1);
+
+				if(morphing == 0 && baton == 0) 
+					PlayerPrefs.SetInt (Utils.PREFS_CONDITION, 1);
+				else if(morphing == 1 && baton == 0) 
+					PlayerPrefs.SetInt (Utils.PREFS_CONDITION, 2);
+				else if(morphing == 0 && baton == 1) 
+					PlayerPrefs.SetInt (Utils.PREFS_CONDITION, 3);
+				else if(morphing == 1 && baton == 1) 
+					PlayerPrefs.SetInt (Utils.PREFS_CONDITION, 4);
+
 				Application.LoadLevel (Utils.OUTOFBODY_SCENE);
 			}
 
