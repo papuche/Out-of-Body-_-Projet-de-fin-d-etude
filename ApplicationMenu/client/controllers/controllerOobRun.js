@@ -1,4 +1,5 @@
 menu.controller('OobRunCtrl', function ($scope, $state, $http, $rootScope, $document) {
+	// Breadcrumb settings
 	$rootScope.chemin = 'Accueil';
 	$rootScope.chemin1 = 'Sortie de corps';
 	$rootScope.stateChemin1 = 'oob';
@@ -7,16 +8,16 @@ menu.controller('OobRunCtrl', function ($scope, $state, $http, $rootScope, $docu
 	$rootScope.stateChemin3 = $state.current.name;
 	$rootScope.suivant = false;
 
-	// enlever le retour de backspace key
+	// Block backspace key action to go back
 	$document.on('keydown', function(e){
-		console.log(e);
     	if(e.which === 8){
         	e.preventDefault();
       	}
  	 });
 
+	// Exit function on "go to menu" button click : send "stop" to finish exercice AND go to menu state
 	$scope.exit = function () {
-		$http.get('/stop');
+		$http.get('stop');
 		$state.go('mainMenu');
 	}
 });

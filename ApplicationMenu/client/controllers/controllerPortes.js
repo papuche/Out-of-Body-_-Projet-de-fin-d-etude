@@ -1,20 +1,5 @@
-menu.config(function($stateProvider, $urlRouterProvider){
-	$stateProvider
-	.state('entiere',{
-		url: "/portes/entiere",
-		templateUrl: "client/templates/portesConfig.html"
-	})
-	.state('demi_haut',{
-		url: "/portes/demi_haut",
-		templateUrl: "client/templates/portesConfig.html"
-	})
-	.state('demi_bas',{
-		url: "/portes/demi_bas",
-		templateUrl: "client/templates/portesConfig.html"
-	});
-});
-
 menu.controller('PortesCtrl', function ($scope,$state, $rootScope) {
+	// Breadcrumb settings
 	$rootScope.chemin = 'Accueil';
 	$rootScope.chemin1 = 'Exercice des portes';
 	$rootScope.stateChemin1 = $state.current.name;
@@ -22,9 +7,12 @@ menu.controller('PortesCtrl', function ($scope,$state, $rootScope) {
 	$rootScope.chemin3 = '';
 	$rootScope.suivant = true;
 
+	// Next function : go to next state (doors configuration) whith type of doors as paramaters
 	$scope.suivant_click = function(type){
 			$state.go(type);
 	}
+
+	// Previous function : go back to menu
 	$scope.previous = function () {
 		$state.go('mainMenu');
 	}
