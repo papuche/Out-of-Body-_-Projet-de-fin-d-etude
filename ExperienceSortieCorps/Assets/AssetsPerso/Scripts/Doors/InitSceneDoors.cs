@@ -140,6 +140,8 @@ public class InitSceneDoors : MonoBehaviour {
 
 						CreateResultFile(directory, username);
 						createTxT(username);
+
+						CallPythonScript(username, PlayerPrefs.GetInt (Utils.PREFS_CONDITION), Path.Combine(directory, username + ".txt"));
 					}
 					SocketClient.GetInstance().Write(Utils.SOCKET_END_DOOR);	// Envoi de la trame de fin d'exercice des portes au client
 					Application.LoadLevel(Utils.WAITING_SCENE);
@@ -239,9 +241,9 @@ public class InitSceneDoors : MonoBehaviour {
 			modelDstvalue = _modelDstValues [0].ToString () + SEPARATOR + _modelDstValues [1].ToString () + SEPARATOR + _modelDstValues [2].ToString ();
 			modelDiffvalue = _differenceModels [0].ToString () + SEPARATOR + _differenceModels [1].ToString () + SEPARATOR + _differenceModels [2].ToString ();
 		} else {
-			modelSrcvalue = "0" + SEPARATOR + "0 " + SEPARATOR + "0";
-			modelDstvalue = "0" + SEPARATOR + "0 " + SEPARATOR + "0";
-			modelDiffvalue = "0" + SEPARATOR + "0 " + SEPARATOR + "0";
+			modelSrcvalue = "0" + SEPARATOR + "0" + SEPARATOR + "0";
+			modelDstvalue = "0" + SEPARATOR + "0" + SEPARATOR + "0";
+			modelDiffvalue = "0" + SEPARATOR + "0" + SEPARATOR + "0";
 		}
 		string filename = Path.Combine(dir, username + ".txt");
 		StreamWriter file = null;
@@ -346,7 +348,7 @@ public class InitSceneDoors : MonoBehaviour {
 		} else {	// Met a jour la derniere ligne
 			string res = "";
 
-			for(int i=0; i<11; i++)
+			for(int i = 0; i < 11; i++)
 				res += parameters[i] + SEPARATOR;
 
 			res += WriteOrUpdateMoyenne(condition, moyenne, parameters);
@@ -356,6 +358,23 @@ public class InitSceneDoors : MonoBehaviour {
 			lines[lines.Length -1] = res;
 			File.WriteAllLines(fileName, lines);
 		}
+	}
+
+	/// <summary>
+	/// Appelle le script python
+	/// </summary>
+	/// <param name="username">Le nom de l'utilisateur effectuant l'exercice</param>
+	/// <param name="condition">La condition d'expérimentation</param>
+	/// <param name="resultFilename">Le fichier de résultat généré pour l'utilisateur</param>
+	void CallPythonScript(string username, int condition, string resultFilename){
+		new System.Diagnostics.Process () {
+			StartInfo = 
+			{
+				FileName = "cmd.exe",
+				Arguments = "/c py drawGraphe.py " + username + " " + condition + " \"" + resultFilename + " \"",
+				WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden
+			}
+		}.Start();
 	}
 
 	string WriteOrUpdateMoyenne(int condition, float moyenne, string[] parameters){
@@ -372,7 +391,7 @@ public class InitSceneDoors : MonoBehaviour {
 
 	string WriteOrUpdateParameter(int condition, string[] parameters, float newValue, int baseIndex){
 		string res = "";
-		for(int i=1; i<5; i++) {
+		for(int i = 1; i < 5; i++) {
 			if(condition == i)
 				res += newValue.ToString() + SEPARATOR;
 			else 

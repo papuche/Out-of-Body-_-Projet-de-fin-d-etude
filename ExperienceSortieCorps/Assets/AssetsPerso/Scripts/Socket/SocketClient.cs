@@ -45,7 +45,7 @@ public class SocketClient
 			}
 		};
 		process.Start();
-		
+
 		string output = process.StandardOutput.ReadToEnd ();
 
 		//string ssid = output.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault(l => l.Contains("SSID") && !l.Contains("BSSID")).Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries)[1].TrimStart();
@@ -74,7 +74,7 @@ public class SocketClient
 			{
 				FileName = "cmd.exe",
 				Arguments = "/c node ..\\ApplicationMenu\\server\\server.js",
-				CreateNoWindow = true
+				WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden
 			}
 		};
 

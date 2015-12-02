@@ -73,7 +73,7 @@ public class SelectModel : MonoBehaviour
 				_avatarIndex = 0;
 			ReloadAvatar();
 		}
-		if (!PlayerPrefs.GetString (Utils.PREFS_VALIDATE_AVATAR).Equals("")) {
+		if (!string.Empty.Equals(PlayerPrefs.GetString (Utils.PREFS_VALIDATE_AVATAR))) {
 			int difference = int.Parse(PlayerPrefs.GetString (Utils.PREFS_VALIDATE_AVATAR));
 			PlayerPrefs.DeleteKey(Utils.PREFS_VALIDATE_AVATAR);
 			Validate(difference);

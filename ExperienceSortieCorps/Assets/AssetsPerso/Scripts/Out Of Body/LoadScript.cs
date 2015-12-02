@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class LoadScript : MonoBehaviour {
-
+	
 	[SerializeField]
 	private GameObject _baton;
 	[SerializeField]
@@ -15,10 +15,10 @@ public class LoadScript : MonoBehaviour {
 	private Material _jeanGhost;
 	[SerializeField]
 	private Material _shirtGhost;
-
+	
 	[SerializeField]
 	private GameObject _initModel;
-
+	
 	// Use this for initialization
 	void Start () {
 		_camera.gameObject.SetActive (false);
@@ -43,29 +43,29 @@ public class LoadScript : MonoBehaviour {
 		}
 		_camera.gameObject.SetActive (true);
 	}
-
+	
 	void EnableBaton(){
 		_baton.SetActive (true);
 	}
-
+	
 	void EnableMorphing(){
-		InitMorphing initMorphing = _scene.AddComponent<InitMorphing>();
+		InitMorphing initMorphing = _scene.AddComponent<InitMorphing> ();
 		initMorphing.jeanGhost = _jeanGhost;
 		initMorphing.shirtGhost = _shirtGhost;
 	}
-
+	
 	public GameObject baton {
 		set {
 			_baton = value;
 		}
 	}
-
+	
 	public Camera camera {
 		set {
 			_camera = value;
 		}
 	}
-
+	
 	public GameObject scene {
 		set {
 			_scene = value;
@@ -76,7 +76,7 @@ public class LoadScript : MonoBehaviour {
 			_posAvatar = value;
 		}
 	}
-
+	
 	public Material jeanGhost {
 		set {
 			_jeanGhost = value;
@@ -88,7 +88,7 @@ public class LoadScript : MonoBehaviour {
 			_shirtGhost = value;
 		}
 	}
-
+	
 	public GameObject initModel {
 		set {
 			_initModel = value;
