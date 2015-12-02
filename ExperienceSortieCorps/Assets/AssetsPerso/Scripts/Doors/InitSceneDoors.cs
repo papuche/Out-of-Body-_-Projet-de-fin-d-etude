@@ -7,43 +7,50 @@ using System.Xml.Linq;
 using System.IO;
 using System.Globalization;
 
+/// <summary>
+/// Script called when the door scene is starting.
+/// </summary>
 public class InitSceneDoors : MonoBehaviour {
 
+	// reference doors on the scene
 	[SerializeField]
 	private GameObject _fullDoors;
 	[SerializeField]
 	private GameObject _bottomDoors;
 	[SerializeField]
 	private GameObject _topDoors;
+	// doors counter on the scene.
 	[SerializeField]
 	private GameObject _text;
 
+	// Value of initial doors scales
 	private float _initialScaleX;
 	private float _initialScaleY;
 
+	// Attribute to know time response of the patient
 	private System.DateTime _time;
 
-	// Gestion de la largeur des portes
+	// management width of the doors
 	private GameObject _piece;
 	private int _nbDoors = 0;
 	private List<Measure> _scales = new List<Measure>();
-	private int _doorIndex;		// Index pointant dans scales
-	private Vector3 _currentScale;	// Dimension de la porte dans la scène
+	private int _doorIndex;		// Index used in scales list
+	private Vector3 _currentScale;	// Scale of the current door in the scene
 
-	// Nombre de réponses jouées (affichées dans la scène)
+	// Number of doors played (visible on the scene)
 	private int _nbAnswers=0;
 
-	// Liste où sont enregistrés les largeur de portes jouées (pour le fichier de résultats)
+	// values of played doors (used for the results file)
 	private List<Measure> _ordreOuverture = new List<Measure>();
 
-	// Modèle sélectionné par le sujet
+	// Chosen model by the patient
 	private float[] _modelSrcValues;
-	// Modèle sélectionné par le psychologue
+	// Chosen model by the psychologue
 	private float[] _modelDstValues;
-	// Ecart de morphologie
+	// difference of morphology
 	private float[] _differenceModels;
 
-	// Fichier de résultats
+	// results file.
 	private string _fileName;
 	private XmlDocument _xmlModel;
 
@@ -75,32 +82,30 @@ public class InitSceneDoors : MonoBehaviour {
 		_initialScaleX = _currentScale.x;
 		_initialScaleY = _currentScale.y;
 
-		// Assignation de labels à la condition du test et au sujet du test
-
-		// Création du fichier de résultats
+		// creation results file
 		_fileName = System.DateTime.Now.ToString ();
 		_fileName = _fileName.Replace ("/", "-");
 		_fileName = _fileName.Replace (":", "-");
 
-		// Initialisation du tableau conprenant la largeur des portes.
+		// Init. array of doors scales.
 		initScales ();
 
 		loadXMLFromAssest ();
 
-		// Recupération du nom des modèles dans modelName
+		// Get name of the current model
 		string[] modelName = PlayerPrefs.GetString (Utils.PREFS_MODEL).Split (';');
 		if(!modelName[0].Equals("")) {
-			_modelSrcValues = ReadModelsValue (modelName [0].Split ('/') [2]);	// Les modèles du sujet sont enregistrés en [0]
-			_modelDstValues = ReadModelsValue (modelName [1].Split ('/') [2]);	// Les modèles du phychologue sont enregistrés en [1]
+			_modelSrcValues = ReadModelsValue (modelName [0].Split ('/') [2]);	//Patient model save at the index 0 of the "modelName" array
+			_modelDstValues = ReadModelsValue (modelName [1].Split ('/') [2]);	//Psychologue model save at the index 0 of the "modelName" array
 			_differenceModels = calculEcart (_modelSrcValues, _modelDstValues);
 		}
 
-		// Mise à jour de la largeur de porte.
+		// Update doors scales.
 		_doorIndex = Random.Range (0, _scales.Count);
 		applyScale ();
 		
 		_stop = false;
-		// Ecriture de l'avancement dans la scène
+		// Write  
 		_nbAnswers++;
 		_text.GetComponent<Text>().text = _nbAnswers.ToString() + "/" + _nbDoors.ToString();	
 	}
@@ -143,7 +148,7 @@ public class InitSceneDoors : MonoBehaviour {
 
 						CallPythonScript(username, PlayerPrefs.GetInt (Utils.PREFS_CONDITION), Path.Combine(directory, username + ".txt"));
 					}
-					SocketClient.GetInstance().Write(Utils.SOCKET_END_DOOR);	// Envoi de la trame de fin d'exercice des portes au client
+					SocketClient.GetInstance().Write(Utils.SOCKET_END_DOOR);	// Send message "doors end" to the server
 					Application.LoadLevel(Utils.WAITING_SCENE);
 				}
 			}
@@ -151,7 +156,7 @@ public class InitSceneDoors : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Initialisation du tableau conprenant les échelles des portes.
+	/// Initialisation of the array who contains doors scales.
 	/// </summary>
 	void initScales(){
 		List<Measure> measures = new List<Measure> ();
@@ -172,14 +177,14 @@ public class InitSceneDoors : MonoBehaviour {
 		if (nbWidth > 0) {
 			int widthStep = int.Parse (parameters [2]);
 			int heightStep = int.Parse (parameters [4]);
-			if (nbWidth % 2 != 0) {	// Si nbWidth est un nombre impair
+			if (nbWidth % 2 != 0) {	// if nbWidth is an odd number
 				for (int i = -nbWidth / 2; i < (nbWidth + 1) / 2; i++) {
 					if (nbHeight > 0) {
-						if (nbHeight % 2 != 0) {	// Si nbHeight est un nombre impair
+						if (nbHeight % 2 != 0) {	// if nbHeight is an odd number
 							for (int j = -nbHeight / 2; j < (nbHeight + 1) / 2; j++) {
 								measures.Add (new Measure ((float)(widthStep * i / 100.0 + 1.0) * _initialScaleX, (float)(heightStep * j / 100.0 + 1.0) * _initialScaleY));
 							}
-						} else {	// Si nbHeight est un nombre pair
+						} else {	// if nbHeight is an even number
 							for (int j = -nbHeight / 2; j < nbHeight / 2; j++) {
 								measures.Add (new Measure ((float)(widthStep * i / 100.0 + 1.0) * _initialScaleX, (float)(heightStep * j / 100.0 + 1.0) * _initialScaleY + heightStep * _initialScaleY / (2 * 100)));
 							}
@@ -188,14 +193,14 @@ public class InitSceneDoors : MonoBehaviour {
 						measures.Add (new Measure ((float)(widthStep * i / 100.0 + 1.0) * _initialScaleX, _initialScaleY));
 					}
 				}
-			} else {	// Si nbWidth est un nombre pair
+			} else {	// if nbWidth is an even number
 				for (int i = -nbWidth / 2; i < nbWidth / 2; i++) {
 					if (nbHeight > 0) {
-						if (nbHeight % 2 != 0) {	// Si nbHeight est un nombre impair
+						if (nbHeight % 2 != 0) {	// if nbHeight is an odd number
 							for (int j = -nbHeight / 2; j < (nbHeight + 1) / 2; j++) {
 								measures.Add (new Measure ((float)(widthStep * i / 100.0 + 1.0) * _initialScaleX + widthStep * _initialScaleX / (2 * 100), (float)(heightStep * j / 100.0 + 1.0) * _initialScaleY));
 							}
-						} else {	// Si nbHeight est un nombre pair
+						} else {	// if nbHeight is an even number
 							for (int j = -nbHeight / 2; j < nbHeight / 2; j++) {
 								measures.Add (new Measure ((float)(widthStep * i / 100.0 + 1.0) * _initialScaleX + widthStep * _initialScaleX / (2 * 100), (float)(heightStep * j / 100.0 + 1.0) * _initialScaleY + heightStep * _initialScaleY / (2 * 100)));
 							}
@@ -215,7 +220,7 @@ public class InitSceneDoors : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Met a jour l'échelle de la porte en fonction de la valeur de _widthIndex
+	/// Update scale of the door whith the value _widthIndex
 	/// </summary>
 	void applyScale(){
 		_currentScale.x = _scales[_doorIndex].width;
@@ -226,12 +231,20 @@ public class InitSceneDoors : MonoBehaviour {
 		_time = System.DateTime.Now;
 	}
 
+	/// <summary>
+	/// Loads the XML from assest.
+	/// </summary>
 	void loadXMLFromAssest(){
 		_xmlModel = new XmlDocument();
 		TextAsset textXml = (TextAsset)Resources.Load("Models", typeof(TextAsset));
 		_xmlModel.LoadXml(textXml.text);
 	}
 
+	/// <summary>
+	/// Creates the result file.
+	/// </summary>
+	/// <param name="dir">directory</param>
+	/// <param name="username">Name of the patient</param>
 	void CreateResultFile(string dir, string username){
 		string modelSrcvalue;
 		string modelDstvalue;
@@ -269,6 +282,10 @@ public class InitSceneDoors : MonoBehaviour {
 		file.Close ();
 	}
 
+	/// <summary>
+	/// Creates the text file.
+	/// </summary>
+	/// <param name="username">Patient name</param>
 	void createTxT(string username){
 		string modelSrcvalue;
 		string modelDstvalue;
@@ -296,11 +313,9 @@ public class InitSceneDoors : MonoBehaviour {
 			                       "Difference corpulence" + SEPARATOR + SEPARATOR + SEPARATOR + 
 			                       "Type porte" + SEPARATOR + 
 			                       "Moyenne largeur OUI" + SEPARATOR + SEPARATOR + SEPARATOR + SEPARATOR + 
-			                       "PSE" + SEPARATOR + SEPARATOR + SEPARATOR + SEPARATOR + 
-			                       "JND");
+			                       "PSE");
 			fileWritter.WriteLine (SEPARATOR + SEPARATOR + SEPARATOR + SEPARATOR + SEPARATOR + SEPARATOR +SEPARATOR + SEPARATOR + SEPARATOR + SEPARATOR + SEPARATOR +
 			                       "C1" + SEPARATOR + "C2" + SEPARATOR + "C3" + SEPARATOR + "C4" + SEPARATOR +
-			                       "C1" + SEPARATOR + "C2" + SEPARATOR + "C3" + SEPARATOR + "C4" + SEPARATOR + 
 			                       "C1" + SEPARATOR + "C2" + SEPARATOR + "C3" + SEPARATOR + "C4");
 			
 			newFile = true;
@@ -318,7 +333,6 @@ public class InitSceneDoors : MonoBehaviour {
 		moyenne = (nbOui > 0) ? moyenne / nbOui : 0;
 		
 		float pse = 0;
-		float jnd = 0;
 
 		string[] lines = File.ReadAllLines (fileName);
 
@@ -328,7 +342,7 @@ public class InitSceneDoors : MonoBehaviour {
 
 		string emptyParam = "/";
 
-		if (!parameters [0].Equals (username) || newFile) {	// Ajoute une ligne
+		if (!parameters [0].Equals (username) || newFile) {	// Add a new line
 			fileWritter = new StreamWriter (fileName, true);
 			string res = username + SEPARATOR + modelSrcvalue + SEPARATOR + modelDstvalue + SEPARATOR + modelDiffvalue + SEPARATOR + _doorType + SEPARATOR;
 			for(int i=1; i<5; i++) {
@@ -339,13 +353,9 @@ public class InitSceneDoors : MonoBehaviour {
 				if(condition == i) res += pse.ToString() + SEPARATOR;
 				else res += emptyParam + SEPARATOR;
 			}
-			for(int i=1; i<5; i++) {
-				if(condition == i) res += jnd.ToString() + SEPARATOR;
-				else res += emptyParam + SEPARATOR;
-			}
 			fileWritter.WriteLine (res);
 			fileWritter.Close ();
-		} else {	// Met a jour la derniere ligne
+		} else {	// Update the last line.
 			string res = "";
 
 			for(int i = 0; i < 11; i++)
@@ -353,7 +363,6 @@ public class InitSceneDoors : MonoBehaviour {
 
 			res += WriteOrUpdateMoyenne(condition, moyenne, parameters);
 			res += WriteOrUpdatePSE(condition, pse, parameters);
-			res += WriteOrUpdateJND(condition, jnd, parameters);
 
 			lines[lines.Length -1] = res;
 			File.WriteAllLines(fileName, lines);
@@ -361,11 +370,11 @@ public class InitSceneDoors : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Appelle le script python
+	/// Call python script
 	/// </summary>
-	/// <param name="username">Le nom de l'utilisateur effectuant l'exercice</param>
-	/// <param name="condition">La condition d'expérimentation</param>
-	/// <param name="resultFilename">Le fichier de résultat généré pour l'utilisateur</param>
+	/// <param name="username">Patient name</param>
+	/// <param name="condition">Experimentation condition</param>
+	/// <param name="resultFilename">Result files who's generate for the patient</param>
 	void CallPythonScript(string username, int condition, string resultFilename){
 		new System.Diagnostics.Process () {
 			StartInfo = 
@@ -377,6 +386,13 @@ public class InitSceneDoors : MonoBehaviour {
 		}.Start();
 	}
 
+	/// <summary>
+	/// Writes the or update moyenne.
+	/// </summary>
+	/// <returns>The or update moyenne.</returns>
+	/// <param name="condition">Condition.</param>
+	/// <param name="moyenne">Moyenne.</param>
+	/// <param name="parameters">Parameters.</param>
 	string WriteOrUpdateMoyenne(int condition, float moyenne, string[] parameters){
 		return WriteOrUpdateParameter(condition, parameters, moyenne, 10);
 	}
@@ -384,11 +400,15 @@ public class InitSceneDoors : MonoBehaviour {
 	string WriteOrUpdatePSE(int condition, float pse, string[] parameters){
 		return WriteOrUpdateParameter(condition, parameters, pse, 14);
 	}
-	
-	string WriteOrUpdateJND(int condition, float jnd, string[] parameters){
-		return WriteOrUpdateParameter(condition, parameters, jnd, 18);
-	}
 
+	/// <summary>
+	/// Prepare or update string who's write on the result file.
+	/// </summary>
+	/// <returns>The new or update string parameter's.</returns>
+	/// <param name="condition">Condition.</param>
+	/// <param name="parameters">Parameters.</param>
+	/// <param name="newValue">New value.</param>
+	/// <param name="baseIndex">Base index.</param>
 	string WriteOrUpdateParameter(int condition, string[] parameters, float newValue, int baseIndex){
 		string res = "";
 		for(int i = 1; i < 5; i++) {
@@ -399,12 +419,21 @@ public class InitSceneDoors : MonoBehaviour {
 		}
 		return res;
 	}
-	
+
+	/// <summary>
+	/// Add response into the array of _answers.
+	/// </summary>
+	/// <param name="rep">Patient response</param>
 	void Reponse(bool rep){
 		_answers.Add (rep);
 		_next = true;
 	}
 
+	/// <summary>
+	/// Reads the models value on the xml.
+	/// </summary>
+	/// <returns>The models value.</returns>
+	/// <param name="name">Name.</param>
 	float[] ReadModelsValue(string name){
 		string nameNode= "", waist = "", hips= "", chest= "";
 		foreach (XmlElement node in _xmlModel.SelectNodes("Models/Model")) {
@@ -424,7 +453,13 @@ public class InitSceneDoors : MonoBehaviour {
 		values [2] = float.Parse (hips);
 		return values;
 	}
-	
+
+	/// <summary>
+	/// calculate the difference bewteen patient and psycholog model.
+	/// </summary>
+	/// <returns>The ecart.</returns>
+	/// <param name="src">Source.</param>
+	/// <param name="dst">Dst.</param>
 	float[] calculEcart(float[] src, float[] dst){
 		float[] resultat = new float[3];
 		for(int i = 0; i < resultat.Length; i++)

@@ -1,0 +1,20 @@
+<Ouvertures Type="Porte entiere">
+  <Ouverture>
+    <Longueur>0.4752</Longueur>
+    <Hauteur>0.48</Hauteur>
+    <Reponse>Oui</Reponse>
+    <Temps_de_reponse>2.238</Temps_de_reponse>
+  </Ouverture>
+  <Ouverture>
+    <Longueur>0.48</Longueur>
+    <Hauteur>0.48</Hauteur>
+    <Reponse>Oui</Reponse>
+    <Temps_de_reponse>0.074</Temps_de_reponse>
+  </Ouverture>
+  <Ouverture>
+    <Longueur>0.4848</Longueur>
+    <Hauteur>0.48</Hauteur>
+    <Reponse>Oui</Reponse>
+    <Temps_de_reponse>0.131</Temps_de_reponse>
+  </Ouverture>
+</Ouvertures>

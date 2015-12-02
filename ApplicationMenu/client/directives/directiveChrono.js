@@ -1,5 +1,5 @@
 menu.controller('controllerChrono', function($scope, $timeout) {
-	// partie chronomètre
+	// chronometer part
 	$scope.chronoSeconde = 0;
 	$scope.chronoMinute = 0;
 
@@ -16,15 +16,15 @@ menu.controller('controllerChrono', function($scope, $timeout) {
 			$scope.chronoMinute = parseInt($scope.chronoMinute);
 			$scope.chronoMinute  = String("0" + $scope.chronoMinute)
 		}
-		$timeout(chronometer, 1000);
+		$timeout(chronometer, 1000); /*run chronometer function every seconds*/
 	}
 
-	chronometer();
+	chronometer(); /*first call of chronometer function*/
 })
 menu.directive('chrono', function() {
   return {
-    restrict: 'E',
-    controller: "controllerChrono",
-    templateUrl: 'client/directives/templateChrono.html'
+    restrict: 'E', /*restrict the directive just for element*/
+    controller: "controllerChrono", /*ask for the controller just above*/ 
+    templateUrl: 'client/directives/templateChrono.html' /*ask for the template*/
   };
 });

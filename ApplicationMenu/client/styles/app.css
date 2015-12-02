@@ -1,9 +1,12 @@
+/*Import and styles for global thing
+*/
+
 @import "breadcrumb.css";
 @import "portes.css";
 @import "portes_config.css";
 @import "avatar&oob.css";
 @import "avatar_medecin.css";
-@import "run.css";
+@import "chrono.css";
 
 .row-centered {
     text-align:center;
@@ -35,6 +38,7 @@
 	color:green;
 }
 
+/*css when the screen's width is over 767px*/
 @media (min-width: 767px) {
 	h1{
 	color :#73738c;
@@ -64,6 +68,7 @@
 	}
 }
 
+/*css when the screen's width is under 767px*/
 @media (max-width: 767px) {
 	h1{
 	color :#73738c;
