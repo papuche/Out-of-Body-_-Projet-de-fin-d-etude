@@ -15,8 +15,6 @@ module.exports = function(grunt) {
       options: {
         separator: ';',
         mangle: false, // si false : enleve les changements de nom de variable
-        // sourceMap: true,
-        // sourceMapName: 'client/sourcemap.map'
       },
       dist: {
         src: ['client/controllers/controllerMenuWeb.js','client/controllers/controllerMainMenu.js','client/controllers/*.js'],
