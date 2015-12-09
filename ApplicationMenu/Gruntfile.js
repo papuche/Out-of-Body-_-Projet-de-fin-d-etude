@@ -8,7 +8,7 @@ module.exports = function(grunt) {
       },
       compile: {
         src: ['client/controllers/controllerMenuWeb.js','client/controllers/controllerMainMenu.js','client/controllers/*.js'], // la source
-        dest: 'client/controllers/built.js' // la destination finale
+        dest: 'build/build.min.js' // la destination finale
       }
     },
     uglify: {
@@ -20,13 +20,24 @@ module.exports = function(grunt) {
       },
       dist: {
         src: ['client/controllers/controllerMenuWeb.js','client/controllers/controllerMainMenu.js','client/controllers/*.js'],
-        dest: 'client/controllers/built.js'
+        dest: 'build/build.min.js'
       }
     },
     watch: {
       scripts: {
-        files: 'client/controllers/*.js', // tous les fichiers JavaScript du dossier src
-        tasks: ['uglify:dist']
+        files: 'client/controllers/*.js', //'client/styles/*.css', // tous les fichiers JavaScript du dossier src
+        tasks: ['uglify:dist,cssmin']
+      }
+    },
+    cssmin: {
+      options: {
+        shorthandCompacting: false,
+        roundingPrecision: -1
+      },
+      target: {
+        files: {
+          'build/build.min.css': ['client/styles/*.css']
+        }
       }
     }
 })
@@ -35,8 +46,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat')
   grunt.loadNpmTasks('grunt-contrib-uglify')
   grunt.loadNpmTasks('grunt-contrib-watch')
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
 
-  grunt.registerTask('default', ['dist','watch'])
+  grunt.registerTask('default', ['dist','cssmin','watch'])
   grunt.registerTask('dev', ['concat:compile'])
   grunt.registerTask('dist', ['uglify:dist'])
+  grunt.registerTask('style', ['cssmin'])
 }
