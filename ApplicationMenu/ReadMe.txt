@@ -1,0 +1,1 @@
+Pour développer : il faut lancer la commande "node server.js" puis dans un autre terminale node : "grunt"
