@@ -58,7 +58,7 @@ menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope, $
 				sendMessage();
 		}
 		else
-			$scope.informationsDonnees = "Tous les champs nécessaires ne sont pas remplis";
+			$scope.informationsDonnees = "Tous les champs ne sont pas remplis";
 	}
 
 	// Function to check if height values are corrects
@@ -68,7 +68,7 @@ menu.controller('PortesConfigCtrl', function ($scope,$state,$http, $rootScope, $
 		else if ($scope.nbTailleHauteur > 1 & $scope.diffTailleHauteur != 0)
 			sendMessage();
 		else
-			$scope.informationsDonnees = "Tous les champs nécessaires ne sont pas remplis";
+			$scope.informationsDonnees = "Tous les champs ne sont pas remplis";
 	}
 
 	// Function to send values to server AND go to running exercice state
