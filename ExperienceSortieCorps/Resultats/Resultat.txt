@@ -1,3 +1,0 @@
-Participant	Choix patient			Choix experimentateur			Difference corpulence			Type porte	Moyenne largeur OUI				PSE				JND
-											C1	C2	C3	C4	C1	C2	C3	C4	C1	C2	C3	C4
-patient_0	0	0	0	0	0	0	0	0	0	Porte entiere	0.48
