@@ -72,6 +72,7 @@ public class SocketClient
 				{
 					WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
 					FileName = "cmd.exe",
+					//UserName = "administrator",
 					Arguments = "/c netsh wlan set hostednetwork mode=allow ssid=\"Out Of Body\" key=outofbody && netsh wlan start hostednetwork"
 				}
 			}.Start ();
