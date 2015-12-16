@@ -15,3 +15,5 @@ Matériels utilisés : Oculus, Kinect, Razer Hydra
 &nbsp; &nbsp;&nbsp; &nbsp; 	->Out_Of_Body_Data : Données de l'exécutable de l'application  
 &nbsp; &nbsp;&nbsp; &nbsp; 	->Out_Of_Body.exe : Exécutable de l'application  
 &nbsp; &nbsp;&nbsp; &nbsp; 	->Out_Of_Body_DirectToRift.exe : Exécutable de l'application adapté à l'Oculus  
+&nbsp; &nbsp;&nbsp; &nbsp; 	->Create_picture_Data : Données de l'exécutable pour la génération d'images des avatars
+&nbsp; &nbsp;&nbsp; &nbsp; 	->Create_picture.exe : Exécutable qui génère deux images pour chaque avatar utilisé par l'application
