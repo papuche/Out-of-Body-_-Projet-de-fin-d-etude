@@ -6,7 +6,7 @@ Matériels utilisés : Oculus, Kinect, Razer Hydra
 
 # Arborescence du dossier contenant l'executable (A respecter !!)
 -> Dossier
- |->ApplicationMenu
+ |->ApplicationMenu\n
  |->bin
 	  ->Resultats : Contient les fichiers de résultat
 	  ->ShowIp.exe : Affiche l'IP de l'ordinateur
