@@ -3,19 +3,23 @@ using System.Collections;
 using System.IO;
 
 public class CreatePicture : MonoBehaviour {
-
+	
 	private GameObject _avatar;
-
+	
 	private GameObject[] _go_modelsMale;
 	private GameObject[] _go_modelsFemale;
-
+	
 	private GameObject[] _currentGoModels;
-
+	
 	private int _avatarIndex;
-
+	
+	private string _avatarName;
+	
 	private bool _isFront;
 	private bool _stop = false;
-
+	
+	private bool _init = false;
+	
 	void Start () {
 		_go_modelsMale = Resources.LoadAll<GameObject> ("Models/Homme/");
 		_go_modelsFemale = Resources.LoadAll<GameObject> ("Models/Femme/");
@@ -29,42 +33,53 @@ public class CreatePicture : MonoBehaviour {
 		_isFront = false;
 		_avatarIndex = 0;
 	}
-
+	
 	void Update(){
-		if (!_stop) {
+		if (!_init)
+			_init = true;
+		else {
 			if (!_isFront) {
-				if (_avatarIndex > _currentGoModels.Length -1) {
+				if (_avatarIndex > _currentGoModels.Length - 1) {
 					if (_currentGoModels.Equals (_go_modelsMale)) {
 						_avatarIndex = 0;
 						_currentGoModels = _go_modelsFemale;
 					} else {
-						_stop = true;
+						Application.Quit ();
 						return;
 					}
 				}
 				if (_avatar != null)
 					Destroy (_avatar);
 				_avatar = (GameObject)Instantiate (_currentGoModels [_avatarIndex]);
+				_avatarName = _currentGoModels[_avatarIndex].name;
 				_avatar.transform.localRotation = new Quaternion (0.0f, -0.7f, 0.0f, 0.7f);
 				_avatar.transform.parent = transform;
 				initAvatar ();
-				if(_currentGoModels.Equals (_go_modelsMale))
-					Application.CaptureScreenshot ("AvatarImg/Hommes/" + _currentGoModels [_avatarIndex].name + "_back.png");
-				else
-					Application.CaptureScreenshot ("AvatarImg/Femmes/" + _currentGoModels [_avatarIndex].name + "_back.png");
 				_isFront = true;
+				
 			} else {
 				_avatar.transform.rotation = new Quaternion (0.0f, 0.7f, 0.0f, 0.7f);
-				if(_currentGoModels.Equals (_go_modelsMale))
-					Application.CaptureScreenshot ("AvatarImg/Hommes/" + _currentGoModels [_avatarIndex].name + "_front.png");
-				else
-					Application.CaptureScreenshot ("AvatarImg/Femmes/" + _currentGoModels [_avatarIndex].name + "_front.png");
 				_isFront = false;
 				_avatarIndex++;
 			}
 		}
 	}
-
+	
+	void LateUpdate(){
+		if(!_avatarName.Equals("")) {
+			string filename;
+			if (_currentGoModels.Equals (_go_modelsMale))
+				filename = "../AvatarImg/Hommes/" + _avatarName;
+			else
+				filename = "../AvatarImg/Femmes/" + _avatarName;
+			if (_isFront)
+				filename += "_back";
+			else 
+				filename += "_front";
+			Application.CaptureScreenshot (filename + ".png");
+		}
+	}
+	
 	void initAvatar ()
 	{
 		GameObject modelRoot = _avatar.transform.FindChild ("python").gameObject;
