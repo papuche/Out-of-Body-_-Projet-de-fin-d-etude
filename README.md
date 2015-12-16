@@ -5,7 +5,7 @@ Matériels utilisés : Oculus, Kinect, Razer Hydra
 
 
 # Arborescence du dossier contenant l'executable (A respecter !!)
-* Dossier
+-> Dossier  
  |*ApplicationMenu
  |*bin
 	  *Resultats : Contient les fichiers de résultat
